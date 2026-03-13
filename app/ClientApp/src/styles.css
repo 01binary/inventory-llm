@@ -1,0 +1,316 @@
+:root {
+  color-scheme: light;
+  font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #13253a;
+  background:
+    radial-gradient(circle at top left, rgba(100, 167, 224, 0.18), transparent 28%),
+    linear-gradient(180deg, #f4f8fb 0%, #eef2f6 100%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 0.8rem 0.65rem;
+  text-align: left;
+  border-bottom: 1px solid #dde6ee;
+  vertical-align: top;
+}
+
+thead th {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #5a6d80;
+}
+
+.app-shell {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: 100vh;
+}
+
+.sidebar {
+  padding: 2rem 1.5rem;
+  background: linear-gradient(180deg, #0f2740 0%, #163f66 100%);
+  color: #f3f7fa;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.sidebar h1 {
+  margin: 0.25rem 0 0.75rem;
+  font-size: 2rem;
+}
+
+.sidebar-copy {
+  color: rgba(243, 247, 250, 0.78);
+}
+
+.nav {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.nav-link {
+  padding: 0.9rem 1rem;
+  border-radius: 14px;
+  color: rgba(243, 247, 250, 0.82);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.main-content {
+  padding: 2rem;
+}
+
+.stack {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.page-header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.page-header h2 {
+  margin: 0.15rem 0;
+  font-size: 2rem;
+}
+
+.page-description,
+.muted-text {
+  color: #5a6d80;
+}
+
+.eyebrow {
+  margin: 0;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  color: #4a7db0;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(214, 224, 236, 0.9);
+  border-radius: 22px;
+  padding: 1.25rem;
+  box-shadow: 0 24px 60px rgba(19, 37, 58, 0.08);
+}
+
+.stat-grid,
+.dashboard-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.stat-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.dashboard-grid {
+  grid-template-columns: 1.2fr 1fr;
+}
+
+.stat-card strong {
+  display: block;
+  font-size: 2rem;
+  margin-top: 0.45rem;
+}
+
+.stat-label {
+  color: #5a6d80;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.form-field {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.form-field span {
+  font-weight: 600;
+}
+
+.form-field input,
+.form-field textarea {
+  width: 100%;
+  border-radius: 14px;
+  border: 1px solid #cfdbe7;
+  padding: 0.85rem 0.95rem;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.button-row,
+.page-actions,
+.panel-header-row,
+.voice-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.panel-header-row {
+  justify-content: space-between;
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+.primary-button,
+.secondary-button,
+.danger-button,
+.text-button {
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.primary-button,
+.secondary-button,
+.danger-button {
+  padding: 0.8rem 1.2rem;
+}
+
+.primary-button {
+  background: #1c6bb0;
+  color: white;
+}
+
+.secondary-button {
+  background: #dfeaf5;
+  color: #163f66;
+}
+
+.danger-button {
+  background: #b94444;
+  color: white;
+}
+
+.text-button {
+  padding: 0;
+  background: none;
+  color: #1c6bb0;
+}
+
+.danger-text {
+  color: #b94444;
+}
+
+.actions-cell {
+  display: flex;
+  gap: 1rem;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.status-pill.ok {
+  background: #d8efe0;
+  color: #256647;
+}
+
+.status-pill.bad {
+  background: #f9dddd;
+  color: #9f2f2f;
+}
+
+.diagnostics-list {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.diagnostic-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid #dde6ee;
+}
+
+.diagnostic-row:last-child {
+  border-bottom: none;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+.config-block {
+  margin: 0;
+  background: #0f2740;
+  color: #f1f5f8;
+  border-radius: 16px;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+.error-text {
+  color: #b94444;
+  margin: 0;
+}
+
+@media (max-width: 980px) {
+  .app-shell,
+  .dashboard-grid,
+  .stat-grid,
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    gap: 2rem;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: start;
+  }
+}

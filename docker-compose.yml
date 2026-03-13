@@ -1,0 +1,60 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile
+    container_name: inventory-demo-app
+    restart: unless-stopped
+    depends_on:
+      llm:
+        condition: service_healthy
+      stt:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      AppPaths__DatabasePath: /data/inventory.db
+      AppPaths__SqlScriptsPath: /app/db
+      AppPaths__TempAudioDirectory: /tmp/inventory-audio
+      AppPaths__PiperExecutablePath: /usr/local/bin/piper/piper
+      AppPaths__PiperVoiceModelPath: /models/piper/${PIPER_VOICE_FILE}
+      ModelServices__LlamaBaseUrl: http://llm:8080
+      ModelServices__WhisperBaseUrl: http://stt:8080
+      ModelServices__LlamaCompletionPath: /completion
+      ModelServices__LlamaHealthPath: /health
+      ModelServices__WhisperTranscriptionPath: /inference
+      ModelServices__WhisperHealthPath: /
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./docker/data/sqlite:/data
+      - ./docker/models/piper:/models/piper:ro
+      - ./docker/temp:/tmp/inventory-audio
+
+  llm:
+    build:
+      context: .
+      dockerfile: docker/llama/Dockerfile
+    container_name: inventory-demo-llm
+    restart: unless-stopped
+    environment:
+      MODEL_PATH: /models/llama/${LLAMA_MODEL_FILE}
+      LLAMA_PORT: 8080
+      N_CTX: ${LLAMA_CONTEXT_SIZE:-2048}
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./docker/models/llama:/models/llama:ro
+
+  stt:
+    build:
+      context: .
+      dockerfile: docker/whisper/Dockerfile
+    container_name: inventory-demo-stt
+    restart: unless-stopped
+    environment:
+      MODEL_PATH: /models/whisper/${WHISPER_MODEL_FILE}
+      WHISPER_PORT: 8080
+    ports:
+      - "8082:8080"
+    volumes:
+      - ./docker/models/whisper:/models/whisper:ro

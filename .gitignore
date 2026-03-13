@@ -1,0 +1,29 @@
+# Node
+app/ClientApp/node_modules/
+app/ClientApp/dist/
+
+# .NET
+app/Server/bin/
+app/Server/obj/
+
+# Local data and logs
+docker/data/sqlite/
+docker/temp/
+app/Server/local-data/
+docker/models/llama/*.gguf
+docker/models/whisper/*.bin
+docker/models/piper/*.onnx
+docker/models/piper/*.onnx.json
+!docker/models/llama/.gitkeep
+!docker/models/whisper/.gitkeep
+!docker/models/piper/.gitkeep
+
+# Environment files
+.env
+.dotnet-home/
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
