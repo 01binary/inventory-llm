@@ -4,8 +4,10 @@ setlocal enabledelayedexpansion
 set SCRIPT_DIR=%~dp0
 set REPO_ROOT=%SCRIPT_DIR%..
 set DEFAULT_LLAMA_FILE=gemma-3-4b-it-Q4_K_M.gguf
+set DEFAULT_WHISPER_FILE=ggml-tiny-q5_1.bin
 set DEFAULT_PIPER_FILE=es_MX-claude-high.onnx
 set LLAMA_MODEL_URL=https://huggingface.co/lmstudio-community/gemma-3-4b-it-GGUF/resolve/main/gemma-3-4b-it-Q4_K_M.gguf
+set WHISPER_MODEL_URL=https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-tiny-q5_1.bin
 set PIPER_MODEL_URL=https://huggingface.co/rhasspy/piper-voices/resolve/main/es/es_MX/claude/high/es_MX-claude-high.onnx
 set PIPER_CONFIG_URL=https://huggingface.co/rhasspy/piper-voices/resolve/main/es/es_MX/claude/high/es_MX-claude-high.onnx.json
 
@@ -43,9 +45,11 @@ for /f "usebackq tokens=1,* delims==" %%A in ("%REPO_ROOT%\.env") do (
 )
 
 if "%LLAMA_MODEL_FILE%"=="" set LLAMA_MODEL_FILE=%DEFAULT_LLAMA_FILE%
+if "%WHISPER_MODEL_FILE%"=="" set WHISPER_MODEL_FILE=%DEFAULT_WHISPER_FILE%
 if "%PIPER_VOICE_FILE%"=="" set PIPER_VOICE_FILE=%DEFAULT_PIPER_FILE%
 
 set LLAMA_MODEL_PATH=%REPO_ROOT%\docker\models\llama\%LLAMA_MODEL_FILE%
+set WHISPER_MODEL_PATH=%REPO_ROOT%\docker\models\whisper\%WHISPER_MODEL_FILE%
 set PIPER_MODEL_PATH=%REPO_ROOT%\docker\models\piper\%PIPER_VOICE_FILE%
 set PIPER_CONFIG_PATH=%PIPER_MODEL_PATH%.json
 
@@ -59,8 +63,15 @@ if not exist "%LLAMA_MODEL_PATH%" (
   )
 )
 
-dir /b "%REPO_ROOT%\docker\models\whisper\*.bin" >nul 2>nul
-if errorlevel 1 echo Warning: no whisper model found in docker\models\whisper
+if not exist "%WHISPER_MODEL_PATH%" (
+  if /i "%WHISPER_MODEL_FILE%"=="%DEFAULT_WHISPER_FILE%" (
+    echo Downloading whisper.cpp model %WHISPER_MODEL_FILE%.
+    powershell -NoProfile -ExecutionPolicy Bypass -Command "Invoke-WebRequest '%WHISPER_MODEL_URL%' -OutFile '%WHISPER_MODEL_PATH%'"
+    if errorlevel 1 exit /b 1
+  ) else (
+    echo Warning: %WHISPER_MODEL_FILE% is missing in docker\models\whisper and no automatic download is configured for custom filenames.
+  )
+)
 
 if not exist "%PIPER_MODEL_PATH%" (
   if /i "%PIPER_VOICE_FILE%"=="%DEFAULT_PIPER_FILE%" (

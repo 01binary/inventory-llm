@@ -4,8 +4,10 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 DEFAULT_LLAMA_FILE="gemma-3-4b-it-Q4_K_M.gguf"
+DEFAULT_WHISPER_FILE="ggml-tiny-q5_1.bin"
 DEFAULT_PIPER_FILE="es_MX-claude-high.onnx"
 LLAMA_MODEL_URL="https://huggingface.co/lmstudio-community/gemma-3-4b-it-GGUF/resolve/main/${DEFAULT_LLAMA_FILE}"
+WHISPER_MODEL_URL="https://huggingface.co/ggerganov/whisper.cpp/resolve/main/${DEFAULT_WHISPER_FILE}"
 PIPER_MODEL_URL="https://huggingface.co/rhasspy/piper-voices/resolve/main/es/es_MX/claude/high/${DEFAULT_PIPER_FILE}"
 PIPER_CONFIG_URL="https://huggingface.co/rhasspy/piper-voices/resolve/main/es/es_MX/claude/high/${DEFAULT_PIPER_FILE}.json"
 
@@ -39,9 +41,11 @@ fi
 . "${REPO_ROOT}/.env"
 
 LLAMA_MODEL_FILE="${LLAMA_MODEL_FILE:-${DEFAULT_LLAMA_FILE}}"
+WHISPER_MODEL_FILE="${WHISPER_MODEL_FILE:-${DEFAULT_WHISPER_FILE}}"
 PIPER_VOICE_FILE="${PIPER_VOICE_FILE:-${DEFAULT_PIPER_FILE}}"
 
 LLAMA_MODEL_PATH="${REPO_ROOT}/docker/models/llama/${LLAMA_MODEL_FILE}"
+WHISPER_MODEL_PATH="${REPO_ROOT}/docker/models/whisper/${WHISPER_MODEL_FILE}"
 PIPER_MODEL_PATH="${REPO_ROOT}/docker/models/piper/${PIPER_VOICE_FILE}"
 PIPER_CONFIG_PATH="${PIPER_MODEL_PATH}.json"
 
@@ -54,8 +58,13 @@ if [ ! -f "${LLAMA_MODEL_PATH}" ]; then
   fi
 fi
 
-if ! ls "${REPO_ROOT}/docker/models/whisper"/* >/dev/null 2>&1; then
-  echo "Warning: no whisper model found in docker/models/whisper"
+if [ ! -f "${WHISPER_MODEL_PATH}" ]; then
+  if [ "${WHISPER_MODEL_FILE}" = "${DEFAULT_WHISPER_FILE}" ]; then
+    echo "Downloading whisper.cpp model ${WHISPER_MODEL_FILE}."
+    curl -L "${WHISPER_MODEL_URL}" -o "${WHISPER_MODEL_PATH}"
+  else
+    echo "Warning: ${WHISPER_MODEL_FILE} is missing in docker/models/whisper and no automatic download is configured for custom filenames."
+  fi
 fi
 
 if [ ! -f "${PIPER_MODEL_PATH}" ] || [ ! -f "${PIPER_CONFIG_PATH}" ]; then

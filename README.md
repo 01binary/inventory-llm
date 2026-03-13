@@ -26,7 +26,7 @@ docker-compose.yml
 - macOS Apple Silicon or Windows 11
 - Enough disk space for model files
 
-The repo does not include the llama.cpp or whisper.cpp model files. The startup scripts will download the default llama.cpp model and Piper voice automatically if they are missing.
+The repo does not include the llama.cpp or whisper.cpp model files. The startup scripts will download the default llama.cpp model, default whisper.cpp model, and Piper voice automatically if they are missing.
 
 ## Model file locations
 
@@ -36,7 +36,8 @@ Copy or move your model files into these folders:
   - Default filename: `gemma-3-4b-it-Q4_K_M.gguf`
   - The upstream repo also publishes `Q3_K_L`, `Q6_K`, `Q8_0`, and `mmproj-model-f16.gguf`
 - whisper.cpp model: [docker/models/whisper](/Users/valeriynovytskyy/Desktop/inventory-llm/docker/models/whisper)
-  - Example filename: `ggml-base.en.bin`
+  - Default filename: `ggml-tiny-q5_1.bin`
+  - This is the smallest multilingual `whisper.cpp` model listed by `ggerganov/whisper.cpp`, so it can handle Spanish, including Mexican Spanish input, without using an English-only checkpoint
 - Piper voice model: [docker/models/piper](/Users/valeriynovytskyy/Desktop/inventory-llm/docker/models/piper)
   - Included filename: `es_MX-claude-high.onnx`
   - Companion config file: `es_MX-claude-high.onnx.json`
@@ -84,6 +85,29 @@ Invoke-WebRequest https://huggingface.co/lmstudio-community/gemma-3-4b-it-GGUF/r
 
 This model repository also includes `mmproj-model-f16.gguf`, but this demo currently uses text completion only and does not mount or call the multimodal projector file.
 
+### Downloading the default whisper.cpp model
+
+This repo now defaults to the smallest multilingual `whisper.cpp` model:
+
+- Model repo: `https://huggingface.co/ggerganov/whisper.cpp`
+- Default file: `ggml-tiny-q5_1.bin`
+
+The startup scripts download this file into [docker/models/whisper](/Users/valeriynovytskyy/Desktop/inventory-llm/docker/models/whisper) automatically when it is missing.
+
+Manual download:
+
+```bash
+curl -L https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-tiny-q5_1.bin -o docker/models/whisper/ggml-tiny-q5_1.bin
+```
+
+Windows PowerShell:
+
+```powershell
+Invoke-WebRequest https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-tiny-q5_1.bin -OutFile docker/models/whisper/ggml-tiny-q5_1.bin
+```
+
+If you want better Spanish transcription quality later, switch `.env` to a larger multilingual model such as `ggml-base.bin` or `ggml-small.bin`.
+
 ## Start
 
 macOS:
@@ -98,6 +122,7 @@ The macOS script will:
 - create local folders if missing
 - create `.env` from `.env.example` if needed
 - download `gemma-3-4b-it-Q4_K_M.gguf` if missing
+- download `ggml-tiny-q5_1.bin` if missing
 - download `es_MX-claude-high.onnx` and `es_MX-claude-high.onnx.json` if missing
 - run `docker compose up -d --build`
 
@@ -174,6 +199,7 @@ Most useful settings:
 
 - If `docker compose up` fails because a model file is missing, verify the filename in `.env` exactly matches the file on disk.
 - If the Gemma download fails, check whether Hugging Face is rate-limiting or requiring a refreshed browser/session for that model URL.
+- If the whisper model download fails, confirm the default URL still resolves to `ggml-tiny-q5_1.bin` in `ggerganov/whisper.cpp`.
 - If the app diagnostics show Piper missing, confirm the `.onnx` voice file exists in `docker/models/piper`.
 - If the app diagnostics show Piper voice missing, also confirm the companion `.onnx.json` file is present next to the model.
 - If whisper.cpp or llama.cpp fail to build, the upstream server binary or flags may have changed. Check the corresponding Dockerfile and container logs.
@@ -190,6 +216,7 @@ Most useful settings:
 - Model files are not bundled
 - Command-line flags for llama.cpp and whisper.cpp can vary by upstream version
 - The default Gemma model download is several gigabytes and will make first startup much slower
+- The tiny quantized whisper model is the smallest multilingual option, but accuracy will be lower than larger models
 
 ## Files to customize first
 
@@ -203,6 +230,7 @@ Most useful settings:
 - `llama.cpp` exposes `POST /completion` and `GET /health`
 - `gemma-3-4b-it-Q4_K_M.gguf` is compatible with the chosen `llama.cpp` server build
 - `whisper.cpp` exposes `POST /inference` and responds on `/`
+- `ggml-tiny-q5_1.bin` is supported by the chosen `whisper.cpp` server build and provides multilingual transcription
 - Piper release archives follow the `piper_linux_<arch>.tar.gz` naming pattern for `amd64` and `arm64`
 - Piper can be invoked with `--model <voice.onnx> --output_file <wav>`
 - The `es_MX-claude-high` voice works with the `.onnx` model plus its adjacent `.onnx.json` config file
