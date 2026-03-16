@@ -48,7 +48,14 @@ public sealed class VoiceController : ControllerBase
             return ValidationProblem(ModelState);
         }
 
-        var audio = await _textToSpeechService.SynthesizeAsync(request.Text, cancellationToken);
-        return File(audio, "audio/wav", "speech.wav");
+        try
+        {
+            var audio = await _textToSpeechService.SynthesizeAsync(request.Text, cancellationToken);
+            return File(audio, "audio/wav", "speech.wav");
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
     }
 }

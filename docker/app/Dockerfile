@@ -36,6 +36,7 @@ RUN case "${TARGETARCH}" in \
     esac \
     && python3 -m venv /opt/piper-venv \
     && /opt/piper-venv/bin/pip install --no-cache-dir --upgrade pip \
+    && /opt/piper-venv/bin/pip install --no-cache-dir pathvalidate \
     && /opt/piper-venv/bin/pip install --no-cache-dir "https://github.com/OHF-Voice/piper1-gpl/releases/download/v${PIPER_VERSION}/${PIPER_WHEEL}" \
     && ln -sf /opt/piper-venv/bin/piper /usr/local/bin/piper \
     && test -x /usr/local/bin/piper
