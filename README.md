@@ -166,6 +166,7 @@ scripts\stop-local-demo.bat
 - SQLite persists on the host under [docker/data/sqlite](/Users/valeriynovytskyy/Desktop/inventory-llm/docker/data/sqlite).
 - On startup, the API creates the database directory, initializes schema from [db/001_schema.sql](/Users/valeriynovytskyy/Desktop/inventory-llm/db/001_schema.sql), and seeds data from [db/002_seed.sql](/Users/valeriynovytskyy/Desktop/inventory-llm/db/002_seed.sql) only when the `items` table is empty.
 - Browser audio is uploaded to the API, which proxies it to whisper.cpp.
+- The API converts browser-recorded audio to mono 16 kHz WAV with `ffmpeg` before sending it to whisper.cpp.
 - Text-to-speech stays inside the app container, where the API shells out to Piper and returns `audio/wav`.
 - Chat completion is a thin proxy from the API to llama.cpp.
 

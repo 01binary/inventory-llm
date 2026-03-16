@@ -26,7 +26,7 @@ ARG PIPER_VERSION=1.4.1
 WORKDIR /app
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends curl ca-certificates libstdc++6 python3 python3-pip python3-venv \
+    && apt-get install -y --no-install-recommends curl ca-certificates ffmpeg libstdc++6 python3 python3-pip python3-venv \
     && rm -rf /var/lib/apt/lists/*
 
 RUN case "${TARGETARCH}" in \

@@ -29,8 +29,15 @@ public sealed class VoiceController : ControllerBase
             return BadRequest(new { message = "Audio file is required." });
         }
 
-        var result = await _speechToTextProxyService.TranscribeAsync(audio);
-        return Ok(result);
+        try
+        {
+            var result = await _speechToTextProxyService.TranscribeAsync(audio);
+            return Ok(result);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
     }
 
     [HttpPost("speak")]
