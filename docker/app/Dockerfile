@@ -21,24 +21,24 @@ RUN dotnet publish app/Server/InventoryDemo.Server.csproj -c Release -o /out /p:
 FROM mcr.microsoft.com/dotnet/aspnet:8.0-bookworm-slim AS runtime
 
 ARG TARGETARCH
-ARG PIPER_VERSION=2023.11.14-2
+ARG PIPER_VERSION=1.4.1
 
 WORKDIR /app
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends curl ca-certificates libstdc++6 xz-utils \
+    && apt-get install -y --no-install-recommends curl ca-certificates libstdc++6 python3 python3-pip python3-venv \
     && rm -rf /var/lib/apt/lists/*
 
 RUN case "${TARGETARCH}" in \
-      "amd64") export PIPER_ARCH="x86_64" ;; \
-      "arm64") export PIPER_ARCH="aarch64" ;; \
+      "amd64") export PIPER_WHEEL="piper_tts-${PIPER_VERSION}-cp39-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_28_x86_64.whl" ;; \
+      "arm64") export PIPER_WHEEL="piper_tts-${PIPER_VERSION}-cp39-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.manylinux_2_28_aarch64.whl" ;; \
       *) echo "Unsupported TARGETARCH: ${TARGETARCH}" && exit 1 ;; \
     esac \
-    && curl -fsSL "https://github.com/rhasspy/piper/releases/download/v${PIPER_VERSION}/piper_linux_${PIPER_ARCH}.tar.gz" -o /tmp/piper.tar.gz \
-    && mkdir -p /usr/local/bin/piper \
-    && tar -xzf /tmp/piper.tar.gz -C /usr/local/bin/piper --strip-components=1 \
-    && rm /tmp/piper.tar.gz \
-    && chmod +x /usr/local/bin/piper/piper
+    && python3 -m venv /opt/piper-venv \
+    && /opt/piper-venv/bin/pip install --no-cache-dir --upgrade pip \
+    && /opt/piper-venv/bin/pip install --no-cache-dir "https://github.com/OHF-Voice/piper1-gpl/releases/download/v${PIPER_VERSION}/${PIPER_WHEEL}" \
+    && ln -sf /opt/piper-venv/bin/piper /usr/local/bin/piper \
+    && test -x /usr/local/bin/piper
 
 COPY --from=server-build /out/ ./
 COPY db/ ./db/

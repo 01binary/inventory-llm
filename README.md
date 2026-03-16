@@ -203,6 +203,7 @@ Most useful settings:
 - If the app diagnostics show Piper missing, confirm the `.onnx` voice file exists in `docker/models/piper`.
 - If the app diagnostics show Piper voice missing, also confirm the companion `.onnx.json` file is present next to the model.
 - If whisper.cpp or llama.cpp fail to build, the upstream server binary or flags may have changed. Check the corresponding Dockerfile and container logs.
+- If the app image fails while installing Piper, check [docker/app/Dockerfile](/Users/valeriynovytskyy/Desktop/inventory-llm/docker/app/Dockerfile) against the latest `OHF-Voice/piper1-gpl` wheel names.
 - On macOS, if the `.command` scripts do not launch, run `chmod +x scripts/*.command` once.
 - On Windows, run the `.bat` script from a normal Command Prompt after Docker Desktop is fully started.
 - First build may take a while because Docker needs to compile `llama.cpp` and `whisper.cpp`.
@@ -231,6 +232,6 @@ Most useful settings:
 - `gemma-3-4b-it-Q4_K_M.gguf` is compatible with the chosen `llama.cpp` server build
 - `whisper.cpp` exposes `POST /inference` and responds on `/`
 - `ggml-tiny-q5_1.bin` is supported by the chosen `whisper.cpp` server build and provides multilingual transcription
-- Piper release archives follow the `piper_linux_<arch>.tar.gz` naming pattern for `amd64` and `arm64`
+- Piper is installed in the app container from `OHF-Voice/piper1-gpl` Linux wheels for `amd64` and `arm64`
 - Piper can be invoked with `--model <voice.onnx> --output_file <wav>`
 - The `es_MX-claude-high` voice works with the `.onnx` model plus its adjacent `.onnx.json` config file
