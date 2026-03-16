@@ -71,6 +71,11 @@ This repo now defaults to the LM Studio Community GGUF build of Gemma 3 4B Instr
 
 The startup scripts download this file into [docker/models/llama](/Users/valeriynovytskyy/Desktop/inventory-llm/docker/models/llama) automatically when it is missing.
 
+Expected size for the default file:
+
+- `gemma-3-4b-it-Q4_K_M.gguf`: `2,489,757,856` bytes
+- SHA256: `be49949e48422e4547b00af14179a193d3777eea7fbbd7d6e1b0861304628a01`
+
 Manual download:
 
 ```bash
@@ -199,6 +204,7 @@ Most useful settings:
 
 - If `docker compose up` fails because a model file is missing, verify the filename in `.env` exactly matches the file on disk.
 - If the Gemma download fails, check whether Hugging Face is rate-limiting or requiring a refreshed browser/session for that model URL.
+- If the llama.cpp container says the model is corrupted or incomplete, delete [docker/models/llama/gemma-3-4b-it-Q4_K_M.gguf](/Users/valeriynovytskyy/Desktop/inventory-llm/docker/models/llama/gemma-3-4b-it-Q4_K_M.gguf) and rerun the startup script. The default file should be exactly `2,489,757,856` bytes.
 - If the whisper model download fails, confirm the default URL still resolves to `ggml-tiny-q5_1.bin` in `ggerganov/whisper.cpp`.
 - If the app diagnostics show Piper missing, confirm the `.onnx` voice file exists in `docker/models/piper`.
 - If the app diagnostics show Piper voice missing, also confirm the companion `.onnx.json` file is present next to the model.

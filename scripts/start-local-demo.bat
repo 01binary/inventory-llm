@@ -4,6 +4,7 @@ setlocal enabledelayedexpansion
 set SCRIPT_DIR=%~dp0
 set REPO_ROOT=%SCRIPT_DIR%..
 set DEFAULT_LLAMA_FILE=gemma-3-4b-it-Q4_K_M.gguf
+set DEFAULT_LLAMA_BYTES=2489757856
 set DEFAULT_WHISPER_FILE=ggml-tiny-q5_1.bin
 set DEFAULT_PIPER_FILE=es_MX-claude-high.onnx
 set LLAMA_MODEL_URL=https://huggingface.co/lmstudio-community/gemma-3-4b-it-GGUF/resolve/main/gemma-3-4b-it-Q4_K_M.gguf
@@ -53,7 +54,19 @@ set WHISPER_MODEL_PATH=%REPO_ROOT%\docker\models\whisper\%WHISPER_MODEL_FILE%
 set PIPER_MODEL_PATH=%REPO_ROOT%\docker\models\piper\%PIPER_VOICE_FILE%
 set PIPER_CONFIG_PATH=%PIPER_MODEL_PATH%.json
 
+set LLAMA_NEEDS_DOWNLOAD=
 if not exist "%LLAMA_MODEL_PATH%" (
+  set LLAMA_NEEDS_DOWNLOAD=1
+) else if /i "%LLAMA_MODEL_FILE%"=="%DEFAULT_LLAMA_FILE%" (
+  for %%F in ("%LLAMA_MODEL_PATH%") do set ACTUAL_LLAMA_BYTES=%%~zF
+  if not "!ACTUAL_LLAMA_BYTES!"=="%DEFAULT_LLAMA_BYTES%" (
+    echo Existing llama.cpp model has the wrong size (!ACTUAL_LLAMA_BYTES! bytes). Expected %DEFAULT_LLAMA_BYTES%. Re-downloading.
+    del "%LLAMA_MODEL_PATH%" >nul 2>nul
+    set LLAMA_NEEDS_DOWNLOAD=1
+  )
+)
+
+if defined LLAMA_NEEDS_DOWNLOAD (
   if /i "%LLAMA_MODEL_FILE%"=="%DEFAULT_LLAMA_FILE%" (
     echo Downloading llama.cpp model %LLAMA_MODEL_FILE%. This may take a while.
     powershell -NoProfile -ExecutionPolicy Bypass -Command "Invoke-WebRequest '%LLAMA_MODEL_URL%' -OutFile '%LLAMA_MODEL_PATH%'"
