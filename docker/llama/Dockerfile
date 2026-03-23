@@ -6,14 +6,14 @@ ARG LLAMA_CPP_REF=master
 WORKDIR /opt
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends build-essential cmake curl ca-certificates git \
+    && apt-get install -y --no-install-recommends build-essential ca-certificates cmake curl git libopenblas-dev \
     && rm -rf /var/lib/apt/lists/*
 
 RUN git clone --depth 1 --branch ${LLAMA_CPP_REF} ${LLAMA_CPP_REPO} llama.cpp
 
 WORKDIR /opt/llama.cpp
 
-RUN cmake -B build -DGGML_NATIVE=OFF -DGGML_AVX=ON -DGGML_BLAS=OFF -DLLAMA_BUILD_SERVER=ON \
+RUN cmake -B build -DGGML_NATIVE=ON -DGGML_BLAS=ON -DGGML_BLAS_VENDOR=OpenBLAS -DLLAMA_BUILD_SERVER=ON \
     && cmake --build build --config Release -j"$(nproc)"
 
 ENV MODEL_PATH=/models/llama/model.gguf
