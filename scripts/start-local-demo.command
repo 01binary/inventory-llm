@@ -41,6 +41,7 @@ fi
 
 . "${REPO_ROOT}/.env"
 
+USE_DOCKER_LLM="${USE_DOCKER_LLM:-0}"
 LLAMA_MODEL_FILE="${LLAMA_MODEL_FILE:-${DEFAULT_LLAMA_FILE}}"
 WHISPER_MODEL_FILE="${WHISPER_MODEL_FILE:-${DEFAULT_WHISPER_FILE}}"
 PIPER_VOICE_FILE="${PIPER_VOICE_FILE:-${DEFAULT_PIPER_FILE}}"
@@ -50,24 +51,31 @@ WHISPER_MODEL_PATH="${REPO_ROOT}/docker/models/whisper/${WHISPER_MODEL_FILE}"
 PIPER_MODEL_PATH="${REPO_ROOT}/docker/models/piper/${PIPER_VOICE_FILE}"
 PIPER_CONFIG_PATH="${PIPER_MODEL_PATH}.json"
 
-LLAMA_NEEDS_DOWNLOAD="false"
-if [ ! -f "${LLAMA_MODEL_PATH}" ]; then
-  LLAMA_NEEDS_DOWNLOAD="true"
-elif [ "${LLAMA_MODEL_FILE}" = "${DEFAULT_LLAMA_FILE}" ]; then
-  ACTUAL_LLAMA_BYTES="$(stat -f%z "${LLAMA_MODEL_PATH}")"
-  if [ "${ACTUAL_LLAMA_BYTES}" != "${DEFAULT_LLAMA_BYTES}" ]; then
-    echo "Existing llama.cpp model has the wrong size (${ACTUAL_LLAMA_BYTES} bytes). Expected ${DEFAULT_LLAMA_BYTES}. Re-downloading."
-    rm -f "${LLAMA_MODEL_PATH}"
+if [ "${USE_DOCKER_LLM}" = "1" ]; then
+  LLAMA_NEEDS_DOWNLOAD="false"
+  if [ ! -f "${LLAMA_MODEL_PATH}" ]; then
     LLAMA_NEEDS_DOWNLOAD="true"
+  elif [ "${LLAMA_MODEL_FILE}" = "${DEFAULT_LLAMA_FILE}" ]; then
+    ACTUAL_LLAMA_BYTES="$(stat -f%z "${LLAMA_MODEL_PATH}")"
+    if [ "${ACTUAL_LLAMA_BYTES}" != "${DEFAULT_LLAMA_BYTES}" ]; then
+      echo "Existing llama.cpp model has the wrong size (${ACTUAL_LLAMA_BYTES} bytes). Expected ${DEFAULT_LLAMA_BYTES}. Re-downloading."
+      rm -f "${LLAMA_MODEL_PATH}"
+      LLAMA_NEEDS_DOWNLOAD="true"
+    fi
   fi
-fi
 
-if [ "${LLAMA_NEEDS_DOWNLOAD}" = "true" ]; then
-  if [ "${LLAMA_MODEL_FILE}" = "${DEFAULT_LLAMA_FILE}" ]; then
-    echo "Downloading llama.cpp model ${LLAMA_MODEL_FILE}. This may take a while."
-    curl -fL --retry 3 "${LLAMA_MODEL_URL}" -o "${LLAMA_MODEL_PATH}"
-  else
-    echo "Warning: ${LLAMA_MODEL_FILE} is missing in docker/models/llama and no automatic download is configured for custom filenames."
+  if [ "${LLAMA_NEEDS_DOWNLOAD}" = "true" ]; then
+    if [ "${LLAMA_MODEL_FILE}" = "${DEFAULT_LLAMA_FILE}" ]; then
+      echo "Downloading llama.cpp model ${LLAMA_MODEL_FILE}. This may take a while."
+      curl -fL --retry 3 "${LLAMA_MODEL_URL}" -o "${LLAMA_MODEL_PATH}"
+    else
+      echo "Warning: ${LLAMA_MODEL_FILE} is missing in docker/models/llama and no automatic download is configured for custom filenames."
+    fi
+  fi
+else
+  if ! curl -fsS http://localhost:1234/v1/models >/dev/null 2>&1; then
+    echo "Warning: LM Studio API was not reachable at http://localhost:1234/v1/models"
+    echo "Start LM Studio local server before using chat features."
   fi
 fi
 
@@ -97,10 +105,18 @@ if [ ! -f "${PIPER_MODEL_PATH}" ] || [ ! -f "${PIPER_CONFIG_PATH}" ]; then
 fi
 
 cd "${REPO_ROOT}"
-docker compose up -d --build
+if [ "${USE_DOCKER_LLM}" = "1" ]; then
+  COMPOSE_PROFILES=with-llm docker compose up -d --build
+else
+  docker compose up -d --build
+fi
 
 echo
 echo "Inventory demo is starting."
 echo "App URL: http://localhost:8080"
-echo "llama.cpp URL: http://localhost:8081"
+if [ "${USE_DOCKER_LLM}" = "1" ]; then
+  echo "llama.cpp URL: http://localhost:8081"
+else
+  echo "LM Studio URL: http://localhost:1234"
+fi
 echo "whisper.cpp URL: http://localhost:8082"

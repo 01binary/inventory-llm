@@ -18,7 +18,9 @@ public sealed class AppConfigService
     {
         databasePath = _paths.DatabasePath,
         tempAudioDirectory = _paths.TempAudioDirectory,
+        llamaProvider = _models.LlamaProvider,
         llamaBaseUrl = _models.LlamaBaseUrl,
+        llamaModel = _models.LlamaModel,
         whisperBaseUrl = _models.WhisperBaseUrl,
         piperExecutablePath = _paths.PiperExecutablePath,
         piperVoiceModelPath = _paths.PiperVoiceModelPath

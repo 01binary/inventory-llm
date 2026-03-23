@@ -1,6 +1,6 @@
 # Inventory LLM Demo
 
-Local-first inventory demo repository built around ASP.NET Core, React, SQLite, llama.cpp, whisper.cpp, and Piper. The full stack runs on Docker Desktop with no cloud services.
+Local-first inventory demo repository built around ASP.NET Core, React, SQLite, whisper.cpp, Piper, and an LLM endpoint. By default the app uses LM Studio running on the host at `http://localhost:1234`, while the rest of the stack runs on Docker Desktop with no cloud services.
 
 ## Repo structure
 
@@ -11,7 +11,7 @@ Local-first inventory demo repository built around ASP.NET Core, React, SQLite, 
 /db              SQLite schema and seed SQL
 /docker
   /app           App container Dockerfile
-  /llama         llama.cpp container Dockerfile
+  /llama         Optional llama.cpp container Dockerfile
   /whisper       whisper.cpp container Dockerfile
   /models        Host-mounted model folders
   /data          Host-mounted SQLite data
@@ -26,13 +26,14 @@ docker-compose.yml
 - macOS Apple Silicon or Windows 11
 - Enough disk space for model files
 
-The repo does not include the llama.cpp or whisper.cpp model files. The startup scripts will download the default llama.cpp model, default whisper.cpp model, and Piper voice automatically if they are missing.
+The repo does not include the whisper.cpp model file. The startup scripts will download the default whisper.cpp model and Piper voice automatically if they are missing. By default they do not download a Docker llama.cpp model, because LM Studio on the host is the preferred LLM backend on Apple Silicon.
 
 ## Model file locations
 
 Copy or move your model files into these folders:
 
-- llama.cpp GGUF model: [docker/models/llama](/Users/valeriynovytskyy/Desktop/inventory-llm/docker/models/llama)
+- Optional Docker llama.cpp GGUF model: [docker/models/llama](/Users/valeriynovytskyy/Desktop/inventory-llm/docker/models/llama)
+  - Only needed if you explicitly enable `USE_DOCKER_LLM=1`
   - Default filename: `gemma-3-4b-it-Q4_K_M.gguf`
   - The upstream repo also publishes `Q3_K_L`, `Q6_K`, `Q8_0`, and `mmproj-model-f16.gguf`
 - whisper.cpp model: [docker/models/whisper](/Users/valeriynovytskyy/Desktop/inventory-llm/docker/models/whisper)
@@ -64,12 +65,12 @@ Invoke-WebRequest https://huggingface.co/rhasspy/piper-voices/resolve/main/es/es
 
 ### Downloading the default llama.cpp model
 
-This repo now defaults to the LM Studio Community GGUF build of Gemma 3 4B Instruct:
+This repo still includes an optional Docker llama.cpp path using the LM Studio Community GGUF build of Gemma 3 4B Instruct:
 
 - Model repo: `https://huggingface.co/lmstudio-community/gemma-3-4b-it-GGUF`
 - Default file: `gemma-3-4b-it-Q4_K_M.gguf`
 
-The startup scripts download this file into [docker/models/llama](/Users/valeriynovytskyy/Desktop/inventory-llm/docker/models/llama) automatically when it is missing.
+The startup scripts only download this file when `USE_DOCKER_LLM=1`.
 
 Expected size for the default file:
 
@@ -89,6 +90,32 @@ Invoke-WebRequest https://huggingface.co/lmstudio-community/gemma-3-4b-it-GGUF/r
 ```
 
 This model repository also includes `mmproj-model-f16.gguf`, but this demo currently uses text completion only and does not mount or call the multimodal projector file.
+
+### Default LLM setup: LM Studio on the host
+
+The default configuration expects LM Studio to expose its local server on:
+
+- `http://localhost:1234`
+
+Inside Docker, the app reaches it through:
+
+- `http://host.docker.internal:1234`
+
+LM Studio should have:
+
+- local server enabled
+- an OpenAI-compatible chat endpoint available
+- your chosen local model loaded
+
+The app defaults to:
+
+- `LLM_PROVIDER=OpenAICompatible`
+- `LLM_BASE_URL=http://host.docker.internal:1234`
+- `LLM_MODEL=auto`
+- `LLM_COMPLETION_PATH=/v1/chat/completions`
+- `LLM_HEALTH_PATH=/v1/models`
+
+With `LLM_MODEL=auto`, the backend will read `GET /v1/models` and use the first exposed model id automatically. If you prefer a specific loaded model, set `LLM_MODEL` explicitly in `.env`.
 
 ### Downloading the default whisper.cpp model
 
@@ -126,7 +153,7 @@ The macOS script will:
 
 - create local folders if missing
 - create `.env` from `.env.example` if needed
-- download `gemma-3-4b-it-Q4_K_M.gguf` if missing
+- warn if LM Studio is not reachable on `localhost:1234`
 - download `ggml-tiny-q5_1.bin` if missing
 - download `es_MX-claude-high.onnx` and `es_MX-claude-high.onnx.json` if missing
 - run `docker compose up -d --build`
@@ -137,13 +164,25 @@ Windows:
 scripts\start-local-demo.bat
 ```
 
-The Windows script does the same downloads before starting Docker Compose.
+The Windows script does the same checks and downloads before starting Docker Compose.
+
+If you want to run llama.cpp in Docker anyway:
+
+- set `USE_DOCKER_LLM=1` in `.env`
+- set `LLM_PROVIDER=LlamaCpp`
+- set `LLM_BASE_URL=http://llm:8080`
+- set `LLM_COMPLETION_PATH=/completion`
+- set `LLM_HEALTH_PATH=/health`
+- rerun the startup script
+
+That enables the optional `llm` compose profile and downloads the GGUF model if needed.
 
 Default local URLs:
 
 - App: `http://localhost:8080`
-- llama.cpp: `http://localhost:8081`
+- LM Studio: `http://localhost:1234`
 - whisper.cpp: `http://localhost:8082`
+- optional Docker llama.cpp: `http://localhost:8081`
 
 ## Stop
 
@@ -168,7 +207,7 @@ scripts\stop-local-demo.bat
 - Browser audio is uploaded to the API, which proxies it to whisper.cpp.
 - The API converts browser-recorded audio to mono 16 kHz WAV with `ffmpeg` before sending it to whisper.cpp.
 - Text-to-speech stays inside the app container, where the API shells out to Piper and returns `audio/wav`.
-- Chat completion is a thin proxy from the API to llama.cpp.
+- Chat completion is a thin proxy from the API to LM Studio by default, or to the optional Docker llama.cpp service if you enable it.
 
 ## API endpoints
 
@@ -204,7 +243,8 @@ Most useful settings:
 ## Troubleshooting
 
 - If `docker compose up` fails because a model file is missing, verify the filename in `.env` exactly matches the file on disk.
-- If the Gemma download fails, check whether Hugging Face is rate-limiting or requiring a refreshed browser/session for that model URL.
+- If LM Studio chat is not working, verify LM Studio local server is enabled and reachable at `http://localhost:1234/v1/models`.
+- If the optional Docker Gemma download fails, check whether Hugging Face is rate-limiting or requiring a refreshed browser/session for that model URL.
 - If the llama.cpp container says the model is corrupted or incomplete, delete [docker/models/llama/gemma-3-4b-it-Q4_K_M.gguf](/Users/valeriynovytskyy/Desktop/inventory-llm/docker/models/llama/gemma-3-4b-it-Q4_K_M.gguf) and rerun the startup script. The default file should be exactly `2,489,757,856` bytes.
 - If the whisper model download fails, confirm the default URL still resolves to `ggml-tiny-q5_1.bin` in `ggerganov/whisper.cpp`.
 - If the app diagnostics show Piper missing, confirm the `.onnx` voice file exists in `docker/models/piper`.
@@ -223,7 +263,7 @@ Most useful settings:
 - No cloud dependencies
 - Model files are not bundled
 - Command-line flags for llama.cpp and whisper.cpp can vary by upstream version
-- The default Gemma model download is several gigabytes and will make first startup much slower
+- The optional Docker Gemma model download is several gigabytes and will make first startup much slower
 - The tiny quantized whisper model is the smallest multilingual option, but accuracy will be lower than larger models
 
 ## Files to customize first
@@ -236,7 +276,8 @@ Most useful settings:
 ## Assumptions
 
 - `llama.cpp` exposes `POST /completion` and `GET /health`
-- `gemma-3-4b-it-Q4_K_M.gguf` is compatible with the chosen `llama.cpp` server build
+- LM Studio exposes an OpenAI-compatible chat API on port `1234`
+- `gemma-3-4b-it-Q4_K_M.gguf` is compatible with the optional Docker `llama.cpp` server path
 - `whisper.cpp` exposes `POST /inference` and responds on `/`
 - `ggml-tiny-q5_1.bin` is supported by the chosen `whisper.cpp` server build and provides multilingual transcription
 - Piper is installed in the app container from `OHF-Voice/piper1-gpl` Linux wheels for `amd64` and `arm64`

@@ -2,6 +2,7 @@ FROM debian:bookworm-slim
 
 ARG LLAMA_CPP_REPO=https://github.com/ggerganov/llama.cpp.git
 ARG LLAMA_CPP_REF=master
+ARG GGML_NATIVE=OFF
 
 WORKDIR /opt
 
@@ -13,7 +14,7 @@ RUN git clone --depth 1 --branch ${LLAMA_CPP_REF} ${LLAMA_CPP_REPO} llama.cpp
 
 WORKDIR /opt/llama.cpp
 
-RUN cmake -B build -DGGML_NATIVE=ON -DGGML_BLAS=ON -DGGML_BLAS_VENDOR=OpenBLAS -DLLAMA_BUILD_SERVER=ON \
+RUN cmake -B build -DGGML_NATIVE=${GGML_NATIVE} -DGGML_BLAS=ON -DGGML_BLAS_VENDOR=OpenBLAS -DLLAMA_BUILD_SERVER=ON \
     && cmake --build build --config Release -j"$(nproc)"
 
 ENV MODEL_PATH=/models/llama/model.gguf
