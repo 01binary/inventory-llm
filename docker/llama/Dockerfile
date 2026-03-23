@@ -6,7 +6,7 @@ ARG LLAMA_CPP_REF=master
 WORKDIR /opt
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends build-essential ca-certificates cmake curl git libopenblas-dev \
+    && apt-get install -y --no-install-recommends build-essential ca-certificates cmake curl git libopenblas-dev pkg-config \
     && rm -rf /var/lib/apt/lists/*
 
 RUN git clone --depth 1 --branch ${LLAMA_CPP_REF} ${LLAMA_CPP_REPO} llama.cpp
