@@ -34,7 +34,7 @@ public sealed class DiagnosticsService
         {
             App = new DiagnosticCheck { IsHealthy = true, Message = "API is running" },
             Database = await CheckDatabaseAsync(),
-            Llm = await CheckHttpAsync("llm", _modelServices.LlamaHealthPath, "llama.cpp"),
+            Llm = await CheckHttpAsync("llm", _modelServices.LlmHealthPath, "LLM server"),
             Stt = await CheckHttpAsync("stt", _modelServices.WhisperHealthPath, "whisper.cpp"),
             PiperExecutable = CheckFile(_paths.PiperExecutablePath, "Piper executable"),
             PiperVoiceModel = CheckFile(_paths.PiperVoiceModelPath, "Piper voice model")

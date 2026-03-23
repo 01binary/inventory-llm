@@ -12,7 +12,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddHttpClient("llm", client =>
 {
-    var baseUrl = builder.Configuration["ModelServices:LlamaBaseUrl"];
+    var baseUrl = builder.Configuration["ModelServices:LlmBaseUrl"];
     if (!string.IsNullOrWhiteSpace(baseUrl))
     {
         client.BaseAddress = new Uri(baseUrl);

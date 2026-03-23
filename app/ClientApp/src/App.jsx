@@ -21,7 +21,7 @@ export default function App() {
           <p className="eyebrow">Local-first demo</p>
           <h1>Inventory LLM</h1>
           <p className="sidebar-copy">
-            ASP.NET Core, React, SQLite, llama.cpp, whisper.cpp, and Piper running locally.
+            ASP.NET Core, React, SQLite, LM Studio, whisper.cpp, and Piper running locally.
           </p>
         </div>
         <nav className="nav">

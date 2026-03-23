@@ -15,12 +15,11 @@ services:
       AppPaths__TempAudioDirectory: /tmp/inventory-audio
       AppPaths__PiperExecutablePath: /usr/local/bin/piper
       AppPaths__PiperVoiceModelPath: /models/piper/${PIPER_VOICE_FILE}
-      ModelServices__LlamaProvider: ${LLM_PROVIDER:-OpenAICompatible}
-      ModelServices__LlamaBaseUrl: ${LLM_BASE_URL:-http://host.docker.internal:1234}
-      ModelServices__LlamaModel: ${LLM_MODEL:-auto}
+      ModelServices__LlmBaseUrl: ${LLM_BASE_URL:-http://host.docker.internal:1234}
+      ModelServices__LlmModel: ${LLM_MODEL:-auto}
       ModelServices__WhisperBaseUrl: http://stt:8080
-      ModelServices__LlamaCompletionPath: ${LLM_COMPLETION_PATH:-/v1/chat/completions}
-      ModelServices__LlamaHealthPath: ${LLM_HEALTH_PATH:-/v1/models}
+      ModelServices__LlmCompletionPath: ${LLM_COMPLETION_PATH:-/v1/chat/completions}
+      ModelServices__LlmHealthPath: ${LLM_HEALTH_PATH:-/v1/models}
       ModelServices__WhisperTranscriptionPath: /inference
       ModelServices__WhisperHealthPath: /
     ports:
@@ -29,25 +28,6 @@ services:
       - ./docker/data/sqlite:/data
       - ./docker/models/piper:/models/piper:ro
       - ./docker/temp:/tmp/inventory-audio
-
-  llm:
-    profiles:
-      - with-llm
-    build:
-      context: .
-      dockerfile: docker/llama/Dockerfile
-      args:
-        GGML_NATIVE: ${LLM_DOCKER_GGML_NATIVE:-OFF}
-    container_name: inventory-demo-llm
-    restart: unless-stopped
-    environment:
-      MODEL_PATH: /models/llama/${LLAMA_MODEL_FILE}
-      LLAMA_PORT: 8080
-      N_CTX: ${LLAMA_CONTEXT_SIZE:-2048}
-    ports:
-      - "8081:8080"
-    volumes:
-      - ./docker/models/llama:/models/llama:ro
 
   stt:
     build:

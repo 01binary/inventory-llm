@@ -27,16 +27,16 @@ public sealed class LlmService
         var client = _httpClientFactory.CreateClient("llm");
         var payload = await BuildPayloadAsync(request);
         var json = JsonSerializer.Serialize(payload);
-        _logger.LogInformation("Sending completion request to {Provider} at {Path}", _options.LlamaProvider, _options.LlamaCompletionPath);
+        _logger.LogInformation("Sending completion request to LLM server at {Path}", _options.LlmCompletionPath);
 
         using var response = await client.PostAsync(
-            _options.LlamaCompletionPath,
+            _options.LlmCompletionPath,
             new StringContent(json, Encoding.UTF8, "application/json"));
 
         var body = await response.Content.ReadAsStringAsync();
         if (!response.IsSuccessStatusCode)
         {
-            _logger.LogWarning("LLM provider {Provider} returned {StatusCode}: {Body}", _options.LlamaProvider, response.StatusCode, body);
+            _logger.LogWarning("LLM server returned {StatusCode}: {Body}", response.StatusCode, body);
             throw new InvalidOperationException($"LLM request failed with HTTP {(int)response.StatusCode}");
         }
 
@@ -52,17 +52,6 @@ public sealed class LlmService
 
     private async Task<object> BuildPayloadAsync(ChatCompletionRequest request)
     {
-        if (string.Equals(_options.LlamaProvider, "LlamaCpp", StringComparison.OrdinalIgnoreCase))
-        {
-            return new
-            {
-                prompt = request.Prompt,
-                n_predict = request.MaxTokens,
-                temperature = 0.2,
-                stop = new[] { "</s>" }
-            };
-        }
-
         return new
         {
             model = await ResolveModelAsync(),
@@ -82,19 +71,14 @@ public sealed class LlmService
 
     private async Task<string> ResolveModelAsync()
     {
-        if (!string.Equals(_options.LlamaProvider, "OpenAICompatible", StringComparison.OrdinalIgnoreCase))
+        if (!string.IsNullOrWhiteSpace(_options.LlmModel) &&
+            !string.Equals(_options.LlmModel, "auto", StringComparison.OrdinalIgnoreCase))
         {
-            return _options.LlamaModel;
-        }
-
-        if (!string.IsNullOrWhiteSpace(_options.LlamaModel) &&
-            !string.Equals(_options.LlamaModel, "auto", StringComparison.OrdinalIgnoreCase))
-        {
-            return _options.LlamaModel;
+            return _options.LlmModel;
         }
 
         var client = _httpClientFactory.CreateClient("llm");
-        using var response = await client.GetAsync(_options.LlamaHealthPath);
+        using var response = await client.GetAsync(_options.LlmHealthPath);
         response.EnsureSuccessStatusCode();
         var body = await response.Content.ReadAsStringAsync();
         using var document = JsonDocument.Parse(body);
@@ -109,7 +93,7 @@ public sealed class LlmService
                 var modelId = idElement.GetString();
                 if (!string.IsNullOrWhiteSpace(modelId))
                 {
-                    _logger.LogInformation("Resolved LM Studio model id {ModelId} from {Path}", modelId, _options.LlamaHealthPath);
+                    _logger.LogInformation("Resolved LM Studio model id {ModelId} from {Path}", modelId, _options.LlmHealthPath);
                     return modelId;
                 }
             }
@@ -120,15 +104,6 @@ public sealed class LlmService
 
     private string ExtractContent(JsonElement root, string fallbackBody)
     {
-        if (string.Equals(_options.LlamaProvider, "LlamaCpp", StringComparison.OrdinalIgnoreCase))
-        {
-            return root.TryGetProperty("content", out var contentElement)
-                ? contentElement.GetString() ?? string.Empty
-                : root.TryGetProperty("response", out var responseElement)
-                    ? responseElement.GetString() ?? string.Empty
-                    : fallbackBody;
-        }
-
         if (root.TryGetProperty("choices", out var choicesElement) &&
             choicesElement.ValueKind == JsonValueKind.Array &&
             choicesElement.GetArrayLength() > 0)

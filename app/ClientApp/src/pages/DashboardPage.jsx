@@ -94,7 +94,7 @@ export default function DashboardPage() {
 
         <div className="card">
           <h3>Chat completion demo</h3>
-          <p>Proxies a prompt to the local llama.cpp server.</p>
+          <p>Proxies a prompt to the local LM Studio server.</p>
           <label className="form-field">
             <span>Prompt</span>
             <textarea rows={6} value={chatPrompt} onChange={(event) => setChatPrompt(event.target.value)} />
