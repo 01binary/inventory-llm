@@ -6,10 +6,7 @@ import { api } from "../services/api";
 const emptyForm = {
   sku: "",
   name: "",
-  description: "",
   quantity: 0,
-  location: "",
-  unit: "each",
   transactionNote: ""
 };
 
@@ -31,10 +28,7 @@ export default function ItemFormPage() {
         setForm({
           sku: item.sku,
           name: item.name,
-          description: item.description || "",
           quantity: item.quantity,
-          location: item.location || "",
-          unit: item.unit,
           transactionNote: ""
         });
       })
@@ -89,23 +83,8 @@ export default function ItemFormPage() {
         </label>
 
         <label className="form-field">
-          <span>Description</span>
-          <textarea name="description" value={form.description} onChange={updateField} rows={4} />
-        </label>
-
-        <label className="form-field">
           <span>Quantity</span>
           <input name="quantity" type="number" min="0" value={form.quantity} onChange={updateField} required />
-        </label>
-
-        <label className="form-field">
-          <span>Location</span>
-          <input name="location" value={form.location} onChange={updateField} maxLength={100} />
-        </label>
-
-        <label className="form-field">
-          <span>Unit</span>
-          <input name="unit" value={form.unit} onChange={updateField} required maxLength={40} />
         </label>
 
         <label className="form-field full-width">

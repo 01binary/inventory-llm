@@ -20,7 +20,7 @@ public sealed class InventoryService
     public async Task<IReadOnlyList<InventoryItem>> GetItemsAsync()
     {
         const string sql = """
-            SELECT id, sku, name, description, quantity, location, unit, created_utc AS CreatedUtc, updated_utc AS UpdatedUtc
+            SELECT id, sku, name, quantity, created_utc AS CreatedUtc, updated_utc AS UpdatedUtc
             FROM items
             ORDER BY name;
             """;
@@ -33,7 +33,7 @@ public sealed class InventoryService
     public async Task<InventoryItem?> GetItemAsync(long id)
     {
         const string sql = """
-            SELECT id, sku, name, description, quantity, location, unit, created_utc AS CreatedUtc, updated_utc AS UpdatedUtc
+            SELECT id, sku, name, quantity, created_utc AS CreatedUtc, updated_utc AS UpdatedUtc
             FROM items
             WHERE id = @Id;
             """;
@@ -72,8 +72,8 @@ public sealed class InventoryService
         await using var transaction = await connection.BeginTransactionAsync();
 
         const string insertItemSql = """
-            INSERT INTO items (sku, name, description, quantity, location, unit, created_utc, updated_utc)
-            VALUES (@Sku, @Name, @Description, @Quantity, @Location, @Unit, @CreatedUtc, @UpdatedUtc);
+            INSERT INTO items (sku, name, quantity, created_utc, updated_utc)
+            VALUES (@Sku, @Name, @Quantity, @CreatedUtc, @UpdatedUtc);
             SELECT last_insert_rowid();
             """;
 
@@ -83,10 +83,7 @@ public sealed class InventoryService
             {
                 request.Sku,
                 request.Name,
-                request.Description,
                 request.Quantity,
-                request.Location,
-                request.Unit,
                 CreatedUtc = now,
                 UpdatedUtc = now
             },
@@ -121,10 +118,7 @@ public sealed class InventoryService
             UPDATE items
             SET sku = @Sku,
                 name = @Name,
-                description = @Description,
                 quantity = @Quantity,
-                location = @Location,
-                unit = @Unit,
                 updated_utc = @UpdatedUtc
             WHERE id = @Id;
             """;
@@ -136,10 +130,7 @@ public sealed class InventoryService
                 Id = id,
                 request.Sku,
                 request.Name,
-                request.Description,
                 request.Quantity,
-                request.Location,
-                request.Unit,
                 UpdatedUtc = now
             },
             transaction);

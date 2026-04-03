@@ -50,8 +50,6 @@ export default function InventoryPage() {
                 <th>SKU</th>
                 <th>Name</th>
                 <th>Quantity</th>
-                <th>Unit</th>
-                <th>Location</th>
                 <th>Updated</th>
                 <th></th>
               </tr>
@@ -62,8 +60,6 @@ export default function InventoryPage() {
                   <td>{item.sku}</td>
                   <td>{item.name}</td>
                   <td>{item.quantity}</td>
-                  <td>{item.unit}</td>
-                  <td>{item.location || "n/a"}</td>
                   <td>{new Date(item.updatedUtc).toLocaleString()}</td>
                   <td className="actions-cell">
                     <Link className="text-button" to={`/inventory/${item.id}/edit`}>Edit</Link>

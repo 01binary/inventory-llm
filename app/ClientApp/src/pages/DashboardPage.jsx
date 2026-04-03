@@ -75,7 +75,6 @@ export default function DashboardPage() {
                   <th>SKU</th>
                   <th>Name</th>
                   <th>Qty</th>
-                  <th>Location</th>
                 </tr>
               </thead>
               <tbody>
@@ -84,7 +83,6 @@ export default function DashboardPage() {
                     <td>{item.sku}</td>
                     <td>{item.name}</td>
                     <td>{item.quantity}</td>
-                    <td>{item.location || "n/a"}</td>
                   </tr>
                 ))}
               </tbody>

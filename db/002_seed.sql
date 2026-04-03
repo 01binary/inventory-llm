@@ -1,10 +1,10 @@
-INSERT INTO items (sku, name, description, quantity, location, unit, created_utc, updated_utc)
+INSERT INTO items (sku, name, quantity, created_utc, updated_utc)
 VALUES
-    ('LAP-13-001', '13-inch Laptop', 'Refurbished demo laptops for field technicians.', 8, 'Shelf A1', 'each', datetime('now'), datetime('now')),
-    ('MON-24-002', '24-inch Monitor', 'Standard office monitors with HDMI cable included.', 12, 'Shelf A2', 'each', datetime('now'), datetime('now')),
-    ('MOU-WL-003', 'Wireless Mouse', 'Battery-powered ergonomic wireless mouse.', 25, 'Bin B4', 'each', datetime('now'), datetime('now')),
-    ('CAB-USBC-004', 'USB-C Cable 2m', 'Braided USB-C charging and data cable.', 40, 'Bin C1', 'each', datetime('now'), datetime('now')),
-    ('LAB-RED-005', 'Red Shipping Labels', 'Thermal label roll for outbound inventory tags.', 6, 'Cabinet D2', 'roll', datetime('now'), datetime('now'));
+    ('LAP-13-001', '13-inch Laptop', 8, datetime('now'), datetime('now')),
+    ('MON-24-002', '24-inch Monitor', 12, datetime('now'), datetime('now')),
+    ('MOU-WL-003', 'Wireless Mouse', 25, datetime('now'), datetime('now')),
+    ('CAB-USBC-004', 'USB-C Cable 2m', 40, datetime('now'), datetime('now')),
+    ('LAB-RED-005', 'Red Shipping Labels', 6, datetime('now'), datetime('now'));
 
 INSERT INTO inventory_transactions (item_id, transaction_type, quantity_delta, note, created_utc)
 VALUES
