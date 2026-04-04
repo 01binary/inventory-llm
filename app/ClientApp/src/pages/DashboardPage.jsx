@@ -49,12 +49,33 @@ export default function DashboardPage() {
     };
   }, []);
 
+  function stripMarkdownForSpeech(markdownText) {
+    return markdownText
+      .replace(/```[\s\S]*?```/g, " ")
+      .replace(/`([^`]+)`/g, "$1")
+      .replace(/!\[([^\]]*)\]\([^)]+\)/g, "$1")
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+      .replace(/^\s{0,3}#{1,6}\s+/gm, "")
+      .replace(/^\s*>\s?/gm, "")
+      .replace(/^\s*[-*+]\s+/gm, "")
+      .replace(/^\s*\d+\.\s+/gm, "")
+      .replace(/[*_~#]/g, "")
+      .replace(/\|/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
   async function speakText(text) {
     if (currentAudioRef.current) {
       currentAudioRef.current.pause();
       currentAudioRef.current.currentTime = 0;
     }
-    const blob = await api.speak(text);
+    const speechText = stripMarkdownForSpeech(text);
+    if (!speechText) {
+      return;
+    }
+
+    const blob = await api.speak(speechText);
     if (currentAudioUrlRef.current) {
       URL.revokeObjectURL(currentAudioUrlRef.current);
     }
