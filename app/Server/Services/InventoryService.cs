@@ -30,6 +30,45 @@ public sealed class InventoryService
         return items.ToList();
     }
 
+    public async Task<IReadOnlyList<InventoryItem>> SearchItemsByNameOrSkuAsync(string query, int limit = 20)
+    {
+        if (string.IsNullOrWhiteSpace(query))
+        {
+            return Array.Empty<InventoryItem>();
+        }
+
+        var safeLimit = Math.Clamp(limit, 1, 200);
+        var escapedQuery = EscapeLikePattern(query.Trim());
+        var pattern = $"%{escapedQuery}%";
+
+        const string sql = """
+            SELECT id, sku, name, quantity, created_utc AS CreatedUtc, updated_utc AS UpdatedUtc
+            FROM items
+            WHERE name LIKE @Pattern ESCAPE '\'
+               OR sku LIKE @Pattern ESCAPE '\'
+            ORDER BY
+                CASE
+                    WHEN lower(name) = lower(@Exact) THEN 0
+                    WHEN lower(sku) = lower(@Exact) THEN 0
+                    ELSE 1
+                END,
+                name
+            LIMIT @Limit;
+            """;
+
+        await using var connection = _databaseInitializer.CreateConnection();
+        var results = await connection.QueryAsync<InventoryItem>(
+            sql,
+            new
+            {
+                Pattern = pattern,
+                Exact = query.Trim(),
+                Limit = safeLimit
+            });
+
+        return results.ToList();
+    }
+
     public async Task<InventoryItem?> GetItemAsync(long id)
     {
         const string sql = """
@@ -166,7 +205,83 @@ public sealed class InventoryService
         return rows > 0;
     }
 
-    private static async Task InsertTransactionAsync(
+    public async Task<InventoryTransaction?> AddInventoryTransactionAsync(
+        long itemId,
+        string transactionType,
+        int quantityDelta,
+        string? note)
+    {
+        var normalizedType = string.IsNullOrWhiteSpace(transactionType) ? "adjustment" : transactionType.Trim().ToLowerInvariant();
+        var now = DateTime.UtcNow.ToString("O");
+
+        await using var connection = _databaseInitializer.CreateConnection();
+        await connection.OpenAsync();
+        await using var transaction = await connection.BeginTransactionAsync();
+
+        const string itemSql = """
+            SELECT id, sku, name, quantity, created_utc AS CreatedUtc, updated_utc AS UpdatedUtc
+            FROM items
+            WHERE id = @Id;
+            """;
+
+        var item = await connection.QuerySingleOrDefaultAsync<InventoryItem>(itemSql, new { Id = itemId }, transaction);
+        if (item is null)
+        {
+            await transaction.RollbackAsync();
+            return null;
+        }
+
+        const string updateItemSql = """
+            UPDATE items
+            SET quantity = quantity + @QuantityDelta,
+                updated_utc = @UpdatedUtc
+            WHERE id = @Id;
+            """;
+
+        await connection.ExecuteAsync(
+            updateItemSql,
+            new
+            {
+                Id = itemId,
+                QuantityDelta = quantityDelta,
+                UpdatedUtc = now
+            },
+            transaction);
+
+        var transactionId = await InsertTransactionAsync(
+            connection,
+            transaction,
+            itemId,
+            normalizedType,
+            quantityDelta,
+            note);
+
+        await transaction.CommitAsync();
+        _logger.LogInformation(
+            "Added inventory transaction {TransactionId} for item {ItemId} ({TransactionType}, delta {QuantityDelta})",
+            transactionId,
+            itemId,
+            normalizedType,
+            quantityDelta);
+
+        const string transactionSql = """
+            SELECT t.id,
+                   t.item_id AS ItemId,
+                   t.transaction_type AS TransactionType,
+                   t.quantity_delta AS QuantityDelta,
+                   t.note,
+                   t.created_utc AS CreatedUtc,
+                   i.name AS ItemName,
+                   i.sku AS ItemSku
+            FROM inventory_transactions t
+            INNER JOIN items i ON i.id = t.item_id
+            WHERE t.id = @Id;
+            """;
+
+        return await connection.QuerySingleOrDefaultAsync<InventoryTransaction>(transactionSql, new { Id = transactionId });
+    }
+
+    private static async Task<long> InsertTransactionAsync(
         Microsoft.Data.Sqlite.SqliteConnection connection,
         IDbTransaction transaction,
         long itemId,
@@ -177,9 +292,10 @@ public sealed class InventoryService
         const string transactionSql = """
             INSERT INTO inventory_transactions (item_id, transaction_type, quantity_delta, note, created_utc)
             VALUES (@ItemId, @TransactionType, @QuantityDelta, @Note, @CreatedUtc);
+            SELECT last_insert_rowid();
             """;
 
-        await connection.ExecuteAsync(
+        return await connection.ExecuteScalarAsync<long>(
             transactionSql,
             new
             {
@@ -190,5 +306,13 @@ public sealed class InventoryService
                 CreatedUtc = DateTime.UtcNow.ToString("O")
             },
             transaction);
+    }
+
+    private static string EscapeLikePattern(string value)
+    {
+        return value
+            .Replace("\\", "\\\\", StringComparison.Ordinal)
+            .Replace("%", "\\%", StringComparison.Ordinal)
+            .Replace("_", "\\_", StringComparison.Ordinal);
     }
 }

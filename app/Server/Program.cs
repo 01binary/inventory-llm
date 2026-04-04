@@ -10,6 +10,13 @@ builder.Services.Configure<ModelServiceOptions>(builder.Configuration.GetSection
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddMcpServer()
+    .WithHttpTransport(options =>
+    {
+        options.Stateless = true;
+    })
+    .WithTools<InventoryMcpTools>();
+
 builder.Services.AddHttpClient("llm", client =>
 {
     var baseUrl = builder.Configuration["ModelServices:LlmBaseUrl"];
@@ -71,6 +78,7 @@ app.UseDefaultFiles();
 app.UseStaticFiles();
 
 app.MapControllers();
+app.MapMcp("/mcp");
 app.MapFallbackToFile("index.html");
 
 app.Run();

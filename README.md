@@ -129,6 +129,7 @@ Default local URLs:
 - App: `http://localhost:8080`
 - LM Studio: `http://localhost:1234`
 - whisper.cpp: `http://localhost:8082`
+- MCP server (HTTP): `http://localhost:8080/mcp`
 
 ## Local dev without app container
 
@@ -214,6 +215,18 @@ scripts\stop-local-demo.bat
 - `POST /api/voice/speak`
 - `POST /api/chat/complete`
 - `GET /api/chat/system-prompt`
+
+## MCP server
+
+The backend also hosts an MCP HTTP endpoint using the official C# SDK package (`ModelContextProtocol.AspNetCore`):
+
+- `POST/GET /mcp` (Streamable HTTP transport; stateless mode)
+
+Current MCP tools:
+
+- `inventory_list_items`: list inventory items with SKU/name/quantity
+- `inventory_search_status`: search item status by name/SKU (e.g. "do I have X?")
+- `inventory_add_transaction`: add an inventory transaction and update quantity
 
 ## Inspecting SQLite in DBeaver
 
