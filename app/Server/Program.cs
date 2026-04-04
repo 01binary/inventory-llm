@@ -41,6 +41,7 @@ builder.Services.AddSingleton<DatabaseInitializer>();
 builder.Services.AddScoped<InventoryService>();
 builder.Services.AddScoped<DiagnosticsService>();
 builder.Services.AddScoped<LlmService>();
+builder.Services.AddScoped<McpClientService>();
 builder.Services.AddScoped<SpeechToTextProxyService>();
 builder.Services.AddScoped<TextToSpeechService>();
 builder.Services.AddScoped<AppConfigService>();

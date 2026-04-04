@@ -56,6 +56,7 @@ The app defaults to:
 
 - `LLM_BASE_URL=http://host.docker.internal:1234`
 - `LLM_MODEL=auto`
+- `MCP_SERVER_URL=http://localhost:8080/mcp`
 - `LLM_COMPLETION_PATH=/v1/chat/completions`
 - `LLM_HEALTH_PATH=/v1/models`
 
@@ -200,6 +201,7 @@ scripts\stop-local-demo.bat
 - Chat completion is a thin proxy from the API to LM Studio.
 - The chat system prompt is loaded from [SYSTEM_PROMPT.md](/Users/valeriynovytskyy/Desktop/inventory-llm/SYSTEM_PROMPT.md) at startup (works in both Docker and local dev).
 - The dashboard chat bootstraps with hidden `system + hello` messages, then shows the model greeting as the first visible assistant message.
+- The backend includes an MCP client that executes model-requested tool calls against its own MCP endpoint (`/mcp`) and returns tool results back to the model in a loop until a final answer is produced.
 
 ## API endpoints
 

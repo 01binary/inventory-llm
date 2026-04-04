@@ -19,6 +19,7 @@ services:
       ModelServices__LlmBaseUrl: ${LLM_BASE_URL:-http://host.docker.internal:1234}
       ModelServices__LlmModel: ${LLM_MODEL:-auto}
       ModelServices__WhisperBaseUrl: http://stt:8080
+      ModelServices__McpServerUrl: ${MCP_SERVER_URL:-http://localhost:8080/mcp}
       ModelServices__LlmCompletionPath: ${LLM_COMPLETION_PATH:-/v1/chat/completions}
       ModelServices__LlmHealthPath: ${LLM_HEALTH_PATH:-/v1/models}
       ModelServices__WhisperTranscriptionPath: /inference

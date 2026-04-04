@@ -26,6 +26,7 @@ public sealed class AppConfigService
         llmBaseUrl = _models.LlmBaseUrl,
         llmModel = _models.LlmModel,
         whisperBaseUrl = _models.WhisperBaseUrl,
+        mcpServerUrl = _models.McpServerUrl,
         piperExecutablePath = _paths.PiperExecutablePath,
         piperVoiceModelPath = _paths.PiperVoiceModelPath,
         hasSystemPrompt = !string.IsNullOrWhiteSpace(_systemPromptService.GetSystemPrompt())
