@@ -35,7 +35,6 @@ export default function DashboardPage() {
     }
   }
 
-  const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
   const lowStock = items.filter((item) => item.quantity <= 5).length;
 
   return (
@@ -50,10 +49,6 @@ export default function DashboardPage() {
         <article className="card stat-card">
           <span className="stat-label">Items</span>
           <strong>{loading ? "..." : items.length}</strong>
-        </article>
-        <article className="card stat-card">
-          <span className="stat-label">Units on hand</span>
-          <strong>{loading ? "..." : totalQuantity}</strong>
         </article>
         <article className="card stat-card">
           <span className="stat-label">Low stock items</span>

@@ -129,6 +129,49 @@ Default local URLs:
 - LM Studio: `http://localhost:1234`
 - whisper.cpp: `http://localhost:8082`
 
+## Local dev without app container
+
+You can run frontend and backend locally while keeping only supporting services in Docker.
+
+1. Stop just the app container:
+```bash
+docker compose stop app
+```
+
+2. Keep whisper running:
+```bash
+docker compose up -d stt
+```
+
+3. In terminal A, run backend from [app/Server](/Users/valeriynovytskyy/Desktop/inventory-llm/app/Server):
+```bash
+dotnet run
+```
+
+4. In terminal B, run frontend from [app/ClientApp](/Users/valeriynovytskyy/Desktop/inventory-llm/app/ClientApp):
+```bash
+npm run dev
+```
+
+Optional one-time local Piper setup (for `dotnet run` voice/TTS):
+
+```bash
+/opt/homebrew/bin/python3.11 -m venv app/Server/local-tools/piper-venv
+app/Server/local-tools/piper-venv/bin/python -m pip install --upgrade pip
+app/Server/local-tools/piper-venv/bin/python -m pip install piper-tts pathvalidate
+```
+
+Local dev URLs:
+
+- Frontend (Vite): `http://localhost:5173`
+- Backend API: `http://localhost:5184`
+
+Notes:
+
+- The Vite proxy is already configured to send `/api` to `http://localhost:5184`.
+- Backend development config now points SQLite SQL scripts to `../../db`, so DB init works when started from `app/Server`.
+- LM Studio should still run on `http://localhost:1234`.
+
 ## Stop
 
 macOS:

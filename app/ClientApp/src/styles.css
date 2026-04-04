@@ -61,7 +61,6 @@ thead th {
   color: #f3f7fa;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 }
 
 .sidebar h1 {

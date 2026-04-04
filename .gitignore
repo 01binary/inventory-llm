@@ -11,6 +11,7 @@ docker/data/sqlite/
 docker/temp/
 docker/models/llama/
 app/Server/local-data/
+app/Server/local-tools/
 docker/models/whisper/*.bin
 docker/models/piper/*.onnx
 docker/models/piper/*.onnx.json

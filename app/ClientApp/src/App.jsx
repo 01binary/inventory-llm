@@ -18,10 +18,9 @@ export default function App() {
     <div className="app-shell">
       <aside className="sidebar">
         <div>
-          <p className="eyebrow">Local-first demo</p>
-          <h1>Inventory LLM</h1>
+          <h1>Inventory</h1>
           <p className="sidebar-copy">
-            ASP.NET Core, React, SQLite, LM Studio, whisper.cpp, and Piper running locally.
+            Demonstrates how to integrate AI into applications by using Model Context Protocol
           </p>
         </div>
         <nav className="nav">
