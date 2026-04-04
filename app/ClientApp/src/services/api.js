@@ -59,11 +59,22 @@ export const api = {
   getTransactions() {
     return fetch("/api/transactions").then(handleResponse);
   },
-  completeChat(prompt) {
+  getSystemPrompt() {
+    return fetch("/api/chat/system-prompt").then(handleResponse);
+  },
+  completeChat(payload) {
+    const requestBody = typeof payload === "string"
+      ? { prompt: payload, maxTokens: 128 }
+      : {
+          prompt: payload.prompt ?? "",
+          messages: payload.messages ?? null,
+          maxTokens: payload.maxTokens ?? 128
+        };
+
     return fetch("/api/chat/complete", {
       method: "POST",
       headers: JSON_HEADERS,
-      body: JSON.stringify({ prompt, maxTokens: 128 })
+      body: JSON.stringify(requestBody)
     }).then(handleResponse);
   },
   transcribeAudio(file) {

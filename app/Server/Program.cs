@@ -37,6 +37,7 @@ builder.Services.AddScoped<LlmService>();
 builder.Services.AddScoped<SpeechToTextProxyService>();
 builder.Services.AddScoped<TextToSpeechService>();
 builder.Services.AddScoped<AppConfigService>();
+builder.Services.AddSingleton<SystemPromptService>();
 
 var app = builder.Build();
 
@@ -44,6 +45,9 @@ using (var scope = app.Services.CreateScope())
 {
     var initializer = scope.ServiceProvider.GetRequiredService<DatabaseInitializer>();
     await initializer.InitializeAsync();
+
+    var systemPromptService = scope.ServiceProvider.GetRequiredService<SystemPromptService>();
+    systemPromptService.GetSystemPrompt();
 }
 
 app.UseExceptionHandler(exceptionHandlerApp =>

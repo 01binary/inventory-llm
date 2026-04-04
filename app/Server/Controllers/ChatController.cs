@@ -9,10 +9,12 @@ namespace InventoryDemo.Server.Controllers;
 public sealed class ChatController : ControllerBase
 {
     private readonly LlmService _llmService;
+    private readonly SystemPromptService _systemPromptService;
 
-    public ChatController(LlmService llmService)
+    public ChatController(LlmService llmService, SystemPromptService systemPromptService)
     {
         _llmService = llmService;
+        _systemPromptService = systemPromptService;
     }
 
     [HttpPost("complete")]
@@ -23,7 +25,22 @@ public sealed class ChatController : ControllerBase
             return ValidationProblem(ModelState);
         }
 
+        var hasPrompt = !string.IsNullOrWhiteSpace(request.Prompt);
+        var hasMessages = request.Messages is { Count: > 0 };
+        if (!hasPrompt && !hasMessages)
+        {
+            return BadRequest(new { message = "Provide either prompt or messages." });
+        }
+
+        if (request.MaxTokens is < 1 or > 512)
+        {
+            return BadRequest(new { message = "maxTokens must be between 1 and 512." });
+        }
+
         var result = await _llmService.CompleteAsync(request);
         return Ok(result);
     }
+
+    [HttpGet("system-prompt")]
+    public IActionResult GetSystemPrompt() => Ok(new { text = _systemPromptService.GetSystemPrompt() });
 }

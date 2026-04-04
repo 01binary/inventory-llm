@@ -7,11 +7,16 @@ public sealed class AppConfigService
 {
     private readonly AppPathsOptions _paths;
     private readonly ModelServiceOptions _models;
+    private readonly SystemPromptService _systemPromptService;
 
-    public AppConfigService(IOptions<AppPathsOptions> paths, IOptions<ModelServiceOptions> models)
+    public AppConfigService(
+        IOptions<AppPathsOptions> paths,
+        IOptions<ModelServiceOptions> models,
+        SystemPromptService systemPromptService)
     {
         _paths = paths.Value;
         _models = models.Value;
+        _systemPromptService = systemPromptService;
     }
 
     public object GetPublicConfig() => new
@@ -22,6 +27,7 @@ public sealed class AppConfigService
         llmModel = _models.LlmModel,
         whisperBaseUrl = _models.WhisperBaseUrl,
         piperExecutablePath = _paths.PiperExecutablePath,
-        piperVoiceModelPath = _paths.PiperVoiceModelPath
+        piperVoiceModelPath = _paths.PiperVoiceModelPath,
+        hasSystemPrompt = !string.IsNullOrWhiteSpace(_systemPromptService.GetSystemPrompt())
     };
 }

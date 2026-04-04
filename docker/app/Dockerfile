@@ -43,6 +43,7 @@ RUN case "${TARGETARCH}" in \
 
 COPY --from=server-build /out/ ./
 COPY db/ ./db/
+COPY SYSTEM_PROMPT.md ./SYSTEM_PROMPT.md
 
 ENV ASPNETCORE_URLS=http://+:8080
 EXPOSE 8080

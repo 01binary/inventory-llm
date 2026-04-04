@@ -4,16 +4,12 @@ import remarkGfm from "remark-gfm";
 import { api } from "../services/api";
 
 export default function DashboardPage() {
+  const helloPrompt = "Hello. Greet the user in one short sentence and ask how you can help track inventory today.";
   const [items, setItems] = useState([]);
   const [loadingItems, setLoadingItems] = useState(true);
+  const [initializingChat, setInitializingChat] = useState(true);
   const [chatInput, setChatInput] = useState("");
-  const [messages, setMessages] = useState([
-    {
-      id: "welcome",
-      role: "assistant",
-      text: "Hello. I can help with inventory questions and read responses out loud. Type a message or use dictation."
-    }
-  ]);
+  const [messages, setMessages] = useState([]);
   const [chatBusy, setChatBusy] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const [sttBusy, setSttBusy] = useState(false);
@@ -24,12 +20,66 @@ export default function DashboardPage() {
   const currentAudioUrlRef = useRef(null);
   const currentAudioRef = useRef(null);
   const messageEndRef = useRef(null);
+  const initStartedRef = useRef(false);
 
   useEffect(() => {
     api.getItems()
       .then((response) => setItems(response))
       .catch((err) => setError(err.message))
       .finally(() => setLoadingItems(false));
+  }, []);
+
+  useEffect(() => {
+    async function initializeConversation() {
+      if (initStartedRef.current) {
+        return;
+      }
+      initStartedRef.current = true;
+
+      setInitializingChat(true);
+      setError("");
+      try {
+        const promptResponse = await api.getSystemPrompt();
+        const systemText = (promptResponse?.text || "").trim();
+
+        const initialMessages = [
+          {
+            id: "system-initial",
+            role: "system",
+            text: systemText
+          },
+          {
+            id: "user-hello",
+            role: "user",
+            text: helloPrompt
+          }
+        ];
+
+        setMessages(initialMessages);
+
+        const response = await api.completeChat({
+          messages: initialMessages.map((message) => ({
+            role: message.role,
+            content: message.text
+          })),
+          maxTokens: 128
+        });
+
+        const assistantText = (response.text || "").trim() || "Hello, how can I help you track your inventory today?";
+        const assistantMessage = {
+          id: `assistant-${Date.now()}`,
+          role: "assistant",
+          text: assistantText
+        };
+        setMessages((current) => [...current, assistantMessage]);
+      } catch (err) {
+        setError(err.message || "Failed to initialize chat.");
+      } finally {
+        setInitializingChat(false);
+      }
+    }
+
+    initializeConversation();
   }, []);
 
   useEffect(() => {
@@ -86,6 +136,10 @@ export default function DashboardPage() {
   }
 
   async function handleSendMessage() {
+    if (initializingChat) {
+      return;
+    }
+
     const prompt = chatInput.trim();
     if (!prompt || chatBusy) {
       return;
@@ -97,13 +151,20 @@ export default function DashboardPage() {
       text: prompt
     };
 
-    setMessages((current) => [...current, userMessage]);
+    const outboundMessages = [...messages, userMessage];
+    setMessages(outboundMessages);
     setChatInput("");
     setChatBusy(true);
     setError("");
 
     try {
-      const response = await api.completeChat(prompt);
+      const response = await api.completeChat({
+        messages: outboundMessages.map((message) => ({
+          role: message.role,
+          content: message.text
+        })),
+        maxTokens: 256
+      });
       const aiText = (response.text || "").trim() || "I did not get a response from the model.";
       const assistantMessage = {
         id: `assistant-${Date.now()}`,
@@ -173,6 +234,9 @@ export default function DashboardPage() {
     setIsRecording(false);
   }
 
+  const visibleMessages = messages.slice(2);
+  const chatStatus = initializingChat ? "Initializing..." : chatBusy ? "Thinking..." : isRecording ? "Recording..." : "Ready";
+
   return (
     <div className="dashboard-full">
       <header className="dashboard-header">
@@ -187,11 +251,11 @@ export default function DashboardPage() {
         <article className="card pane chat-pane">
           <div className="pane-header">
             <h3>Assistant Chat</h3>
-            <span className="muted-text">{chatBusy ? "Thinking..." : isRecording ? "Recording..." : "Ready"}</span>
+            <span className="muted-text">{chatStatus}</span>
           </div>
 
           <div className="chat-scroll">
-            {messages.map((message) => (
+            {visibleMessages.map((message) => (
               <div
                 key={message.id}
                 className={message.role === "user" ? "message-row user" : "message-row assistant"}
@@ -225,7 +289,7 @@ export default function DashboardPage() {
             />
             <div className="button-row">
               {!isRecording ? (
-                <button className="secondary-button" onClick={startRecording} disabled={chatBusy || sttBusy}>
+                <button className="secondary-button" onClick={startRecording} disabled={initializingChat || chatBusy || sttBusy}>
                   {sttBusy ? "Transcribing..." : "Dictate"}
                 </button>
               ) : (
@@ -236,7 +300,7 @@ export default function DashboardPage() {
               <button
                 className="primary-button"
                 onClick={handleSendMessage}
-                disabled={chatBusy || sttBusy || !chatInput.trim()}
+                disabled={initializingChat || chatBusy || sttBusy || !chatInput.trim()}
               >
                 Send
               </button>

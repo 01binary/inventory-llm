@@ -17,6 +17,7 @@ Local-first inventory demo repository built around ASP.NET Core, React, SQLite, 
   /temp          Temp audio files
 /scripts         Start/stop scripts for macOS and Windows
 docker-compose.yml
+SYSTEM_PROMPT.md
 ```
 
 ## Prerequisites
@@ -196,6 +197,8 @@ scripts\stop-local-demo.bat
 - The API converts browser-recorded audio to mono 16 kHz WAV with `ffmpeg` before sending it to whisper.cpp.
 - Text-to-speech stays inside the app container, where the API shells out to Piper and returns `audio/wav`.
 - Chat completion is a thin proxy from the API to LM Studio.
+- The chat system prompt is loaded from [SYSTEM_PROMPT.md](/Users/valeriynovytskyy/Desktop/inventory-llm/SYSTEM_PROMPT.md) at startup (works in both Docker and local dev).
+- The dashboard chat bootstraps with hidden `system + hello` messages, then shows the model greeting as the first visible assistant message.
 
 ## API endpoints
 
@@ -210,6 +213,7 @@ scripts\stop-local-demo.bat
 - `POST /api/voice/transcribe-proxy`
 - `POST /api/voice/speak`
 - `POST /api/chat/complete`
+- `GET /api/chat/system-prompt`
 
 ## Inspecting SQLite in DBeaver
 
@@ -239,5 +243,6 @@ scripts\stop-local-demo.bat
 
 - [docker-compose.yml](/Users/valeriynovytskyy/Desktop/inventory-llm/docker-compose.yml) for ports and mounted paths
 - [app/Server/appsettings.json](/Users/valeriynovytskyy/Desktop/inventory-llm/app/Server/appsettings.json) for backend integration settings
+- [SYSTEM_PROMPT.md](/Users/valeriynovytskyy/Desktop/inventory-llm/SYSTEM_PROMPT.md) for assistant behavior and tone
 - [db/002_seed.sql](/Users/valeriynovytskyy/Desktop/inventory-llm/db/002_seed.sql) for your sample inventory
 - [app/ClientApp/src/styles.css](/Users/valeriynovytskyy/Desktop/inventory-llm/app/ClientApp/src/styles.css) for UI appearance

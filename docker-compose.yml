@@ -15,6 +15,7 @@ services:
       AppPaths__TempAudioDirectory: /tmp/inventory-audio
       AppPaths__PiperExecutablePath: /usr/local/bin/piper
       AppPaths__PiperVoiceModelPath: /models/piper/${PIPER_VOICE_FILE}
+      AppPaths__SystemPromptPath: /app/SYSTEM_PROMPT.md
       ModelServices__LlmBaseUrl: ${LLM_BASE_URL:-http://host.docker.internal:1234}
       ModelServices__LlmModel: ${LLM_MODEL:-auto}
       ModelServices__WhisperBaseUrl: http://stt:8080

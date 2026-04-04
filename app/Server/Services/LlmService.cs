@@ -10,15 +10,18 @@ public sealed class LlmService
 {
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly ModelServiceOptions _options;
+    private readonly SystemPromptService _systemPromptService;
     private readonly ILogger<LlmService> _logger;
 
     public LlmService(
         IHttpClientFactory httpClientFactory,
         IOptions<ModelServiceOptions> options,
+        SystemPromptService systemPromptService,
         ILogger<LlmService> logger)
     {
         _httpClientFactory = httpClientFactory;
         _options = options.Value;
+        _systemPromptService = systemPromptService;
         _logger = logger;
     }
 
@@ -52,21 +55,66 @@ public sealed class LlmService
 
     private async Task<object> BuildPayloadAsync(ChatCompletionRequest request)
     {
+        var messages = BuildMessages(request);
+
         return new
         {
             model = await ResolveModelAsync(),
-            messages = new[]
-            {
-                new
-                {
-                    role = "user",
-                    content = request.Prompt
-                }
-            },
+            messages,
             temperature = 0.2,
             max_tokens = request.MaxTokens,
             stream = false
         };
+    }
+
+    private List<object> BuildMessages(ChatCompletionRequest request)
+    {
+        var messages = new List<object>();
+        var systemPrompt = _systemPromptService.GetSystemPrompt();
+
+        var hasSystemMessage = request.Messages?.Any(message =>
+            string.Equals(message.Role, "system", StringComparison.OrdinalIgnoreCase)) ?? false;
+
+        if (!hasSystemMessage && !string.IsNullOrWhiteSpace(systemPrompt))
+        {
+            messages.Add(new
+            {
+                role = "system",
+                content = systemPrompt
+            });
+        }
+
+        if (request.Messages is { Count: > 0 })
+        {
+            foreach (var message in request.Messages)
+            {
+                if (string.IsNullOrWhiteSpace(message.Role) || string.IsNullOrWhiteSpace(message.Content))
+                {
+                    continue;
+                }
+
+                messages.Add(new
+                {
+                    role = message.Role.Trim().ToLowerInvariant(),
+                    content = message.Content.Trim()
+                });
+            }
+        }
+        else if (!string.IsNullOrWhiteSpace(request.Prompt))
+        {
+            messages.Add(new
+            {
+                role = "user",
+                content = request.Prompt.Trim()
+            });
+        }
+
+        if (messages.Count == 0)
+        {
+            throw new InvalidOperationException("No valid messages found for completion request.");
+        }
+
+        return messages;
     }
 
     private async Task<string> ResolveModelAsync()
