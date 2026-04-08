@@ -46,6 +46,7 @@ builder.Services.AddScoped<SpeechToTextProxyService>();
 builder.Services.AddScoped<TextToSpeechService>();
 builder.Services.AddScoped<AppConfigService>();
 builder.Services.AddSingleton<SystemPromptService>();
+builder.Services.AddSingleton<FewShotPromptService>();
 
 var app = builder.Build();
 
@@ -56,6 +57,9 @@ using (var scope = app.Services.CreateScope())
 
     var systemPromptService = scope.ServiceProvider.GetRequiredService<SystemPromptService>();
     systemPromptService.GetSystemPrompt();
+
+    var fewShotPromptService = scope.ServiceProvider.GetRequiredService<FewShotPromptService>();
+    fewShotPromptService.GetFewShotPrompts();
 }
 
 app.UseExceptionHandler(exceptionHandlerApp =>

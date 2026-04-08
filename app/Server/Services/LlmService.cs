@@ -11,6 +11,7 @@ public sealed class LlmService
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly ModelServiceOptions _options;
     private readonly SystemPromptService _systemPromptService;
+    private readonly FewShotPromptService _fewShotPromptService;
     private readonly McpClientService _mcpClientService;
     private readonly ILogger<LlmService> _logger;
 
@@ -18,12 +19,14 @@ public sealed class LlmService
         IHttpClientFactory httpClientFactory,
         IOptions<ModelServiceOptions> options,
         SystemPromptService systemPromptService,
+        FewShotPromptService fewShotPromptService,
         McpClientService mcpClientService,
         ILogger<LlmService> logger)
     {
         _httpClientFactory = httpClientFactory;
         _options = options.Value;
         _systemPromptService = systemPromptService;
+        _fewShotPromptService = fewShotPromptService;
         _mcpClientService = mcpClientService;
         _logger = logger;
     }
@@ -128,6 +131,15 @@ public sealed class LlmService
             {
                 ["role"] = "system",
                 ["content"] = systemPrompt
+            });
+        }
+
+        foreach (var message in _fewShotPromptService.GetFewShotPrompts())
+        {
+            messages.Add(new Dictionary<string, object?>
+            {
+                ["role"] = message.Role,
+                ["content"] = message.Content
             });
         }
 

@@ -200,6 +200,7 @@ scripts\stop-local-demo.bat
 - Text-to-speech stays inside the app container, where the API shells out to Piper and returns `audio/wav`.
 - Chat completion is a thin proxy from the API to LM Studio.
 - The chat system prompt is loaded from [SYSTEM_PROMPT.md](/Users/valeriynovytskyy/Desktop/inventory-llm/SYSTEM_PROMPT.md) at startup (works in both Docker and local dev).
+- Few-shot chat messages are loaded from [FEW_SHOT_PROMPTS.json](/Users/valeriynovytskyy/Desktop/inventory-llm/FEW_SHOT_PROMPTS.json) at startup using OpenAI-style `{ "role", "content" }` entries in a root JSON array.
 - The dashboard chat bootstraps with hidden `system + hello` messages, then shows the model greeting as the first visible assistant message.
 - The backend includes an MCP client that executes model-requested tool calls against its own MCP endpoint (`/mcp`) and returns tool results back to the model in a loop until a final answer is produced.
 
@@ -217,6 +218,7 @@ scripts\stop-local-demo.bat
 - `POST /api/voice/speak`
 - `POST /api/chat/complete`
 - `GET /api/chat/system-prompt`
+- `GET /api/chat/few-shot-prompts`
 
 ## MCP server
 
@@ -259,5 +261,6 @@ Current MCP tools:
 - [docker-compose.yml](/Users/valeriynovytskyy/Desktop/inventory-llm/docker-compose.yml) for ports and mounted paths
 - [app/Server/appsettings.json](/Users/valeriynovytskyy/Desktop/inventory-llm/app/Server/appsettings.json) for backend integration settings
 - [SYSTEM_PROMPT.md](/Users/valeriynovytskyy/Desktop/inventory-llm/SYSTEM_PROMPT.md) for assistant behavior and tone
+- [FEW_SHOT_PROMPTS.json](/Users/valeriynovytskyy/Desktop/inventory-llm/FEW_SHOT_PROMPTS.json) for few-shot examples used in chat completions
 - [db/002_seed.sql](/Users/valeriynovytskyy/Desktop/inventory-llm/db/002_seed.sql) for your sample inventory
 - [app/ClientApp/src/styles.css](/Users/valeriynovytskyy/Desktop/inventory-llm/app/ClientApp/src/styles.css) for UI appearance

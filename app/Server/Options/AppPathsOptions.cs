@@ -11,4 +11,5 @@ public sealed class AppPathsOptions
     public string PiperExecutablePath { get; set; } = "/usr/local/bin/piper";
     public string PiperVoiceModelPath { get; set; } = "/models/piper/es_MX-claude-high.onnx";
     public string SystemPromptPath { get; set; } = "SYSTEM_PROMPT.md";
+    public string FewShotPromptsPath { get; set; } = "FEW_SHOT_PROMPTS.json";
 }
