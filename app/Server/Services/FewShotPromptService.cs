@@ -49,7 +49,7 @@ public sealed class FewShotPromptService
                     Role = message.Role.Trim().ToLowerInvariant(),
                     Content = message.Content.Trim()
                 })
-                .ToList() ?? Array.Empty<ChatMessageDto>();
+                .ToList() ?? new List<ChatMessageDto>();
 
             _logger.LogInformation("Loaded {Count} few-shot prompt messages from {Path}", _cachedPrompts.Count, resolvedPath);
             return _cachedPrompts;
