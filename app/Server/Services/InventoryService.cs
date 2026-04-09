@@ -83,6 +83,24 @@ public sealed class InventoryService
         return await connection.QuerySingleOrDefaultAsync<InventoryItem>(sql, new { Id = id });
     }
 
+    public async Task<InventoryItem?> GetItemBySkuAsync(string sku)
+    {
+        if (string.IsNullOrWhiteSpace(sku))
+        {
+            return null;
+        }
+
+        const string sql = """
+            SELECT id, sku, name, quantity, created_utc AS CreatedUtc, updated_utc AS UpdatedUtc
+            FROM items
+            WHERE lower(sku) = lower(@Sku)
+            LIMIT 1;
+            """;
+
+        await using var connection = _databaseInitializer.CreateConnection();
+        return await connection.QuerySingleOrDefaultAsync<InventoryItem>(sql, new { Sku = sku.Trim() });
+    }
+
     public async Task<IReadOnlyList<InventoryTransaction>> GetTransactionsAsync()
     {
         const string sql = """
@@ -138,6 +156,47 @@ public sealed class InventoryService
         await transaction.CommitAsync();
         _logger.LogInformation("Created inventory item {ItemId} ({Sku})", id, request.Sku);
         return (await GetItemAsync(id))!;
+    }
+
+    public async Task<(InventoryItem Item, bool Created, bool TransactionApplied)> CreateOrApplyTransactionBySkuAsync(
+        InventoryItemUpsertRequest request)
+    {
+        var existing = await GetItemBySkuAsync(request.Sku);
+        if (existing is null)
+        {
+            var createdItem = await CreateItemAsync(request);
+            return (createdItem, true, request.Quantity != 0);
+        }
+
+        var desiredName = string.IsNullOrWhiteSpace(request.Name) ? existing.Name : request.Name.Trim();
+        if (!string.Equals(existing.Name, desiredName, StringComparison.Ordinal))
+        {
+            var renamed = await UpdateItemAsync(existing.Id, new InventoryItemUpsertRequest
+            {
+                Sku = existing.Sku,
+                Name = desiredName,
+                Quantity = existing.Quantity
+            });
+
+            if (renamed is not null)
+            {
+                existing = renamed;
+            }
+        }
+
+        var appliedTransaction = false;
+        if (request.Quantity != 0)
+        {
+            await AddInventoryTransactionAsync(
+                existing.Id,
+                "adjustment",
+                request.Quantity,
+                string.IsNullOrWhiteSpace(request.TransactionNote) ? "Added from add item form" : request.TransactionNote);
+            appliedTransaction = true;
+        }
+
+        var refreshed = await GetItemAsync(existing.Id) ?? existing;
+        return (refreshed, false, appliedTransaction);
     }
 
     public async Task<InventoryItem?> UpdateItemAsync(long id, InventoryItemUpsertRequest request)

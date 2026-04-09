@@ -184,6 +184,26 @@ thead th {
   background: rgba(255, 255, 255, 0.9);
 }
 
+.sku-validation {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.sku-validation.exists {
+  background: #d8efe0;
+  color: #256647;
+}
+
+.sku-validation.new {
+  background: #e7eff8;
+  color: #163f66;
+}
+
 .button-row,
 .page-actions,
 .panel-header-row,

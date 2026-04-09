@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import PageHeader from "../components/PageHeader";
 import { api } from "../services/api";
@@ -15,8 +15,11 @@ export default function ItemFormPage() {
   const navigate = useNavigate();
   const isEditing = Boolean(id);
   const [form, setForm] = useState(emptyForm);
+  const [skuValidation, setSkuValidation] = useState(null);
+  const [skuValidationBusy, setSkuValidationBusy] = useState(false);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(isEditing);
+  const skuValidationRequestRef = useRef(0);
 
   useEffect(() => {
     if (!isEditing) {
@@ -35,6 +38,48 @@ export default function ItemFormPage() {
       .catch((err) => setError(err.message))
       .finally(() => setBusy(false));
   }, [id, isEditing]);
+
+  useEffect(() => {
+    if (isEditing) {
+      return;
+    }
+
+    const sku = form.sku.trim();
+    if (!sku) {
+      setSkuValidation(null);
+      setSkuValidationBusy(false);
+      return;
+    }
+
+    const requestId = skuValidationRequestRef.current + 1;
+    skuValidationRequestRef.current = requestId;
+
+    const timer = window.setTimeout(async () => {
+      setSkuValidationBusy(true);
+      try {
+        const result = await api.validateSku(sku);
+        if (skuValidationRequestRef.current !== requestId) {
+          return;
+        }
+        setSkuValidation(result);
+      } catch (err) {
+        if (skuValidationRequestRef.current !== requestId) {
+          return;
+        }
+        setSkuValidation({
+          valid: false,
+          exists: false,
+          message: err.message || "Could not validate SKU."
+        });
+      } finally {
+        if (skuValidationRequestRef.current === requestId) {
+          setSkuValidationBusy(false);
+        }
+      }
+    }, 350);
+
+    return () => window.clearTimeout(timer);
+  }, [form.sku, isEditing]);
 
   function updateField(event) {
     const { name, value } = event.target;
@@ -75,6 +120,11 @@ export default function ItemFormPage() {
         <label className="form-field">
           <span>SKU</span>
           <input name="sku" value={form.sku} onChange={updateField} required maxLength={64} />
+          {!isEditing && form.sku.trim() ? (
+            <span className={`sku-validation ${skuValidation?.exists ? "exists" : "new"}`}>
+              {skuValidationBusy ? "..." : skuValidation?.exists ? "✓ Existing SKU" : "+ New SKU"}
+            </span>
+          ) : null}
         </label>
 
         <label className="form-field">

@@ -35,6 +35,10 @@ export const api = {
   getItem(id) {
     return fetch(`/api/items/${id}`).then(handleResponse);
   },
+  validateSku(sku) {
+    const encodedSku = encodeURIComponent(sku ?? "");
+    return fetch(`/api/items/validate-sku?sku=${encodedSku}`).then(handleResponse);
+  },
   createItem(payload) {
     return fetch("/api/items", {
       method: "POST",

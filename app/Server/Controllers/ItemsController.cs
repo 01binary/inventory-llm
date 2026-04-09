@@ -38,14 +38,61 @@ public sealed class ItemsController : ControllerBase
 
         try
         {
-            var created = await _inventoryService.CreateItemAsync(request);
-            return CreatedAtAction(nameof(GetByIdAsync), new { id = created.Id }, created);
+            var result = await _inventoryService.CreateOrApplyTransactionBySkuAsync(request);
+            if (result.Created)
+            {
+                return CreatedAtAction(nameof(GetByIdAsync), new { id = result.Item.Id }, result.Item);
+            }
+
+            return Ok(new
+            {
+                item = result.Item,
+                created = false,
+                transactionApplied = result.TransactionApplied
+            });
         }
         catch (SqliteException ex) when (ex.SqliteErrorCode == 19)
         {
             _logger.LogWarning(ex, "Attempted to create duplicate SKU {Sku}", request.Sku);
             return Conflict(new { message = "An item with that SKU already exists." });
         }
+    }
+
+    [HttpGet("validate-sku")]
+    public async Task<IActionResult> ValidateSkuAsync([FromQuery] string sku)
+    {
+        var normalizedSku = (sku ?? string.Empty).Trim();
+        if (string.IsNullOrWhiteSpace(normalizedSku))
+        {
+            return Ok(new
+            {
+                valid = false,
+                exists = false,
+                message = "SKU is required."
+            });
+        }
+
+        var existing = await _inventoryService.GetItemBySkuAsync(normalizedSku);
+        if (existing is null)
+        {
+            return Ok(new
+            {
+                valid = true,
+                exists = false,
+                sku = normalizedSku,
+                message = "New SKU. Item will be created."
+            });
+        }
+
+        return Ok(new
+        {
+            valid = true,
+            exists = true,
+            sku = existing.Sku,
+            itemId = existing.Id,
+            itemName = existing.Name,
+            message = "SKU exists. Quantity will be added as a transaction."
+        });
     }
 
     [HttpPut("{id:long}")]

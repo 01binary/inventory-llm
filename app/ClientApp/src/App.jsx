@@ -22,7 +22,7 @@ export default function App() {
             <NavLink
               key={item.to}
               to={item.to}
-              end={item.to === "/"}
+              end={item.to === "/" || item.to === "/inventory"}
               className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}
             >
               {item.label}

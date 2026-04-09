@@ -93,6 +93,12 @@ export default function DashboardPage() {
           text: assistantText
         };
         setMessages((current) => [...current, assistantMessage]);
+
+        try {
+          await speakText(assistantText);
+        } catch {
+          // Browser autoplay policies can block TTS before first user interaction.
+        }
       } catch (err) {
         setError(err.message || "Failed to initialize chat.");
       } finally {
