@@ -531,6 +531,27 @@ thead th {
   white-space: nowrap;
 }
 
+.order-toggle {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 999px;
+  border: 1px solid #cfdbe7;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #163f66;
+  background: #f3f6fa;
+}
+
+.order-items-cell {
+  background: rgba(231, 239, 248, 0.45);
+}
+
+.order-items-table th,
+.order-items-table td {
+  border-bottom: 1px solid #d5e1ec;
+}
+
 @media (max-width: 980px) {
   .app-shell,
   .dashboard-grid,

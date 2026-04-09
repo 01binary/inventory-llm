@@ -63,6 +63,10 @@ export const api = {
   getTransactions() {
     return fetch("/api/transactions").then(handleResponse);
   },
+  getOrders(limit = 50) {
+    const safeLimit = Number.isFinite(limit) ? Math.max(1, Math.min(100, Math.floor(limit))) : 50;
+    return fetch(`/api/orders?limit=${safeLimit}`).then(handleResponse);
+  },
   getSystemPrompt() {
     return fetch("/api/chat/system-prompt").then(handleResponse);
   },
