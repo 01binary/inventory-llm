@@ -1,4 +1,6 @@
 using System.ComponentModel;
+using InventoryDemo.Server.DTOs;
+using InventoryDemo.Server.Models;
 using Microsoft.Extensions.DependencyInjection;
 using ModelContextProtocol.Server;
 
@@ -7,6 +9,15 @@ namespace InventoryDemo.Server.Services;
 [McpServerToolType]
 public sealed class InventoryMcpTools
 {
+    public sealed class OrderToolItem
+    {
+        [Description("Inventory item identifier, either SKU or item name.")]
+        public string ItemNameOrSku { get; set; } = string.Empty;
+
+        [Description("Quantity to order. Must be greater than zero.")]
+        public int Quantity { get; set; }
+    }
+
     [McpServerTool(
         Name = "inventory_list_items",
         ReadOnly = true,
@@ -181,5 +192,263 @@ public sealed class InventoryMcpTools
                     quantity = refreshedItem.Quantity
                 }
         };
+    }
+
+    [McpServerTool(
+        Name = "orders_get_latest",
+        ReadOnly = true,
+        Idempotent = true,
+        Destructive = false)]
+    [Description("Get the latest order and its item lines.")]
+    public static async Task<object> GetLatestOrderAsync(IServiceProvider serviceProvider)
+    {
+        var orderService = serviceProvider.GetRequiredService<OrderService>();
+        var order = await orderService.GetLatestOrderAsync();
+        if (order is null)
+        {
+            return new
+            {
+                found = false,
+                message = "No orders found yet."
+            };
+        }
+
+        return new
+        {
+            found = true,
+            order
+        };
+    }
+
+    [McpServerTool(
+        Name = "orders_create",
+        ReadOnly = false,
+        Idempotent = false,
+        Destructive = false)]
+    [Description("Create a new order with one or more item lines.")]
+    public static async Task<object> CreateOrderAsync(
+        [Description("Array of order lines. Each line requires itemNameOrSku and quantity > 0.")]
+        List<OrderToolItem> items,
+        IServiceProvider serviceProvider)
+    {
+        if (items.Count == 0)
+        {
+            return new
+            {
+                success = false,
+                message = "At least one item is required to create an order."
+            };
+        }
+
+        var inventoryService = serviceProvider.GetRequiredService<InventoryService>();
+        var orderService = serviceProvider.GetRequiredService<OrderService>();
+
+        var resolvedItems = new List<OrderItemRequest>();
+        var unresolved = new List<object>();
+        foreach (var item in items)
+        {
+            if (item.Quantity <= 0)
+            {
+                unresolved.Add(new
+                {
+                    itemNameOrSku = item.ItemNameOrSku,
+                    message = "Quantity must be greater than zero."
+                });
+                continue;
+            }
+
+            var resolution = await ResolveItemByNameOrSkuAsync(item.ItemNameOrSku, inventoryService);
+            if (!resolution.Success)
+            {
+                unresolved.Add(new
+                {
+                    itemNameOrSku = item.ItemNameOrSku,
+                    message = resolution.Message,
+                    candidates = resolution.Candidates
+                });
+                continue;
+            }
+
+            resolvedItems.Add(new OrderItemRequest
+            {
+                Sku = resolution.Item!.Sku,
+                Quantity = item.Quantity
+            });
+        }
+
+        if (unresolved.Count > 0)
+        {
+            return new
+            {
+                success = false,
+                message = "Some order lines could not be resolved. No order was created.",
+                unresolved
+            };
+        }
+
+        var order = await orderService.CreateOrderAsync(resolvedItems);
+        return new
+        {
+            success = true,
+            message = $"Created order {order.OrderNumber}.",
+            order
+        };
+    }
+
+    [McpServerTool(
+        Name = "orders_add_items_to_latest",
+        ReadOnly = false,
+        Idempotent = false,
+        Destructive = false)]
+    [Description("Add one or more item lines to the latest existing order.")]
+    public static async Task<object> AddItemsToLatestOrderAsync(
+        [Description("Array of order lines. Each line requires itemNameOrSku and quantity > 0.")]
+        List<OrderToolItem> items,
+        IServiceProvider serviceProvider)
+    {
+        if (items.Count == 0)
+        {
+            return new
+            {
+                success = false,
+                message = "At least one item is required to update the latest order."
+            };
+        }
+
+        var inventoryService = serviceProvider.GetRequiredService<InventoryService>();
+        var orderService = serviceProvider.GetRequiredService<OrderService>();
+
+        var resolvedItems = new List<OrderItemRequest>();
+        var unresolved = new List<object>();
+        foreach (var item in items)
+        {
+            if (item.Quantity <= 0)
+            {
+                unresolved.Add(new
+                {
+                    itemNameOrSku = item.ItemNameOrSku,
+                    message = "Quantity must be greater than zero."
+                });
+                continue;
+            }
+
+            var resolution = await ResolveItemByNameOrSkuAsync(item.ItemNameOrSku, inventoryService);
+            if (!resolution.Success)
+            {
+                unresolved.Add(new
+                {
+                    itemNameOrSku = item.ItemNameOrSku,
+                    message = resolution.Message,
+                    candidates = resolution.Candidates
+                });
+                continue;
+            }
+
+            resolvedItems.Add(new OrderItemRequest
+            {
+                Sku = resolution.Item!.Sku,
+                Quantity = item.Quantity
+            });
+        }
+
+        if (unresolved.Count > 0)
+        {
+            return new
+            {
+                success = false,
+                message = "Some order lines could not be resolved. Latest order was not updated.",
+                unresolved
+            };
+        }
+
+        var order = await orderService.AddItemsToLatestOrderAsync(resolvedItems);
+        if (order is null)
+        {
+            return new
+            {
+                success = false,
+                message = "No existing order found. Create an order first."
+            };
+        }
+
+        return new
+        {
+            success = true,
+            message = $"Updated latest order {order.OrderNumber}.",
+            order
+        };
+    }
+
+    private static async Task<ItemResolutionResult> ResolveItemByNameOrSkuAsync(
+        string itemNameOrSku,
+        InventoryService inventoryService)
+    {
+        if (string.IsNullOrWhiteSpace(itemNameOrSku))
+        {
+            return ItemResolutionResult.Failure("itemNameOrSku is required.");
+        }
+
+        var normalizedLookup = itemNameOrSku.Trim();
+        var matches = await inventoryService.SearchItemsByNameOrSkuAsync(normalizedLookup, 10);
+        if (matches.Count == 0)
+        {
+            return ItemResolutionResult.Failure($"No inventory item found matching '{normalizedLookup}'.");
+        }
+
+        var exactMatches = matches
+            .Where(item => InventoryService.AreEquivalentForSearch(item.Name, normalizedLookup)
+                           || InventoryService.AreEquivalentForSearch(item.Sku, normalizedLookup))
+            .ToList();
+
+        var selectedItem = exactMatches.Count switch
+        {
+            1 => exactMatches[0],
+            0 when matches.Count == 1 => matches[0],
+            _ => null
+        };
+
+        if (selectedItem is null)
+        {
+            return ItemResolutionResult.Failure(
+                $"Multiple items match '{normalizedLookup}'. Use a more specific name or SKU.",
+                matches.Select(item => new
+                {
+                    id = item.Id,
+                    sku = item.Sku,
+                    name = item.Name
+                }));
+        }
+
+        return ItemResolutionResult.FromSuccess(selectedItem);
+    }
+
+    private sealed class ItemResolutionResult
+    {
+        public bool Success { get; init; }
+
+        public string Message { get; init; } = string.Empty;
+
+        public InventoryItem? Item { get; init; }
+
+        public object? Candidates { get; init; }
+
+        public static ItemResolutionResult FromSuccess(InventoryItem item)
+        {
+            return new ItemResolutionResult
+            {
+                Success = true,
+                Item = item
+            };
+        }
+
+        public static ItemResolutionResult Failure(string message, object? candidates = null)
+        {
+            return new ItemResolutionResult
+            {
+                Success = false,
+                Message = message,
+                Candidates = candidates
+            };
+        }
     }
 }

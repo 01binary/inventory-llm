@@ -1,10 +1,90 @@
 [
   {
     "role": "user",
-    "content": "Oye, we need to order more drinks. Uh, ponme tres cajas de Coca Light, and let's get five of the Doritos rojos. Ah, y también four bags of frijoles pintos."
+    "content": "Dame una lista rápida del inventario actual."
   },
   {
     "role": "assistant",
-    "content": "Sure! I'll place an order for three boxes of Coca Light, five bags of Doritos Rojos, and four bags of frijoles pintos. Anything else you need?"
+    "content": "Claro. Voy a revisar el inventario completo y te comparto un resumen corto con SKU, nombre y cantidad."
+  },
+  {
+    "role": "user",
+    "content": "Cuánto tenemos del SKU CHOL?"
+  },
+  {
+    "role": "assistant",
+    "content": "Voy a consultar el estado del SKU CHOL y te digo la cantidad exacta disponible."
+  },
+  {
+    "role": "user",
+    "content": "Agrega 12 al SKU TORT, nos llegó un pedido."
+  },
+  {
+    "role": "assistant",
+    "content": "Perfecto. Registraré una transacción positiva para el SKU TORT (+12) y luego te confirmo el nuevo total."
+  },
+  {
+    "role": "user",
+    "content": "Quita 3 del SKU JARR porque se vendieron."
+  },
+  {
+    "role": "assistant",
+    "content": "Entendido. Aplicaré una transacción de salida para el SKU JARR (-3) y te confirmo el inventario actualizado."
+  },
+  {
+    "role": "user",
+    "content": "Crea una orden con 6 de PEP15 y 4 de FRIJ."
+  },
+  {
+    "role": "assistant",
+    "content": "Listo. Crearé una nueva orden con esos dos SKUs y esas cantidades."
+  },
+  {
+    "role": "user",
+    "content": "También agrégale 2 de CHAY a la orden."
+  },
+  {
+    "role": "assistant",
+    "content": "Perfecto, agregaré 2 de CHAY a la orden más reciente."
+  },
+  {
+    "role": "user",
+    "content": "Please add five of salsa to the order."
+  },
+  {
+    "role": "assistant",
+    "content": "Claro. Voy a identificar el SKU correcto de salsa y, si hay una sola coincidencia, agregaré 5 a la orden más reciente. Si hay varias, te pediré precisión."
+  },
+  {
+    "role": "user",
+    "content": "Agrégame 4 de salsa a la orden."
+  },
+  {
+    "role": "assistant",
+    "content": "Puedo hacerlo, pero primero necesito más precisión: hay varias opciones de salsa. ¿Cuál SKU quieres agregar (por ejemplo CHOL o SALS)?"
+  },
+  {
+    "role": "user",
+    "content": "Quítale 2 al SKU XYZ999."
+  },
+  {
+    "role": "assistant",
+    "content": "No encuentro el SKU XYZ999 en inventario. ¿Me compartes el SKU correcto o el nombre exacto del producto para buscarlo?"
+  },
+  {
+    "role": "user",
+    "content": "Crea una orden con 0 de PEP15."
+  },
+  {
+    "role": "assistant",
+    "content": "Para crear o actualizar una orden, la cantidad debe ser mayor que cero. Dime una cantidad válida y lo hago."
+  },
+  {
+    "role": "user",
+    "content": "Agrégale -3 de CHAY a la orden."
+  },
+  {
+    "role": "assistant",
+    "content": "No puedo agregar una cantidad negativa en una orden de compra. Si quieres ajustar inventario hacia abajo, te ayudo con una transacción; si quieres ordenar CHAY, indícame una cantidad positiva."
   }
 ]

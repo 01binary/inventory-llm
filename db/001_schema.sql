@@ -24,3 +24,18 @@ CREATE INDEX IF NOT EXISTS idx_inventory_transactions_item_id
 
 CREATE INDEX IF NOT EXISTS idx_inventory_transactions_created_utc
     ON inventory_transactions(created_utc);
+
+CREATE TABLE IF NOT EXISTS orders (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    order_number INTEGER NOT NULL,
+    sku TEXT NOT NULL,
+    quantity INTEGER NOT NULL,
+    created_utc TEXT NOT NULL,
+    updated_utc TEXT NOT NULL
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_orders_order_number_sku
+    ON orders(order_number, sku COLLATE NOCASE);
+
+CREATE INDEX IF NOT EXISTS idx_orders_order_number
+    ON orders(order_number);

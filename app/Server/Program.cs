@@ -30,6 +30,7 @@ builder.Services.AddHttpClient("llm", client =>
 
 builder.Services.AddSingleton<DatabaseInitializer>();
 builder.Services.AddScoped<InventoryService>();
+builder.Services.AddScoped<OrderService>();
 builder.Services.AddScoped<DiagnosticsService>();
 builder.Services.AddScoped<LlmService>();
 builder.Services.AddScoped<McpClientService>();
