@@ -21,6 +21,7 @@ export default function DashboardPage() {
   const [sttBusy, setSttBusy] = useState(false);
   const [error, setError] = useState("");
   const recognitionRef = useRef(null);
+  const chatInputRef = useRef(null);
   const messageEndRef = useRef(null);
   const initStartedRef = useRef(false);
 
@@ -205,6 +206,7 @@ export default function DashboardPage() {
         onEnd: () => {
           setIsRecording(false);
           setSttBusy(false);
+          chatInputRef.current?.focus();
         }
       });
       setIsRecording(true);
@@ -217,6 +219,23 @@ export default function DashboardPage() {
   function stopRecording() {
     recognitionRef.current?.stop();
     setIsRecording(false);
+  }
+
+  function handleDictatePressStart(event) {
+    event.preventDefault();
+    if (isRecording) {
+      return;
+    }
+    startRecording();
+  }
+
+  function handleDictatePressEnd(event) {
+    event.preventDefault();
+    if (!isRecording) {
+      return;
+    }
+    stopRecording();
+    chatInputRef.current?.focus();
   }
 
   const visibleMessages = messages.slice(2);
@@ -261,6 +280,7 @@ export default function DashboardPage() {
 
           <div className="chat-composer">
             <textarea
+              ref={chatInputRef}
               rows={3}
               placeholder="Type your inventory question..."
               value={chatInput}
@@ -273,15 +293,28 @@ export default function DashboardPage() {
               }}
             />
             <div className="button-row">
-              {!isRecording ? (
-                <button className="secondary-button" onClick={startRecording} disabled={initializingChat || chatBusy || sttBusy}>
-                  {sttBusy ? "Transcribing..." : "Dictate"}
-                </button>
-              ) : (
-                <button className="danger-button" onClick={stopRecording}>
-                  Stop
-                </button>
-              )}
+              <button
+                className={isRecording ? "danger-button" : "secondary-button"}
+                disabled={initializingChat || chatBusy || sttBusy}
+                onMouseDown={handleDictatePressStart}
+                onMouseUp={handleDictatePressEnd}
+                onMouseLeave={handleDictatePressEnd}
+                onTouchStart={handleDictatePressStart}
+                onTouchEnd={handleDictatePressEnd}
+                onTouchCancel={handleDictatePressEnd}
+                onKeyDown={(event) => {
+                  if (event.key === " " || event.key === "Enter") {
+                    handleDictatePressStart(event);
+                  }
+                }}
+                onKeyUp={(event) => {
+                  if (event.key === " " || event.key === "Enter") {
+                    handleDictatePressEnd(event);
+                  }
+                }}
+              >
+                {sttBusy ? "Transcribing..." : isRecording ? "Release to stop" : "Hold to dictate"}
+              </button>
               <button
                 className="primary-button"
                 onClick={handleSendMessage}
