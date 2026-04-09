@@ -7,16 +7,16 @@ public sealed class AppConfigService
 {
     private readonly AppPathsOptions _paths;
     private readonly ModelServiceOptions _models;
-    private readonly SystemPromptService _systemPromptService;
+    private readonly PromptService _PromptService;
 
     public AppConfigService(
         IOptions<AppPathsOptions> paths,
         IOptions<ModelServiceOptions> models,
-        SystemPromptService systemPromptService)
+        PromptService PromptService)
     {
         _paths = paths.Value;
         _models = models.Value;
-        _systemPromptService = systemPromptService;
+        _PromptService = PromptService;
     }
 
     public object GetPublicConfig() => new
@@ -25,6 +25,6 @@ public sealed class AppConfigService
         llmBaseUrl = _models.LlmBaseUrl,
         llmModel = _models.LlmModel,
         mcpServerUrl = _models.McpServerUrl,
-        hasSystemPrompt = !string.IsNullOrWhiteSpace(_systemPromptService.GetSystemPrompt())
+        hasSystemPrompt = !string.IsNullOrWhiteSpace(_PromptService.GetSystemPrompt())
     };
 }

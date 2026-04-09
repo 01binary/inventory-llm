@@ -9,20 +9,14 @@ namespace InventoryDemo.Server.Controllers;
 public sealed class ChatController : ControllerBase
 {
     private readonly LlmService _llmService;
-    private readonly SystemPromptService _systemPromptService;
-    private readonly HelloPromptService _helloPromptService;
-    private readonly FewShotPromptService _fewShotPromptService;
+    private readonly PromptService _PromptService;
 
     public ChatController(
         LlmService llmService,
-        SystemPromptService systemPromptService,
-        HelloPromptService helloPromptService,
-        FewShotPromptService fewShotPromptService)
+        PromptService PromptService)
     {
         _llmService = llmService;
-        _systemPromptService = systemPromptService;
-        _helloPromptService = helloPromptService;
-        _fewShotPromptService = fewShotPromptService;
+        _PromptService = PromptService;
     }
 
     [HttpPost("complete")]
@@ -50,11 +44,11 @@ public sealed class ChatController : ControllerBase
     }
 
     [HttpGet("system-prompt")]
-    public IActionResult GetSystemPrompt() => Ok(new { text = _systemPromptService.GetSystemPrompt() });
+    public IActionResult GetSystemPrompt() => Ok(new { text = _PromptService.GetSystemPrompt() });
 
     [HttpGet("hello-prompt")]
-    public IActionResult GetHelloPrompt() => Ok(new { text = _helloPromptService.GetHelloPrompt() });
+    public IActionResult GetHelloPrompt() => Ok(new { text = _PromptService.GetHelloPrompt() });
 
     [HttpGet("few-shot-prompts")]
-    public IActionResult GetFewShotPrompts() => Ok(new { messages = _fewShotPromptService.GetFewShotPrompts() });
+    public IActionResult GetFewShotPrompts() => Ok(new { messages = _PromptService.GetFewShotPrompts() });
 }

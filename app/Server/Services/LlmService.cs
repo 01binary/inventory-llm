@@ -10,23 +10,20 @@ public sealed class LlmService
 {
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly ModelServiceOptions _options;
-    private readonly SystemPromptService _systemPromptService;
-    private readonly FewShotPromptService _fewShotPromptService;
+    private readonly PromptService _PromptService;
     private readonly McpClientService _mcpClientService;
     private readonly ILogger<LlmService> _logger;
 
     public LlmService(
         IHttpClientFactory httpClientFactory,
         IOptions<ModelServiceOptions> options,
-        SystemPromptService systemPromptService,
-        FewShotPromptService fewShotPromptService,
+        PromptService PromptService,
         McpClientService mcpClientService,
         ILogger<LlmService> logger)
     {
         _httpClientFactory = httpClientFactory;
         _options = options.Value;
-        _systemPromptService = systemPromptService;
-        _fewShotPromptService = fewShotPromptService;
+        _PromptService = PromptService;
         _mcpClientService = mcpClientService;
         _logger = logger;
     }
@@ -120,7 +117,7 @@ public sealed class LlmService
     private List<Dictionary<string, object?>> BuildMessages(ChatCompletionRequest request)
     {
         var messages = new List<Dictionary<string, object?>>();
-        var systemPrompt = _systemPromptService.GetSystemPrompt();
+        var systemPrompt = _PromptService.GetSystemPrompt();
 
         var hasSystemMessage = request.Messages?.Any(message =>
             string.Equals(message.Role, "system", StringComparison.OrdinalIgnoreCase)) ?? false;
@@ -134,7 +131,7 @@ public sealed class LlmService
             });
         }
 
-        foreach (var message in _fewShotPromptService.GetFewShotPrompts())
+        foreach (var message in _PromptService.GetFewShotPrompts())
         {
             messages.Add(new Dictionary<string, object?>
             {

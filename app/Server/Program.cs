@@ -34,9 +34,7 @@ builder.Services.AddScoped<DiagnosticsService>();
 builder.Services.AddScoped<LlmService>();
 builder.Services.AddScoped<McpClientService>();
 builder.Services.AddScoped<AppConfigService>();
-builder.Services.AddSingleton<SystemPromptService>();
-builder.Services.AddSingleton<HelloPromptService>();
-builder.Services.AddSingleton<FewShotPromptService>();
+builder.Services.AddSingleton<PromptService>();
 
 var app = builder.Build();
 
@@ -45,14 +43,10 @@ using (var scope = app.Services.CreateScope())
     var initializer = scope.ServiceProvider.GetRequiredService<DatabaseInitializer>();
     await initializer.InitializeAsync();
 
-    var systemPromptService = scope.ServiceProvider.GetRequiredService<SystemPromptService>();
-    systemPromptService.GetSystemPrompt();
-
-    var helloPromptService = scope.ServiceProvider.GetRequiredService<HelloPromptService>();
-    helloPromptService.GetHelloPrompt();
-
-    var fewShotPromptService = scope.ServiceProvider.GetRequiredService<FewShotPromptService>();
-    fewShotPromptService.GetFewShotPrompts();
+    var PromptService = scope.ServiceProvider.GetRequiredService<PromptService>();
+    PromptService.GetSystemPrompt();
+    PromptService.GetHelloPrompt();
+    PromptService.GetFewShotPrompts();
 }
 
 app.UseExceptionHandler(exceptionHandlerApp =>
