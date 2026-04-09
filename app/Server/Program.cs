@@ -35,6 +35,7 @@ builder.Services.AddScoped<LlmService>();
 builder.Services.AddScoped<McpClientService>();
 builder.Services.AddScoped<AppConfigService>();
 builder.Services.AddSingleton<SystemPromptService>();
+builder.Services.AddSingleton<HelloPromptService>();
 builder.Services.AddSingleton<FewShotPromptService>();
 
 var app = builder.Build();
@@ -46,6 +47,9 @@ using (var scope = app.Services.CreateScope())
 
     var systemPromptService = scope.ServiceProvider.GetRequiredService<SystemPromptService>();
     systemPromptService.GetSystemPrompt();
+
+    var helloPromptService = scope.ServiceProvider.GetRequiredService<HelloPromptService>();
+    helloPromptService.GetHelloPrompt();
 
     var fewShotPromptService = scope.ServiceProvider.GetRequiredService<FewShotPromptService>();
     fewShotPromptService.GetFewShotPrompts();

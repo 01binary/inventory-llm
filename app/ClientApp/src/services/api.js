@@ -62,6 +62,9 @@ export const api = {
   getSystemPrompt() {
     return fetch("/api/chat/system-prompt").then(handleResponse);
   },
+  getHelloPrompt() {
+    return fetch("/api/chat/hello-prompt").then(handleResponse);
+  },
   completeChat(payload) {
     const requestBody = typeof payload === "string"
       ? { prompt: payload, maxTokens: 128 }

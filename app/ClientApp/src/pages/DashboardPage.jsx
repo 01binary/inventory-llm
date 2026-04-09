@@ -10,7 +10,7 @@ import {
 } from "../services/browserSpeech";
 
 export default function DashboardPage() {
-  const helloPrompt = "Hello. Greet the user in one short sentence and ask how you can help track inventory today.";
+  const fallbackHelloPrompt = "Hello. Greet the user in one short sentence and ask how you can help track inventory today.";
   const [items, setItems] = useState([]);
   const [loadingItems, setLoadingItems] = useState(true);
   const [initializingChat, setInitializingChat] = useState(true);
@@ -55,8 +55,12 @@ export default function DashboardPage() {
       setInitializingChat(true);
       setError("");
       try {
-        const promptResponse = await api.getSystemPrompt();
-        const systemText = (promptResponse?.text || "").trim();
+        const [systemPromptResponse, helloPromptResponse] = await Promise.all([
+          api.getSystemPrompt(),
+          api.getHelloPrompt()
+        ]);
+        const systemText = (systemPromptResponse?.text || "").trim();
+        const helloPrompt = (helloPromptResponse?.text || "").trim() || fallbackHelloPrompt;
 
         const initialMessages = [
           {

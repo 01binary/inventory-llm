@@ -10,15 +10,18 @@ public sealed class ChatController : ControllerBase
 {
     private readonly LlmService _llmService;
     private readonly SystemPromptService _systemPromptService;
+    private readonly HelloPromptService _helloPromptService;
     private readonly FewShotPromptService _fewShotPromptService;
 
     public ChatController(
         LlmService llmService,
         SystemPromptService systemPromptService,
+        HelloPromptService helloPromptService,
         FewShotPromptService fewShotPromptService)
     {
         _llmService = llmService;
         _systemPromptService = systemPromptService;
+        _helloPromptService = helloPromptService;
         _fewShotPromptService = fewShotPromptService;
     }
 
@@ -48,6 +51,9 @@ public sealed class ChatController : ControllerBase
 
     [HttpGet("system-prompt")]
     public IActionResult GetSystemPrompt() => Ok(new { text = _systemPromptService.GetSystemPrompt() });
+
+    [HttpGet("hello-prompt")]
+    public IActionResult GetHelloPrompt() => Ok(new { text = _helloPromptService.GetHelloPrompt() });
 
     [HttpGet("few-shot-prompts")]
     public IActionResult GetFewShotPrompts() => Ok(new { messages = _fewShotPromptService.GetFewShotPrompts() });
