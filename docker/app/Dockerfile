@@ -29,6 +29,8 @@ RUN apt-get update \
 COPY --from=server-build /out/ ./
 COPY db/ ./db/
 COPY SYSTEM_PROMPT.md ./SYSTEM_PROMPT.md
+COPY HELLO_PROMPT.md ./HELLO_PROMPT.md
+COPY FEW_SHOT_PROMPTS.json ./FEW_SHOT_PROMPTS.json
 
 ENV ASPNETCORE_URLS=http://+:8080
 EXPOSE 8080

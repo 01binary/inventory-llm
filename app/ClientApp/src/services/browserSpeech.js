@@ -103,9 +103,14 @@ export function speakWithBrowser(text, languageOrOptions = DEFAULT_TTS_LANGUAGE)
         };
 
     const voices = getBrowserVoices();
+    const normalizedPreferredName = (options.voiceName || "").trim().toLowerCase();
     const selectedVoiceByName = voices.find((voice) => voice.name === options.voiceName);
+    const selectedVoiceByNameContains = normalizedPreferredName
+      ? voices.find((voice) => voice.name.toLowerCase().includes(normalizedPreferredName))
+      : null;
     const selectedVoiceByUri = voices.find((voice) => voice.voiceURI === options.voiceURI);
-    const selectedVoice = selectedVoiceByName || selectedVoiceByUri;
+    const selectedSpanishVoice = voices.find((voice) => voice.lang?.toLowerCase().startsWith("es"));
+    const selectedVoice = selectedVoiceByName || selectedVoiceByNameContains || selectedVoiceByUri || selectedSpanishVoice;
     if (selectedVoice) {
       utterance.voice = selectedVoice;
       utterance.lang = selectedVoice.lang;
