@@ -6,6 +6,7 @@ export default function ChatPanel({
   messages,
   chatInput,
   onChatInputChange,
+  onClearInput,
   onChatInputKeyDown,
   chatInputRef,
   messageEndRef,
@@ -46,14 +47,27 @@ export default function ChatPanel({
       </div>
 
       <div className="chat-composer">
-        <textarea
-          ref={chatInputRef}
-          rows={3}
-          placeholder="Type your inventory question..."
-          value={chatInput}
-          onChange={(event) => onChatInputChange(event.target.value)}
-          onKeyDown={onChatInputKeyDown}
-        />
+        <div className="chat-input-wrap">
+          <textarea
+            ref={chatInputRef}
+            rows={3}
+            placeholder="Type your inventory question..."
+            value={chatInput}
+            onChange={(event) => onChatInputChange(event.target.value)}
+            onKeyDown={onChatInputKeyDown}
+          />
+          {chatInput ? (
+            <button
+              type="button"
+              className="chat-clear-button"
+              onClick={onClearInput}
+              aria-label="Clear chat input"
+              title="Clear"
+            >
+              ×
+            </button>
+          ) : null}
+        </div>
         <div className="button-row">
           <button
             className={isRecording ? "danger-button" : "secondary-button"}

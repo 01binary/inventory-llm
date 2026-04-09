@@ -238,6 +238,11 @@ export default function DashboardPage() {
     chatInputRef.current?.focus();
   }
 
+  function handleClearChatInput() {
+    setChatInput("");
+    chatInputRef.current?.focus();
+  }
+
   const visibleMessages = messages.slice(2);
   const chatStatus = initializingChat ? "Initializing..." : chatBusy ? "Thinking..." : isRecording ? "Recording..." : "Ready";
 
@@ -257,6 +262,7 @@ export default function DashboardPage() {
           messages={visibleMessages}
           chatInput={chatInput}
           onChatInputChange={setChatInput}
+          onClearInput={handleClearChatInput}
           onChatInputKeyDown={(event) => {
             if (event.key === "Enter" && !event.shiftKey) {
               event.preventDefault();

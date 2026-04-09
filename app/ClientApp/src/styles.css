@@ -380,6 +380,7 @@ thead th {
 }
 
 .speech-bubble {
+  height: fit-content;
   max-width: 80%;
   border-radius: 18px;
   padding: 0.7rem 0.9rem;
@@ -463,6 +464,33 @@ thead th {
   padding: 0.85rem 0.95rem;
   background: rgba(255, 255, 255, 0.9);
   resize: vertical;
+}
+
+.chat-input-wrap {
+  position: relative;
+}
+
+.chat-input-wrap textarea {
+  padding-right: 2.6rem;
+}
+
+.chat-clear-button {
+  position: absolute;
+  right: 0.6rem;
+  top: 0.6rem;
+  width: 1.6rem;
+  height: 1.6rem;
+  border: 1px solid #cfdbe7;
+  border-radius: 999px;
+  background: #f3f6fa;
+  color: #4f6275;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0;
+}
+
+.chat-clear-button:hover {
+  background: #e6edf4;
 }
 
 .activity-row {
