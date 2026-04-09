@@ -3,9 +3,9 @@ setlocal enabledelayedexpansion
 
 set SCRIPT_DIR=%~dp0
 set REPO_ROOT=%SCRIPT_DIR%..
-set DEFAULT_WHISPER_FILE=ggml-tiny-q5_1.bin
+set DEFAULT_WHISPER_FILE=ggml-large-v3-turbo.bin
 set DEFAULT_PIPER_FILE=es_MX-claude-high.onnx
-set WHISPER_MODEL_URL=https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-tiny-q5_1.bin
+set WHISPER_MODEL_URL=https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v3-turbo.bin
 set PIPER_MODEL_URL=https://huggingface.co/rhasspy/piper-voices/resolve/main/es/es_MX/claude/high/es_MX-claude-high.onnx
 set PIPER_CONFIG_URL=https://huggingface.co/rhasspy/piper-voices/resolve/main/es/es_MX/claude/high/es_MX-claude-high.onnx.json
 

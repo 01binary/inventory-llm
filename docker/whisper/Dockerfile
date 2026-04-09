@@ -16,7 +16,7 @@ WORKDIR /opt/whisper.cpp
 RUN cmake -B build -DGGML_NATIVE=OFF -DWHISPER_BUILD_SERVER=ON \
     && cmake --build build --config Release -j"$(nproc)"
 
-ENV MODEL_PATH=/models/whisper/ggml-tiny-q5_1.bin
+ENV MODEL_PATH=/models/whisper/ggml-large-v3-turbo.bin
 ENV WHISPER_PORT=8080
 
 EXPOSE 8080

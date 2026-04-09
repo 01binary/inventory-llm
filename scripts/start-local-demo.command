@@ -3,7 +3,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
-DEFAULT_WHISPER_FILE="ggml-tiny-q5_1.bin"
+DEFAULT_WHISPER_FILE="ggml-large-v3-turbo.bin"
 DEFAULT_PIPER_FILE="es_MX-claude-high.onnx"
 WHISPER_MODEL_URL="https://huggingface.co/ggerganov/whisper.cpp/resolve/main/${DEFAULT_WHISPER_FILE}"
 PIPER_MODEL_URL="https://huggingface.co/rhasspy/piper-voices/resolve/main/es/es_MX/claude/high/${DEFAULT_PIPER_FILE}"

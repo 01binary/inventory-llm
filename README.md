@@ -34,8 +34,8 @@ The repo does not include the whisper.cpp model file. The startup scripts will d
 Copy or move your model files into these folders:
 
 - whisper.cpp model: [docker/models/whisper](/Users/valeriynovytskyy/Desktop/inventory-llm/docker/models/whisper)
-  - Default filename: `ggml-tiny-q5_1.bin`
-  - This is the smallest multilingual `whisper.cpp` model listed by `ggerganov/whisper.cpp`, so it can handle Spanish, including Mexican Spanish input
+  - Default filename: `ggml-large-v3-turbo.bin`
+  - This larger multilingual model is much stronger for Spanish, code-switching (Spanish and English), and noisy audio than the tiny model
 - Piper voice model: [docker/models/piper](/Users/valeriynovytskyy/Desktop/inventory-llm/docker/models/piper)
   - Included filename: `es_MX-claude-high.onnx`
   - Companion config file: `es_MX-claude-high.onnx.json`
@@ -82,23 +82,23 @@ Invoke-WebRequest https://huggingface.co/rhasspy/piper-voices/resolve/main/es/es
 
 ### Downloading the default whisper.cpp model
 
-This repo defaults to the smallest multilingual `whisper.cpp` model:
+This repo defaults to a higher-accuracy multilingual `whisper.cpp` model:
 
 - Model repo: `https://huggingface.co/ggerganov/whisper.cpp`
-- Default file: `ggml-tiny-q5_1.bin`
+- Default file: `ggml-large-v3-turbo.bin`
 
 The startup scripts download this file into [docker/models/whisper](/Users/valeriynovytskyy/Desktop/inventory-llm/docker/models/whisper) automatically when it is missing.
 
 Manual download:
 
 ```bash
-curl -L https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-tiny-q5_1.bin -o docker/models/whisper/ggml-tiny-q5_1.bin
+curl -L https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v3-turbo.bin -o docker/models/whisper/ggml-large-v3-turbo.bin
 ```
 
 Windows PowerShell:
 
 ```powershell
-Invoke-WebRequest https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-tiny-q5_1.bin -OutFile docker/models/whisper/ggml-tiny-q5_1.bin
+Invoke-WebRequest https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v3-turbo.bin -OutFile docker/models/whisper/ggml-large-v3-turbo.bin
 ```
 
 ## Start
@@ -121,7 +121,7 @@ The startup scripts:
 - create local folders if missing
 - create `.env` from `.env.example` if needed
 - warn if LM Studio is not reachable on `localhost:1234`
-- download `ggml-tiny-q5_1.bin` if missing
+- download `ggml-large-v3-turbo.bin` if missing
 - download `es_MX-claude-high.onnx` and `es_MX-claude-high.onnx.json` if missing
 - run `docker compose up -d --build`
 
@@ -241,7 +241,7 @@ Current MCP tools:
 ## Troubleshooting
 
 - If LM Studio chat is not working, verify LM Studio local server is enabled and reachable at `http://localhost:1234/v1/models`.
-- If the whisper model download fails, confirm the default URL still resolves to `ggml-tiny-q5_1.bin` in `ggerganov/whisper.cpp`.
+- If the whisper model download fails, confirm the default URL still resolves to `ggml-large-v3-turbo.bin` in `ggerganov/whisper.cpp`.
 - If the app diagnostics show Piper missing, confirm the `.onnx` voice file exists in `docker/models/piper`.
 - If the app diagnostics show Piper voice missing, also confirm the companion `.onnx.json` file is present next to the model.
 - If the app image fails while installing Piper, check [docker/app/Dockerfile](/Users/valeriynovytskyy/Desktop/inventory-llm/docker/app/Dockerfile) against the latest `OHF-Voice/piper1-gpl` wheel names.
