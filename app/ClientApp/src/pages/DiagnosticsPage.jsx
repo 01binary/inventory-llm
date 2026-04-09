@@ -34,7 +34,7 @@ export default function DiagnosticsPage() {
       <PageHeader
         eyebrow="Operations"
         title="Diagnostics"
-        description="Health view across the API, SQLite, the LM Studio server, whisper.cpp, and Piper."
+        description="Health view across the API, SQLite, and the LM Studio server."
       />
 
       <section className="card">
@@ -48,9 +48,6 @@ export default function DiagnosticsPage() {
           <DiagnosticRow label="App API" check={health?.app} />
           <DiagnosticRow label="SQLite" check={health?.database} />
           <DiagnosticRow label="LM Studio" check={health?.llm} />
-          <DiagnosticRow label="whisper.cpp" check={health?.stt} />
-          <DiagnosticRow label="Piper executable" check={health?.piperExecutable} />
-          <DiagnosticRow label="Piper voice model" check={health?.piperVoiceModel} />
         </div>
       </section>
 

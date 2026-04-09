@@ -27,23 +27,12 @@ builder.Services.AddHttpClient("llm", client =>
     client.Timeout = TimeSpan.FromMinutes(3);
     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 });
-builder.Services.AddHttpClient("stt", client =>
-{
-    var baseUrl = builder.Configuration["ModelServices:WhisperBaseUrl"];
-    if (!string.IsNullOrWhiteSpace(baseUrl))
-    {
-        client.BaseAddress = new Uri(baseUrl);
-    }
-    client.Timeout = TimeSpan.FromMinutes(5);
-});
 
 builder.Services.AddSingleton<DatabaseInitializer>();
 builder.Services.AddScoped<InventoryService>();
 builder.Services.AddScoped<DiagnosticsService>();
 builder.Services.AddScoped<LlmService>();
 builder.Services.AddScoped<McpClientService>();
-builder.Services.AddScoped<SpeechToTextProxyService>();
-builder.Services.AddScoped<TextToSpeechService>();
 builder.Services.AddScoped<AppConfigService>();
 builder.Services.AddSingleton<SystemPromptService>();
 builder.Services.AddSingleton<FewShotPromptService>();

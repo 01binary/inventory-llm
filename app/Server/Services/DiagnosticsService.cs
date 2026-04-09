@@ -10,20 +10,17 @@ public sealed class DiagnosticsService
 {
     private readonly DatabaseInitializer _databaseInitializer;
     private readonly IHttpClientFactory _httpClientFactory;
-    private readonly AppPathsOptions _paths;
     private readonly ModelServiceOptions _modelServices;
     private readonly ILogger<DiagnosticsService> _logger;
 
     public DiagnosticsService(
         DatabaseInitializer databaseInitializer,
         IHttpClientFactory httpClientFactory,
-        IOptions<AppPathsOptions> paths,
         IOptions<ModelServiceOptions> modelServices,
         ILogger<DiagnosticsService> logger)
     {
         _databaseInitializer = databaseInitializer;
         _httpClientFactory = httpClientFactory;
-        _paths = paths.Value;
         _modelServices = modelServices.Value;
         _logger = logger;
     }
@@ -34,18 +31,12 @@ public sealed class DiagnosticsService
         {
             App = new DiagnosticCheck { IsHealthy = true, Message = "API is running" },
             Database = await CheckDatabaseAsync(),
-            Llm = await CheckHttpAsync("llm", _modelServices.LlmHealthPath, "LLM server"),
-            Stt = await CheckHttpAsync("stt", _modelServices.WhisperHealthPath, "whisper.cpp"),
-            PiperExecutable = CheckFile(_paths.PiperExecutablePath, "Piper executable"),
-            PiperVoiceModel = CheckFile(_paths.PiperVoiceModelPath, "Piper voice model")
+            Llm = await CheckHttpAsync("llm", _modelServices.LlmHealthPath, "LLM server")
         };
 
         report.OverallHealthy = report.App.IsHealthy &&
                                report.Database.IsHealthy &&
-                               report.Llm.IsHealthy &&
-                               report.Stt.IsHealthy &&
-                               report.PiperExecutable.IsHealthy &&
-                               report.PiperVoiceModel.IsHealthy;
+                               report.Llm.IsHealthy;
 
         return report;
     }
@@ -81,13 +72,4 @@ public sealed class DiagnosticsService
         }
     }
 
-    private static DiagnosticCheck CheckFile(string path, string label)
-    {
-        var exists = File.Exists(path);
-        return new DiagnosticCheck
-        {
-            IsHealthy = exists,
-            Message = exists ? $"{label} found at {path}" : $"{label} not found at {path}"
-        };
-    }
 }

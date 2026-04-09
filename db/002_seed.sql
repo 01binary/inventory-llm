@@ -3,8 +3,12 @@ VALUES
     ('JARR', 'Jarritos', 25, datetime('now'), datetime('now')),
     ('CHOR', 'Olé Chorizo', 12, datetime('now'), datetime('now')),
     ('MASA', 'Masa Flour', 8, datetime('now'), datetime('now')),
-    ('CHOL', 'Cholula Original Hot Sauce', 40, datetime('now'), datetime('now')),
-    ('CHAY', 'Chayotes Squash', 6, datetime('now'), datetime('now'));
+    ('CHOL', 'Salsa Picante Cholula Original', 40, datetime('now'), datetime('now')),
+    ('CHAY', 'Chayotes Squash', 6, datetime('now'), datetime('now')),
+    ('PEP15', 'Pepsi 15 oz', 15, datetime('now'), datetime('now')),
+    ('TORT', 'Tortillas', 30, datetime('now'), datetime('now')),
+    ('SALS', 'Salsa Verde', 20, datetime('now'), datetime('now')),
+    ('FRIJ', 'Frijoles Refritos', 18, datetime('now'), datetime('now'));
 
 INSERT INTO inventory_transactions (item_id, transaction_type, quantity_delta, note, created_utc)
 VALUES

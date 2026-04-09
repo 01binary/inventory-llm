@@ -1,4 +1,6 @@
 using System.Data;
+using System.Globalization;
+using System.Text;
 using Dapper;
 using InventoryDemo.Server.Data;
 using InventoryDemo.Server.DTOs;
@@ -38,35 +40,35 @@ public sealed class InventoryService
         }
 
         var safeLimit = Math.Clamp(limit, 1, 200);
-        var escapedQuery = EscapeLikePattern(query.Trim());
-        var pattern = $"%{escapedQuery}%";
+        var normalizedQuery = NormalizeForSearch(query);
+        if (string.IsNullOrWhiteSpace(normalizedQuery))
+        {
+            return Array.Empty<InventoryItem>();
+        }
 
-        const string sql = """
-            SELECT id, sku, name, quantity, created_utc AS CreatedUtc, updated_utc AS UpdatedUtc
-            FROM items
-            WHERE name LIKE @Pattern ESCAPE '\'
-               OR sku LIKE @Pattern ESCAPE '\'
-            ORDER BY
-                CASE
-                    WHEN lower(name) = lower(@Exact) THEN 0
-                    WHEN lower(sku) = lower(@Exact) THEN 0
-                    ELSE 1
-                END,
-                name
-            LIMIT @Limit;
-            """;
-
-        await using var connection = _databaseInitializer.CreateConnection();
-        var results = await connection.QueryAsync<InventoryItem>(
-            sql,
-            new
+        var items = await GetItemsAsync();
+        return items
+            .Select(item => new
             {
-                Pattern = pattern,
-                Exact = query.Trim(),
-                Limit = safeLimit
-            });
+                Item = item,
+                Score = Math.Max(
+                    ComputeSearchScore(normalizedQuery, item.Name),
+                    ComputeSearchScore(normalizedQuery, item.Sku))
+            })
+            .Where(candidate => candidate.Score > 0)
+            .OrderByDescending(candidate => candidate.Score)
+            .ThenBy(candidate => candidate.Item.Name, StringComparer.OrdinalIgnoreCase)
+            .Take(safeLimit)
+            .Select(candidate => candidate.Item)
+            .ToList();
+    }
 
-        return results.ToList();
+    public static bool AreEquivalentForSearch(string left, string right)
+    {
+        return string.Equals(
+            NormalizeForSearch(left),
+            NormalizeForSearch(right),
+            StringComparison.Ordinal);
     }
 
     public async Task<InventoryItem?> GetItemAsync(long id)
@@ -308,11 +310,142 @@ public sealed class InventoryService
             transaction);
     }
 
-    private static string EscapeLikePattern(string value)
+    private static int ComputeSearchScore(string query, string candidate)
     {
-        return value
-            .Replace("\\", "\\\\", StringComparison.Ordinal)
-            .Replace("%", "\\%", StringComparison.Ordinal)
-            .Replace("_", "\\_", StringComparison.Ordinal);
+        if (string.IsNullOrWhiteSpace(candidate))
+        {
+            return 0;
+        }
+
+        var normalizedCandidate = NormalizeForSearch(candidate);
+        if (string.IsNullOrWhiteSpace(normalizedCandidate))
+        {
+            return 0;
+        }
+
+        if (string.Equals(normalizedCandidate, query, StringComparison.Ordinal))
+        {
+            return 1000;
+        }
+
+        if (normalizedCandidate.StartsWith(query, StringComparison.Ordinal))
+        {
+            return 900;
+        }
+
+        if (normalizedCandidate.Contains(query, StringComparison.Ordinal))
+        {
+            return 800;
+        }
+
+        var queryTokens = query.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        var candidateTokens = normalizedCandidate.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        if (queryTokens.Length > 0)
+        {
+            var fullTokenMatches = queryTokens.Count(token => candidateTokens.Any(candidateToken =>
+                candidateToken.Contains(token, StringComparison.Ordinal) ||
+                candidateToken.StartsWith(token, StringComparison.Ordinal)));
+
+            if (fullTokenMatches == queryTokens.Length)
+            {
+                return 700 + (fullTokenMatches * 10);
+            }
+        }
+
+        var overallDistance = LevenshteinDistance(query, normalizedCandidate);
+        var maxOverallDistance = Math.Max(1, query.Length / 3);
+        if (overallDistance <= maxOverallDistance)
+        {
+            return 600 - (overallDistance * 10);
+        }
+
+        if (queryTokens.Length == 1)
+        {
+            var queryToken = queryTokens[0];
+            var bestTokenDistance = candidateTokens
+                .Select(token => LevenshteinDistance(queryToken, token))
+                .DefaultIfEmpty(int.MaxValue)
+                .Min();
+
+            var maxTokenDistance = Math.Max(1, queryToken.Length / 3);
+            if (bestTokenDistance <= maxTokenDistance)
+            {
+                return 500 - (bestTokenDistance * 10);
+            }
+        }
+
+        return 0;
+    }
+
+    private static string NormalizeForSearch(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return string.Empty;
+        }
+
+        var formD = value.Normalize(NormalizationForm.FormD);
+        var builder = new StringBuilder(formD.Length);
+        var previousWasSpace = false;
+        foreach (var ch in formD)
+        {
+            var category = CharUnicodeInfo.GetUnicodeCategory(ch);
+            if (category == UnicodeCategory.NonSpacingMark)
+            {
+                continue;
+            }
+
+            if (char.IsLetterOrDigit(ch))
+            {
+                builder.Append(char.ToLowerInvariant(ch));
+                previousWasSpace = false;
+                continue;
+            }
+
+            if (!previousWasSpace)
+            {
+                builder.Append(' ');
+                previousWasSpace = true;
+            }
+        }
+
+        return builder.ToString().Trim();
+    }
+
+    private static int LevenshteinDistance(string a, string b)
+    {
+        if (string.IsNullOrEmpty(a))
+        {
+            return b.Length;
+        }
+
+        if (string.IsNullOrEmpty(b))
+        {
+            return a.Length;
+        }
+
+        var costs = new int[b.Length + 1];
+        for (var j = 0; j <= b.Length; j++)
+        {
+            costs[j] = j;
+        }
+
+        for (var i = 1; i <= a.Length; i++)
+        {
+            var previousDiagonal = costs[0];
+            costs[0] = i;
+
+            for (var j = 1; j <= b.Length; j++)
+            {
+                var temp = costs[j];
+                var substitutionCost = a[i - 1] == b[j - 1] ? 0 : 1;
+                costs[j] = Math.Min(
+                    Math.Min(costs[j] + 1, costs[j - 1] + 1),
+                    previousDiagonal + substitutionCost);
+                previousDiagonal = temp;
+            }
+        }
+
+        return costs[b.Length];
     }
 }

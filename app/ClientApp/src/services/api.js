@@ -76,25 +76,5 @@ export const api = {
       headers: JSON_HEADERS,
       body: JSON.stringify(requestBody)
     }).then(handleResponse);
-  },
-  transcribeAudio(file) {
-    const formData = new FormData();
-    formData.append("audio", file, file.name);
-    return fetch("/api/voice/transcribe-proxy", {
-      method: "POST",
-      body: formData
-    }).then(handleResponse);
-  },
-  speak(text) {
-    return fetch("/api/voice/speak", {
-      method: "POST",
-      headers: JSON_HEADERS,
-      body: JSON.stringify({ text })
-    }).then(async (response) => {
-      if (!response.ok) {
-        throw new Error(`Speech request failed with HTTP ${response.status}`);
-      }
-      return response.blob();
-    });
   }
 };

@@ -1,60 +1,55 @@
 import { useEffect, useRef, useState } from "react";
-import { api } from "../services/api";
+import {
+  getBrowserVoices,
+  speakWithBrowser,
+  startBrowserSpeechRecognition,
+  stopBrowserSpeech,
+  subscribeToVoiceChanges
+} from "../services/browserSpeech";
 
 export default function VoiceDemoPanel() {
   const [isRecording, setIsRecording] = useState(false);
   const [transcript, setTranscript] = useState("");
   const [speakText, setSpeakText] = useState("Inventory check complete.");
+  const [voices, setVoices] = useState([]);
+  const [selectedVoiceURI, setSelectedVoiceURI] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
-  const recorderRef = useRef(null);
-  const streamRef = useRef(null);
-  const chunksRef = useRef([]);
-  const audioUrlRef = useRef(null);
+  const recognitionRef = useRef(null);
 
   useEffect(() => {
+    const loadVoices = () => setVoices(getBrowserVoices());
+    loadVoices();
+    const unsubscribe = subscribeToVoiceChanges(loadVoices);
+
     return () => {
-      if (audioUrlRef.current) {
-        URL.revokeObjectURL(audioUrlRef.current);
-      }
-      streamRef.current?.getTracks().forEach((track) => track.stop());
+      unsubscribe();
+      recognitionRef.current?.stop();
+      stopBrowserSpeech();
     };
   }, []);
 
-  async function startRecording() {
+  function startRecording() {
     setError("");
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    streamRef.current = stream;
-    chunksRef.current = [];
-
-    const recorder = new MediaRecorder(stream);
-    recorder.ondataavailable = (event) => {
-      if (event.data.size > 0) {
-        chunksRef.current.push(event.data);
-      }
-    };
-    recorder.onstop = async () => {
-      const blob = new Blob(chunksRef.current, { type: "audio/webm" });
-      const file = new File([blob], "recording.webm", { type: "audio/webm" });
-      setBusy(true);
-      try {
-        const response = await api.transcribeAudio(file);
-        setTranscript(response.text || "");
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setBusy(false);
-        streamRef.current?.getTracks().forEach((track) => track.stop());
-      }
-    };
-
-    recorderRef.current = recorder;
-    recorder.start();
-    setIsRecording(true);
+    setBusy(true);
+    try {
+      recognitionRef.current = startBrowserSpeechRecognition({
+        onResult: (text) => setTranscript(text),
+        onError: (message) => setError(message),
+        onEnd: () => {
+          setIsRecording(false);
+          setBusy(false);
+        }
+      });
+      setIsRecording(true);
+    } catch (err) {
+      setBusy(false);
+      setError(err.message);
+    }
   }
 
   function stopRecording() {
-    recorderRef.current?.stop();
+    recognitionRef.current?.stop();
     setIsRecording(false);
   }
 
@@ -62,13 +57,7 @@ export default function VoiceDemoPanel() {
     setBusy(true);
     setError("");
     try {
-      const blob = await api.speak(speakText);
-      if (audioUrlRef.current) {
-        URL.revokeObjectURL(audioUrlRef.current);
-      }
-      audioUrlRef.current = URL.createObjectURL(blob);
-      const audio = new Audio(audioUrlRef.current);
-      await audio.play();
+      await speakWithBrowser(speakText, { voiceURI: selectedVoiceURI });
     } catch (err) {
       setError(err.message);
     } finally {
@@ -81,7 +70,7 @@ export default function VoiceDemoPanel() {
       <div className="panel-header-row">
         <div>
           <h3>Voice demo</h3>
-          <p>Record audio, proxy it through whisper.cpp, then send text to Piper and play the returned WAV.</p>
+          <p>Record audio with Chrome speech recognition, then play responses with Chrome text to speech.</p>
         </div>
       </div>
 
@@ -106,6 +95,18 @@ export default function VoiceDemoPanel() {
       <label className="form-field">
         <span>Text to speak</span>
         <textarea value={speakText} onChange={(event) => setSpeakText(event.target.value)} rows={3} />
+      </label>
+
+      <label className="form-field">
+        <span>Voice</span>
+        <select value={selectedVoiceURI} onChange={(event) => setSelectedVoiceURI(event.target.value)}>
+          <option value="">Default ({voices.length} available)</option>
+          {voices.map((voice) => (
+            <option key={voice.voiceURI} value={voice.voiceURI}>
+              {voice.name} ({voice.lang})
+            </option>
+          ))}
+        </select>
       </label>
 
       <button className="secondary-button" onClick={handleSpeak} disabled={busy || !speakText.trim()}>

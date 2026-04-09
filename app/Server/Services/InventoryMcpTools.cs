@@ -114,8 +114,8 @@ public sealed class InventoryMcpTools
         }
 
         var exactMatches = matches
-            .Where(item => string.Equals(item.Name, normalizedLookup, StringComparison.OrdinalIgnoreCase)
-                           || string.Equals(item.Sku, normalizedLookup, StringComparison.OrdinalIgnoreCase))
+            .Where(item => InventoryService.AreEquivalentForSearch(item.Name, normalizedLookup)
+                           || InventoryService.AreEquivalentForSearch(item.Sku, normalizedLookup))
             .ToList();
 
         var selectedItem = exactMatches.Count switch

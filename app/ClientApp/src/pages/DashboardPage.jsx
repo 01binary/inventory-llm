@@ -2,6 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { api } from "../services/api";
+import {
+  getBrowserVoices,
+  speakWithBrowser,
+  startBrowserSpeechRecognition,
+  stopBrowserSpeech,
+  subscribeToVoiceChanges
+} from "../services/browserSpeech";
 
 export default function DashboardPage() {
   const helloPrompt = "Hello. Greet the user in one short sentence and ask how you can help track inventory today.";
@@ -13,20 +20,32 @@ export default function DashboardPage() {
   const [chatBusy, setChatBusy] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const [sttBusy, setSttBusy] = useState(false);
+  const [voices, setVoices] = useState([]);
+  const [selectedVoiceURI, setSelectedVoiceURI] = useState("");
   const [error, setError] = useState("");
-  const recorderRef = useRef(null);
-  const streamRef = useRef(null);
-  const chunksRef = useRef([]);
-  const currentAudioUrlRef = useRef(null);
-  const currentAudioRef = useRef(null);
+  const recognitionRef = useRef(null);
   const messageEndRef = useRef(null);
   const initStartedRef = useRef(false);
 
+  async function refreshItems(showLoading = false) {
+    if (showLoading) {
+      setLoadingItems(true);
+    }
+
+    try {
+      const response = await api.getItems();
+      setItems(response);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      if (showLoading) {
+        setLoadingItems(false);
+      }
+    }
+  }
+
   useEffect(() => {
-    api.getItems()
-      .then((response) => setItems(response))
-      .catch((err) => setError(err.message))
-      .finally(() => setLoadingItems(false));
+    refreshItems(true);
   }, []);
 
   useEffect(() => {
@@ -87,15 +106,14 @@ export default function DashboardPage() {
   }, [messages]);
 
   useEffect(() => {
+    const loadVoices = () => setVoices(getBrowserVoices());
+    loadVoices();
+    const unsubscribe = subscribeToVoiceChanges(loadVoices);
+
     return () => {
-      if (currentAudioRef.current) {
-        currentAudioRef.current.pause();
-        currentAudioRef.current.currentTime = 0;
-      }
-      if (currentAudioUrlRef.current) {
-        URL.revokeObjectURL(currentAudioUrlRef.current);
-      }
-      streamRef.current?.getTracks().forEach((track) => track.stop());
+      unsubscribe();
+      recognitionRef.current?.stop();
+      stopBrowserSpeech();
     };
   }, []);
 
@@ -116,23 +134,12 @@ export default function DashboardPage() {
   }
 
   async function speakText(text) {
-    if (currentAudioRef.current) {
-      currentAudioRef.current.pause();
-      currentAudioRef.current.currentTime = 0;
-    }
     const speechText = stripMarkdownForSpeech(text);
     if (!speechText) {
       return;
     }
 
-    const blob = await api.speak(speechText);
-    if (currentAudioUrlRef.current) {
-      URL.revokeObjectURL(currentAudioUrlRef.current);
-    }
-    currentAudioUrlRef.current = URL.createObjectURL(blob);
-    const audio = new Audio(currentAudioUrlRef.current);
-    currentAudioRef.current = audio;
-    await audio.play();
+    await speakWithBrowser(speechText, { voiceURI: selectedVoiceURI });
   }
 
   async function handleSendMessage() {
@@ -172,6 +179,7 @@ export default function DashboardPage() {
         text: aiText
       };
       setMessages((current) => [...current, assistantMessage]);
+      await refreshItems();
       await speakText(aiText);
     } catch (err) {
       setError(err.message);
@@ -187,50 +195,31 @@ export default function DashboardPage() {
 
     setError("");
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      streamRef.current = stream;
-      chunksRef.current = [];
-
-      const recorder = new MediaRecorder(stream);
-      recorder.ondataavailable = (event) => {
-        if (event.data.size > 0) {
-          chunksRef.current.push(event.data);
-        }
-      };
-      recorder.onstop = async () => {
-        setSttBusy(true);
-        try {
-          const blob = new Blob(chunksRef.current, { type: "audio/webm" });
-          const file = new File([blob], "dictation.webm", { type: "audio/webm" });
-          const response = await api.transcribeAudio(file);
-          const transcript = (response.text || "").trim();
-          if (!transcript) {
-            return;
-          }
+      setSttBusy(true);
+      recognitionRef.current = startBrowserSpeechRecognition({
+        onResult: (transcript) => {
           setChatInput((current) => {
             if (!current.trim()) {
               return transcript;
             }
             return `${current.trim()} ${transcript}`;
           });
-        } catch (err) {
-          setError(err.message);
-        } finally {
+        },
+        onError: (message) => setError(message),
+        onEnd: () => {
+          setIsRecording(false);
           setSttBusy(false);
-          streamRef.current?.getTracks().forEach((track) => track.stop());
         }
-      };
-
-      recorderRef.current = recorder;
-      recorder.start();
+      });
       setIsRecording(true);
     } catch (err) {
+      setSttBusy(false);
       setError(err.message || "Could not start recording.");
     }
   }
 
   function stopRecording() {
-    recorderRef.current?.stop();
+    recognitionRef.current?.stop();
     setIsRecording(false);
   }
 
@@ -287,6 +276,17 @@ export default function DashboardPage() {
                 }
               }}
             />
+            <label className="form-field">
+              <span>Voice</span>
+              <select value={selectedVoiceURI} onChange={(event) => setSelectedVoiceURI(event.target.value)}>
+                <option value="">Default ({voices.length} available)</option>
+                {voices.map((voice) => (
+                  <option key={voice.voiceURI} value={voice.voiceURI}>
+                    {voice.name} ({voice.lang})
+                  </option>
+                ))}
+              </select>
+            </label>
             <div className="button-row">
               {!isRecording ? (
                 <button className="secondary-button" onClick={startRecording} disabled={initializingChat || chatBusy || sttBusy}>

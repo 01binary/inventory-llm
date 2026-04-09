@@ -5,42 +5,17 @@ services:
       dockerfile: docker/app/Dockerfile
     container_name: inventory-demo-app
     restart: unless-stopped
-    depends_on:
-      stt:
-        condition: service_healthy
     environment:
       ASPNETCORE_ENVIRONMENT: Production
       AppPaths__DatabasePath: /data/inventory.db
       AppPaths__SqlScriptsPath: /app/db
-      AppPaths__TempAudioDirectory: /tmp/inventory-audio
-      AppPaths__PiperExecutablePath: /usr/local/bin/piper
-      AppPaths__PiperVoiceModelPath: /models/piper/${PIPER_VOICE_FILE}
       AppPaths__SystemPromptPath: /app/SYSTEM_PROMPT.md
       ModelServices__LlmBaseUrl: ${LLM_BASE_URL:-http://host.docker.internal:1234}
       ModelServices__LlmModel: ${LLM_MODEL:-auto}
-      ModelServices__WhisperBaseUrl: http://stt:8080
       ModelServices__McpServerUrl: ${MCP_SERVER_URL:-http://localhost:8080/mcp}
       ModelServices__LlmCompletionPath: ${LLM_COMPLETION_PATH:-/v1/chat/completions}
       ModelServices__LlmHealthPath: ${LLM_HEALTH_PATH:-/v1/models}
-      ModelServices__WhisperTranscriptionPath: /inference
-      ModelServices__WhisperHealthPath: /
     ports:
       - "8080:8080"
     volumes:
       - ./docker/data/sqlite:/data
-      - ./docker/models/piper:/models/piper:ro
-      - ./docker/temp:/tmp/inventory-audio
-
-  stt:
-    build:
-      context: .
-      dockerfile: docker/whisper/Dockerfile
-    container_name: inventory-demo-stt
-    restart: unless-stopped
-    environment:
-      MODEL_PATH: /models/whisper/${WHISPER_MODEL_FILE}
-      WHISPER_PORT: 8080
-    ports:
-      - "8082:8080"
-    volumes:
-      - ./docker/models/whisper:/models/whisper:ro
