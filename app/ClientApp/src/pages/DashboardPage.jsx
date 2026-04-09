@@ -3,11 +3,10 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { api } from "../services/api";
 import {
-  getBrowserVoices,
+  PREFERRED_TTS_VOICE_NAME,
   speakWithBrowser,
   startBrowserSpeechRecognition,
-  stopBrowserSpeech,
-  subscribeToVoiceChanges
+  stopBrowserSpeech
 } from "../services/browserSpeech";
 
 export default function DashboardPage() {
@@ -20,8 +19,6 @@ export default function DashboardPage() {
   const [chatBusy, setChatBusy] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const [sttBusy, setSttBusy] = useState(false);
-  const [voices, setVoices] = useState([]);
-  const [selectedVoiceURI, setSelectedVoiceURI] = useState("");
   const [error, setError] = useState("");
   const recognitionRef = useRef(null);
   const messageEndRef = useRef(null);
@@ -106,12 +103,7 @@ export default function DashboardPage() {
   }, [messages]);
 
   useEffect(() => {
-    const loadVoices = () => setVoices(getBrowserVoices());
-    loadVoices();
-    const unsubscribe = subscribeToVoiceChanges(loadVoices);
-
     return () => {
-      unsubscribe();
       recognitionRef.current?.stop();
       stopBrowserSpeech();
     };
@@ -139,7 +131,7 @@ export default function DashboardPage() {
       return;
     }
 
-    await speakWithBrowser(speechText, { voiceURI: selectedVoiceURI });
+    await speakWithBrowser(speechText, { voiceName: PREFERRED_TTS_VOICE_NAME });
   }
 
   async function handleSendMessage() {
@@ -276,17 +268,6 @@ export default function DashboardPage() {
                 }
               }}
             />
-            <label className="form-field">
-              <span>Voice</span>
-              <select value={selectedVoiceURI} onChange={(event) => setSelectedVoiceURI(event.target.value)}>
-                <option value="">Default ({voices.length} available)</option>
-                {voices.map((voice) => (
-                  <option key={voice.voiceURI} value={voice.voiceURI}>
-                    {voice.name} ({voice.lang})
-                  </option>
-                ))}
-              </select>
-            </label>
             <div className="button-row">
               {!isRecording ? (
                 <button className="secondary-button" onClick={startRecording} disabled={initializingChat || chatBusy || sttBusy}>

@@ -1,5 +1,6 @@
 const DEFAULT_STT_LANGUAGE = "es-MX";
 const DEFAULT_TTS_LANGUAGE = "es-MX";
+export const PREFERRED_TTS_VOICE_NAME = "Google español de Estados Unidos";
 
 function getSpeechRecognitionConstructor() {
   return window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -94,13 +95,17 @@ export function speakWithBrowser(text, languageOrOptions = DEFAULT_TTS_LANGUAGE)
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(content);
     const options = typeof languageOrOptions === "string"
-      ? { language: languageOrOptions, voiceURI: "" }
+      ? { language: languageOrOptions, voiceURI: "", voiceName: "" }
       : {
           language: languageOrOptions?.language || DEFAULT_TTS_LANGUAGE,
-          voiceURI: languageOrOptions?.voiceURI || ""
+          voiceURI: languageOrOptions?.voiceURI || "",
+          voiceName: languageOrOptions?.voiceName || ""
         };
 
-    const selectedVoice = getBrowserVoices().find((voice) => voice.voiceURI === options.voiceURI);
+    const voices = getBrowserVoices();
+    const selectedVoiceByName = voices.find((voice) => voice.name === options.voiceName);
+    const selectedVoiceByUri = voices.find((voice) => voice.voiceURI === options.voiceURI);
+    const selectedVoice = selectedVoiceByName || selectedVoiceByUri;
     if (selectedVoice) {
       utterance.voice = selectedVoice;
       utterance.lang = selectedVoice.lang;
