@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+import ChatPanel from "../components/ChatPanel";
+import InventoryPanel from "../components/InventoryPanel";
 import { api } from "../services/api";
 import {
   PREFERRED_TTS_VOICE_NAME,
@@ -247,107 +247,39 @@ export default function DashboardPage() {
         <div>
           <p className="eyebrow">Overview</p>
           <h2>AI Inventory Assistant</h2>
-          <p className="page-description">Ask inventory questions, dictate prompts, and hear responses instantly.</p>
+          <p className="page-description">Demonstrates how to integrate AI into applications by using Model Context Protocol.</p>
         </div>
       </header>
 
       <section className="dashboard-split">
-        <article className="card pane chat-pane">
-          <div className="pane-header">
-            <h3>Assistant Chat</h3>
-            <span className="muted-text">{chatStatus}</span>
-          </div>
-
-          <div className="chat-scroll">
-            {visibleMessages.map((message) => (
-              <div
-                key={message.id}
-                className={message.role === "user" ? "message-row user" : "message-row assistant"}
-              >
-                <div className={message.role === "user" ? "speech-bubble user" : "speech-bubble assistant"}>
-                  {message.role === "assistant" ? (
-                    <ReactMarkdown remarkPlugins={[remarkGfm]} className="markdown-content">
-                      {message.text}
-                    </ReactMarkdown>
-                  ) : (
-                    message.text
-                  )}
-                </div>
-              </div>
-            ))}
-            <div ref={messageEndRef} />
-          </div>
-
-          <div className="chat-composer">
-            <textarea
-              ref={chatInputRef}
-              rows={3}
-              placeholder="Type your inventory question..."
-              value={chatInput}
-              onChange={(event) => setChatInput(event.target.value)}
-              onKeyDown={(event) => {
-                if (event.key === "Enter" && !event.shiftKey) {
-                  event.preventDefault();
-                  handleSendMessage();
-                }
-              }}
-            />
-            <div className="button-row">
-              <button
-                className={isRecording ? "danger-button" : "secondary-button"}
-                disabled={initializingChat || chatBusy || sttBusy}
-                onMouseDown={handleDictatePressStart}
-                onMouseUp={handleDictatePressEnd}
-                onMouseLeave={handleDictatePressEnd}
-                onTouchStart={handleDictatePressStart}
-                onTouchEnd={handleDictatePressEnd}
-                onTouchCancel={handleDictatePressEnd}
-                onKeyDown={(event) => {
-                  if (event.key === " " || event.key === "Enter") {
-                    handleDictatePressStart(event);
-                  }
-                }}
-                onKeyUp={(event) => {
-                  if (event.key === " " || event.key === "Enter") {
-                    handleDictatePressEnd(event);
-                  }
-                }}
-              >
-                {sttBusy ? "Transcribing..." : isRecording ? "Release to stop" : "Hold to dictate"}
-              </button>
-              <button
-                className="primary-button"
-                onClick={handleSendMessage}
-                disabled={initializingChat || chatBusy || sttBusy || !chatInput.trim()}
-              >
-                Send
-              </button>
-            </div>
-          </div>
-          {error ? <p className="error-text">{error}</p> : null}
-        </article>
-
-        <article className="card pane inventory-pane">
-          <div className="pane-header">
-            <h3>Current Inventory</h3>
-            <span className="muted-text">{loadingItems ? "Loading..." : `${items.length} items`}</span>
-          </div>
-          <div className="activity-scroll">
-            {items.map((item) => (
-              <div className="activity-row" key={item.id}>
-                <div>
-                  <strong>{item.name}</strong>
-                  <p className="muted-text">SKU: {item.sku}</p>
-                </div>
-                <div>
-                  <p className="muted-text">
-                    Qty: {item.quantity}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </article>
+        <ChatPanel
+          chatStatus={chatStatus}
+          messages={visibleMessages}
+          chatInput={chatInput}
+          onChatInputChange={setChatInput}
+          onChatInputKeyDown={(event) => {
+            if (event.key === "Enter" && !event.shiftKey) {
+              event.preventDefault();
+              handleSendMessage();
+            }
+          }}
+          chatInputRef={chatInputRef}
+          messageEndRef={messageEndRef}
+          isRecording={isRecording}
+          sttBusy={sttBusy}
+          initializingChat={initializingChat}
+          chatBusy={chatBusy}
+          onDictatePressStart={handleDictatePressStart}
+          onDictatePressEnd={handleDictatePressEnd}
+          onSend={handleSendMessage}
+          error={error}
+        />
+        <InventoryPanel
+          items={items}
+          loading={loadingItems}
+          readOnly
+          showUpdated={false}
+        />
       </section>
     </div>
   );

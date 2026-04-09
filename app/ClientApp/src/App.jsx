@@ -17,12 +17,6 @@ export default function App() {
   return (
     <div className="app-shell">
       <aside className="sidebar">
-        <div>
-          <h1>Inventory</h1>
-          <p className="sidebar-copy">
-            Demonstrates how to integrate AI into applications by using Model Context Protocol
-          </p>
-        </div>
         <nav className="nav">
           {navItems.map((item) => (
             <NavLink

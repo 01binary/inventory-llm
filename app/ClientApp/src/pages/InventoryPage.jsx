@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import InventoryList from "../components/InventoryList";
 import PageHeader from "../components/PageHeader";
 import { api } from "../services/api";
 
@@ -43,35 +44,7 @@ export default function InventoryPage() {
       />
 
       <section className="card">
-        <div className="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>SKU</th>
-                <th>Name</th>
-                <th>Quantity</th>
-                <th>Updated</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {items.map((item) => (
-                <tr key={item.id}>
-                  <td>{item.sku}</td>
-                  <td>{item.name}</td>
-                  <td>{item.quantity}</td>
-                  <td>{new Date(item.updatedUtc).toLocaleString()}</td>
-                  <td className="actions-cell">
-                    <Link className="text-button" to={`/inventory/${item.id}/edit`}>Edit</Link>
-                    <button className="text-button danger-text" onClick={() => handleDelete(item.id)}>
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <InventoryList items={items} readOnly={false} onDelete={handleDelete} />
         {loading ? <p className="muted-text">Loading inventory...</p> : null}
         {error ? <p className="error-text">{error}</p> : null}
       </section>

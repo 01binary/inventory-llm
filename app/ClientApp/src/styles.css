@@ -246,6 +246,16 @@ thead th {
   gap: 1rem;
 }
 
+.sku-code {
+  display: inline-block;
+  padding: 0.15rem 0.45rem;
+  border-radius: 8px;
+  background: #edf2f7;
+  color: #2b3b4d;
+  font-family: "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 0.9em;
+}
+
 .status-pill {
   display: inline-flex;
   align-items: center;
