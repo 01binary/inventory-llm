@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.Configure<AppPathsOptions>(builder.Configuration.GetSection(AppPathsOptions.SectionName));
 builder.Services.Configure<ModelServiceOptions>(builder.Configuration.GetSection(ModelServiceOptions.SectionName));
+builder.Services.Configure<SpeechOptions>(builder.Configuration.GetSection(SpeechOptions.SectionName));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

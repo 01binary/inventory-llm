@@ -3,7 +3,8 @@ import ChatPanel from "../components/ChatPanel";
 import InventoryPanel from "../components/InventoryPanel";
 import { api } from "../services/api";
 import {
-  PREFERRED_TTS_VOICE_NAME,
+  configureBrowserSpeechDefaults,
+  getBrowserSpeechDefaults,
   speakWithBrowser,
   startBrowserSpeechRecognition,
   stopBrowserSpeech
@@ -43,6 +44,16 @@ export default function DashboardPage() {
 
   useEffect(() => {
     refreshItems(true);
+  }, []);
+
+  useEffect(() => {
+    api.getConfig()
+      .then((configResponse) => {
+        configureBrowserSpeechDefaults(configResponse?.speech || {});
+      })
+      .catch(() => {
+        // Keep built-in browser speech defaults if app config is unavailable.
+      });
   }, []);
 
   useEffect(() => {
@@ -144,7 +155,7 @@ export default function DashboardPage() {
       return;
     }
 
-    await speakWithBrowser(speechText, { voiceName: PREFERRED_TTS_VOICE_NAME });
+    await speakWithBrowser(speechText, { voiceName: getBrowserSpeechDefaults().preferredTtsVoiceName });
   }
 
   async function handleSendMessage() {

@@ -7,15 +7,18 @@ public sealed class AppConfigService
 {
     private readonly AppPathsOptions _paths;
     private readonly ModelServiceOptions _models;
+    private readonly SpeechOptions _speech;
     private readonly PromptService _PromptService;
 
     public AppConfigService(
         IOptions<AppPathsOptions> paths,
         IOptions<ModelServiceOptions> models,
+        IOptions<SpeechOptions> speech,
         PromptService PromptService)
     {
         _paths = paths.Value;
         _models = models.Value;
+        _speech = speech.Value;
         _PromptService = PromptService;
     }
 
@@ -25,6 +28,12 @@ public sealed class AppConfigService
         llmBaseUrl = _models.LlmBaseUrl,
         llmModel = _models.LlmModel,
         mcpServerUrl = _models.McpServerUrl,
-        hasSystemPrompt = !string.IsNullOrWhiteSpace(_PromptService.GetSystemPrompt())
+        hasSystemPrompt = !string.IsNullOrWhiteSpace(_PromptService.GetSystemPrompt()),
+        speech = new
+        {
+            defaultSttLanguage = _speech.DefaultSttLanguage,
+            defaultTtsLanguage = _speech.DefaultTtsLanguage,
+            preferredTtsVoiceName = _speech.PreferredTtsVoiceName
+        }
     };
 }

@@ -1,13 +1,31 @@
-const DEFAULT_STT_LANGUAGE = "es-MX";
-const DEFAULT_TTS_LANGUAGE = "es-MX";
-export const PREFERRED_TTS_VOICE_NAME = "Google español de Estados Unidos";
+const FALLBACK_STT_LANGUAGE = "es-MX";
+const FALLBACK_TTS_LANGUAGE = "es-MX";
+const FALLBACK_TTS_VOICE_NAME = "Google español de Estados Unidos";
+
+let defaultSttLanguage = FALLBACK_STT_LANGUAGE;
+let defaultTtsLanguage = FALLBACK_TTS_LANGUAGE;
+let preferredTtsVoiceName = FALLBACK_TTS_VOICE_NAME;
+
+export function configureBrowserSpeechDefaults(config = {}) {
+  defaultSttLanguage = (config.defaultSttLanguage || FALLBACK_STT_LANGUAGE).trim() || FALLBACK_STT_LANGUAGE;
+  defaultTtsLanguage = (config.defaultTtsLanguage || FALLBACK_TTS_LANGUAGE).trim() || FALLBACK_TTS_LANGUAGE;
+  preferredTtsVoiceName = (config.preferredTtsVoiceName || FALLBACK_TTS_VOICE_NAME).trim() || FALLBACK_TTS_VOICE_NAME;
+}
+
+export function getBrowserSpeechDefaults() {
+  return {
+    defaultSttLanguage,
+    defaultTtsLanguage,
+    preferredTtsVoiceName
+  };
+}
 
 function getSpeechRecognitionConstructor() {
   return window.SpeechRecognition || window.webkitSpeechRecognition;
 }
 
 export function startBrowserSpeechRecognition({
-  language = DEFAULT_STT_LANGUAGE,
+  language = defaultSttLanguage,
   continuous = true,
   autoStopMs = 15000,
   onResult,
@@ -79,7 +97,7 @@ export function subscribeToVoiceChanges(handler) {
   };
 }
 
-export function speakWithBrowser(text, languageOrOptions = DEFAULT_TTS_LANGUAGE) {
+export function speakWithBrowser(text, languageOrOptions = defaultTtsLanguage) {
   return new Promise((resolve, reject) => {
     if (!("speechSynthesis" in window)) {
       reject(new Error("Text to speech is not supported in this browser."));
@@ -97,7 +115,7 @@ export function speakWithBrowser(text, languageOrOptions = DEFAULT_TTS_LANGUAGE)
     const options = typeof languageOrOptions === "string"
       ? { language: languageOrOptions, voiceURI: "", voiceName: "" }
       : {
-          language: languageOrOptions?.language || DEFAULT_TTS_LANGUAGE,
+          language: languageOrOptions?.language || defaultTtsLanguage,
           voiceURI: languageOrOptions?.voiceURI || "",
           voiceName: languageOrOptions?.voiceName || ""
         };
