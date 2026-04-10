@@ -130,38 +130,10 @@ Dev URLs:
 - `orders_create`
 - `orders_add_items_to_latest`
 
-## MCP Client Config (Copy/Paste)
-
-Use this in an `mcp.json`-style config for clients that support HTTP MCP servers:
-
-```json
-{
-  "mcpServers": {
-    "inventory-demo": {
-      "url": "http://localhost:8080/mcp"
-    }
-  }
-}
-```
-
-If your MCP client runs inside Docker, use the host-reachable URL instead:
-
-```json
-{
-  "mcpServers": {
-    "inventory-demo": {
-      "url": "http://host.docker.internal:8080/mcp"
-    }
-  }
-}
-```
-
-## Speech Notes
-
-- STT/TTS is browser-native (Web Speech API), so quality/voices depend on browser + OS.
-- Best experience is in Chrome.
 
 ## Troubleshooting
+
+The diagnostics page in the app can help troubleshoot issues with configuration and running services.
 
 - Verify LM Studio is reachable: `http://localhost:1234/v1/models`
 - If chat works but tool calling fails, verify backend MCP URL config:

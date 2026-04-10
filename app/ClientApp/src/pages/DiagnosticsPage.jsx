@@ -19,6 +19,19 @@ export default function DiagnosticsPage() {
   const [health, setHealth] = useState(null);
   const [config, setConfig] = useState(null);
   const [error, setError] = useState("");
+  const mcpClientConfig = config?.mcpServerUrl
+    ? JSON.stringify(
+        {
+          mcpServers: {
+            "inventory-demo": {
+              url: config.mcpServerUrl
+            }
+          }
+        },
+        null,
+        2
+      )
+    : "Loading...";
 
   useEffect(() => {
     Promise.all([api.getHealth(), api.getConfig()])
@@ -54,6 +67,11 @@ export default function DiagnosticsPage() {
       <section className="card">
         <h3>Effective configuration</h3>
         <pre className="config-block">{config ? JSON.stringify(config, null, 2) : "Loading..."}</pre>
+      </section>
+
+      <section className="card">
+        <h3>MCP client config (copy/paste)</h3>
+        <pre className="config-block">{mcpClientConfig}</pre>
       </section>
 
       {error ? <p className="error-text">{error}</p> : null}
