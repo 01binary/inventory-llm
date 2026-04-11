@@ -37,7 +37,7 @@ export default function TransactionsPage() {
               {transactions.map((transaction) => (
                 <tr key={transaction.id}>
                   <td>{new Date(transaction.createdUtc).toLocaleString()}</td>
-                  <td>{transaction.itemSku}</td>
+                  <td><span className="sku-code">{transaction.itemSku}</span></td>
                   <td>{transaction.itemName}</td>
                   <td>{transaction.transactionType}</td>
                   <td>{transaction.quantityDelta}</td>

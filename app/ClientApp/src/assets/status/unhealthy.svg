@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 48 48">
+  <defs>
+    <style>
+      .st0 {
+        stroke: url(#linear-gradient);
+      }
+
+      .st0, .st1 {
+        fill: none;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 2px;
+      }
+
+      .st1 {
+        stroke: url(#linear-gradient1);
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="12.8" y1="25" x2="35.2" y2="25" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ff3bb8"/>
+      <stop offset="1" stop-color="#8f35ff"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient1" x1="12.8" y1="25" x2="35.2" y2="25" xlink:href="#linear-gradient"/>
+  </defs>
+  <line class="st0" x1="13.8" y1="14.8" x2="34.2" y2="35.2"/>
+  <line class="st1" x1="13.8" y1="35.2" x2="34.2" y2="14.8"/>
+</svg>
