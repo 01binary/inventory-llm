@@ -1,5 +1,6 @@
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using Microsoft.Extensions.Options;
 using InventoryDemo.Server.DTOs;
 using InventoryDemo.Server.Options;
@@ -31,6 +32,7 @@ public sealed class LlmService
     public async Task<object> CompleteAsync(ChatCompletionRequest request)
     {
         var client = _httpClientFactory.CreateClient("llm");
+        var preferInventoryList = ShouldPreferInventoryListTool(request);
         IReadOnlyList<McpToolDescriptor> tools;
         try
         {
@@ -78,7 +80,7 @@ public sealed class LlmService
             }
 
             AppendAssistantToolCallMessage(conversation, root, toolCallsElement);
-            await ExecuteToolCallsAsync(conversation, toolCallsElement, CancellationToken.None);
+            await ExecuteToolCallsAsync(conversation, toolCallsElement, preferInventoryList, CancellationToken.None);
         }
 
         throw new InvalidOperationException(
@@ -229,6 +231,7 @@ public sealed class LlmService
     private async Task ExecuteToolCallsAsync(
         ICollection<Dictionary<string, object?>> conversation,
         JsonElement toolCalls,
+        bool preferInventoryList,
         CancellationToken cancellationToken)
     {
         foreach (var toolCall in toolCalls.EnumerateArray())
@@ -256,7 +259,20 @@ public sealed class LlmService
                 : "{}";
 
             _logger.LogInformation("Executing MCP tool call from model: {ToolName}", toolName);
-            var toolResult = await _mcpClientService.CallToolAsync(toolName, argumentsJson, cancellationToken);
+            var selectedToolName = toolName;
+            var selectedArgumentsJson = argumentsJson;
+            if (preferInventoryList &&
+                ShouldOverrideWithInventoryList(toolName))
+            {
+                selectedToolName = "inventory_list_items";
+                selectedArgumentsJson = "{\"limit\":200}";
+                _logger.LogInformation(
+                    "Overriding MCP tool call {OriginalToolName} with {SelectedToolName} due to explicit full inventory-list intent.",
+                    toolName,
+                    selectedToolName);
+            }
+
+            var toolResult = await _mcpClientService.CallToolAsync(selectedToolName, selectedArgumentsJson, cancellationToken);
 
             conversation.Add(new Dictionary<string, object?>
             {
@@ -265,6 +281,63 @@ public sealed class LlmService
                 ["content"] = toolResult
             });
         }
+    }
+
+    private static bool ShouldOverrideWithInventoryList(string toolName)
+    {
+        return string.Equals(toolName, "inventory_search_status", StringComparison.OrdinalIgnoreCase) ||
+               toolName.StartsWith("orders_", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static bool ShouldPreferInventoryListTool(ChatCompletionRequest request)
+    {
+        var latestUserText = GetLatestUserText(request);
+        if (string.IsNullOrWhiteSpace(latestUserText))
+        {
+            return false;
+        }
+
+        var normalized = latestUserText.ToLowerInvariant();
+
+        var mentionsOrder = Regex.IsMatch(
+            normalized,
+            @"\b(order|orders|purchase order|po\b|orden|pedido|restock order|re-stock order)\b");
+        var mentionsInventory = Regex.IsMatch(
+            normalized,
+            @"\b(inventory|stock|on hand|warehouse|inventario|existencias|almacen|almac[eé]n)\b");
+        var mutatingAction = Regex.IsMatch(
+            normalized,
+            @"\b(add|create|update|remove|delete|restock|receive|received|sell|sold|adjust|agrega|crear|actualiza|quita|elimina|recibimos|vendimos|ajusta)\b");
+        var asksList = Regex.IsMatch(
+            normalized,
+            @"\b(list|show|display|dame|lista|muestra|mostrar|mu[eé]strame|cu[aá]les|que hay|qu[eé] hay|what do we have)\b");
+        var asksBroadScope = Regex.IsMatch(
+            normalized,
+            @"\b(all|everything|full|entire|complete|current|todos|todas|todo|completo|completa|actual)\b") ||
+            Regex.IsMatch(normalized, @"\blist(\s+all)?(\s+inventory)?\s+items\b");
+
+        return asksList &&
+               asksBroadScope &&
+               !mutatingAction &&
+               (!mentionsOrder || mentionsInventory);
+    }
+
+    private static string GetLatestUserText(ChatCompletionRequest request)
+    {
+        if (request.Messages is { Count: > 0 })
+        {
+            for (var i = request.Messages.Count - 1; i >= 0; i--)
+            {
+                var message = request.Messages[i];
+                if (string.Equals(message.Role, "user", StringComparison.OrdinalIgnoreCase) &&
+                    !string.IsNullOrWhiteSpace(message.Content))
+                {
+                    return message.Content.Trim();
+                }
+            }
+        }
+
+        return request.Prompt?.Trim() ?? string.Empty;
     }
 
     private async Task<string> ResolveModelAsync()
