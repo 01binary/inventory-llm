@@ -6,11 +6,11 @@ import { api } from "../services/api";
 function DiagnosticRow({ label, check }) {
   return (
     <article className="diagnostic-row">
+      <StatusPill ok={check?.isHealthy} label={check?.isHealthy ? "Healthy" : "Needs attention"} />
       <div>
         <h4>{label}</h4>
         <p>{check?.message || "No data"}</p>
       </div>
-      <StatusPill ok={check?.isHealthy} label={check?.isHealthy ? "Healthy" : "Needs attention"} />
     </article>
   );
 }
@@ -19,6 +19,7 @@ export default function DiagnosticsPage() {
   const [health, setHealth] = useState(null);
   const [config, setConfig] = useState(null);
   const [error, setError] = useState("");
+
   const mcpClientConfig = config?.mcpServerUrl
     ? JSON.stringify(
         {
@@ -51,12 +52,13 @@ export default function DiagnosticsPage() {
       />
 
       <section className="card">
-        <div className="panel-header-row">
-          <h3>Status</h3>
-          {health ? (
-            <StatusPill ok={health.overallHealthy} label={health.overallHealthy ? "All healthy" : "Issues detected"} />
-          ) : null}
-        </div>
+        {health ? (
+          <>
+            {health.overallHealthy
+              ? <h2 className="diagnostics-header">All healthy</h2>
+              : <h2 className="diagnostics-header danger-text">Issues detected</h2>}
+          </>
+        ) : null}
         <div className="diagnostics-list">
           <DiagnosticRow label="App API" check={health?.app} />
           <DiagnosticRow label="SQLite" check={health?.database} />

@@ -206,15 +206,10 @@ thead th {
 
 .button-row,
 .page-actions,
-.panel-header-row,
 .voice-controls {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-}
-
-.panel-header-row {
-  justify-content: space-between;
 }
 
 .full-width {
@@ -295,16 +290,24 @@ thead th {
   gap: 0.9rem;
 }
 
+.diagnostics-header {
+  margin-top: 0;
+}
+
 .diagnostic-row {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 1rem;
-  padding: 1rem 0;
   border-bottom: 1px solid #dde6ee;
+  align-items: center;
 }
 
 .diagnostic-row:last-child {
   border-bottom: none;
+}
+
+.diagnostic-row h4, p {
+  margin: 0.25rem 0;
 }
 
 .table-wrap {
