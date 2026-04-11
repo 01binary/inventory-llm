@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import ChatPanel from "../components/ChatPanel";
 import InventoryPanel from "../components/InventoryPanel";
 import { api } from "../services/api";
+import { stripMarkdownForSpeech, stripThinkTags } from "../utils/chatText";
 import {
   configureBrowserSpeechDefaults,
   getBrowserSpeechDefaults,
@@ -98,7 +99,7 @@ export default function DashboardPage() {
           maxTokens: 128
         });
 
-        const assistantText = (response.text || "").trim() || "Hello, how can I help you track your inventory today?";
+        const assistantText = stripThinkTags(response.text || "") || "Hello, how can I help you track your inventory today?";
         const assistantMessage = {
           id: `assistant-${Date.now()}`,
           role: "assistant",
@@ -132,22 +133,6 @@ export default function DashboardPage() {
       stopBrowserSpeech();
     };
   }, []);
-
-  function stripMarkdownForSpeech(markdownText) {
-    return markdownText
-      .replace(/```[\s\S]*?```/g, " ")
-      .replace(/`([^`]+)`/g, "$1")
-      .replace(/!\[([^\]]*)\]\([^)]+\)/g, "$1")
-      .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
-      .replace(/^\s{0,3}#{1,6}\s+/gm, "")
-      .replace(/^\s*>\s?/gm, "")
-      .replace(/^\s*[-*+]\s+/gm, "")
-      .replace(/^\s*\d+\.\s+/gm, "")
-      .replace(/[*_~#]/g, "")
-      .replace(/\|/g, " ")
-      .replace(/\s+/g, " ")
-      .trim();
-  }
 
   async function speakText(text) {
     const speechText = stripMarkdownForSpeech(text);
@@ -188,7 +173,7 @@ export default function DashboardPage() {
         })),
         maxTokens: 256
       });
-      const aiText = (response.text || "").trim() || "I did not get a response from the model.";
+      const aiText = stripThinkTags(response.text || "") || "I did not get a response from the model.";
       const assistantMessage = {
         id: `assistant-${Date.now()}`,
         role: "assistant",
