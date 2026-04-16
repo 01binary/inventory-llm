@@ -663,4 +663,31 @@ thead th {
   .pane {
     min-height: 360px;
   }
+
+  .dashboard-split .card {
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+    backdrop-filter: none;
+  }
+
+  .dashboard-split .pane-header {
+    display: none;
+  }
+
+  .dashboard-split .pane {
+    min-height: 0;
+  }
+
+  .dashboard-split .chat-composer {
+    background: transparent;
+    border-top: 1px solid #d5e1ec;
+    border-radius: 0;
+  }
+
+  .dashboard-split .inventory-pane {
+    border-top: 1px solid #d5e1ec;
+    padding-top: 0.9rem;
+  }
 }
