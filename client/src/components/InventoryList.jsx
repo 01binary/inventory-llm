@@ -10,7 +10,13 @@ function formatTimestamp(value) {
     return "-";
   }
 
-  return date.toLocaleString();
+  return date.toLocaleString(undefined, {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit"
+  });
 }
 
 export default function InventoryList({

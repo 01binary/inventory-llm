@@ -24,7 +24,6 @@ export default function OrdersPage() {
   return (
     <div className="stack">
       <PageHeader
-        eyebrow="Ordering"
         title="Orders"
         description="View created orders and expand each order to inspect its item lines."
       />

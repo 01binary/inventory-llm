@@ -254,7 +254,6 @@ export default function DashboardPage() {
     <div className="dashboard-full">
       <header className="dashboard-header">
         <div>
-          <p className="eyebrow">Overview</p>
           <h2>AI Inventory Assistant</h2>
           <p className="page-description">Demonstrates how to integrate AI into applications by using Model Context Protocol.</p>
         </div>

@@ -78,6 +78,27 @@ thead th {
   gap: 0.5rem;
 }
 
+.mobile-nav-header {
+  display: none;
+}
+
+.mobile-nav-toggle {
+  display: none;
+}
+
+.mobile-nav-title {
+  display: none;
+}
+
+.mobile-nav-toggle svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  display: block;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+}
+
 .nav-link {
   padding: 0.9rem 1rem;
   border-radius: 14px;
@@ -117,14 +138,6 @@ thead th {
 .page-description,
 .muted-text {
   color: #5a6d80;
-}
-
-.eyebrow {
-  margin: 0;
-  text-transform: uppercase;
-  font-size: 0.8rem;
-  letter-spacing: 0.1em;
-  color: #4a7db0;
 }
 
 .card {
@@ -556,12 +569,88 @@ thead th {
   }
 
   .sidebar {
-    gap: 2rem;
+    gap: 0;
+    padding: 0;
+    background: #ffffff;
+    color: #13253a;
+    border-bottom: 1px solid #4a4a4a;
+  }
+
+  .mobile-nav-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 3.25rem;
+    padding: 0 0.75rem;
+  }
+
+  .mobile-nav-title {
+    display: block;
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.2;
+    font-weight: 600;
+    color: #13253a;
+  }
+
+  .mobile-nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 1px solid #cfdbe7;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #2f3a44;
+    cursor: pointer;
+  }
+
+  .nav {
+    display: none;
+    gap: 0.35rem;
+    padding: 0.75rem;
+  }
+
+  .sidebar.mobile-open .nav {
+    display: grid;
+  }
+
+  .nav-link {
+    color: #2b3b4d;
+  }
+
+  .nav-link:hover,
+  .nav-link.active {
+    background: #e7eff8;
+    color: #163f66;
+  }
+
+  .page-header h2,
+  .dashboard-header h2 {
+    display: none;
+  }
+
+  .page-description {
+    display: none;
+  }
+
+  .main-content {
+    padding: 1rem 0.75rem;
   }
 
   .page-header {
     flex-direction: column;
     align-items: start;
+    gap: 0;
+  }
+
+  .page-header > div:first-child {
+    display: none;
+  }
+
+  .dashboard-header {
+    display: none;
   }
 
   .dashboard-full {

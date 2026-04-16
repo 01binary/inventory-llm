@@ -15,7 +15,6 @@ export default function TransactionsPage() {
   return (
     <div className="stack">
       <PageHeader
-        eyebrow="Inventory"
         title="Transactions"
         description="All quantity changes recorded by the backend service layer."
       />

@@ -46,7 +46,6 @@ export default function DiagnosticsPage() {
   return (
     <div className="stack">
       <PageHeader
-        eyebrow="Operations"
         title="Diagnostics"
         description="Health view across the API, SQLite, and the LM Studio server."
       />
