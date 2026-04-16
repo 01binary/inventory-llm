@@ -22,7 +22,13 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0-bookworm-slim AS runtime
 
 WORKDIR /app
 
-RUN apt-get update \
+RUN if [ -f /etc/apt/sources.list.d/debian.sources ]; then \
+      sed -i 's|http://deb.debian.org|https://deb.debian.org|g' /etc/apt/sources.list.d/debian.sources; \
+    fi \
+    && if [ -f /etc/apt/sources.list ]; then \
+      sed -i 's|http://deb.debian.org|https://deb.debian.org|g' /etc/apt/sources.list; \
+    fi \
+    && apt-get update \
     && apt-get install -y --no-install-recommends curl ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 

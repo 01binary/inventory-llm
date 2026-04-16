@@ -13,13 +13,14 @@ Inventory demo app that combines:
 
 - Frontend: `client` (Vite + React)
 - Backend: `server` (ASP.NET Core + Dapper + SQLite)
-- DB schema + seed: `db/001_schema.sql`, `db/002_seed.sql`
-- Prompt assets:
+- Database: `db/001_schema.sql`, `db/002_seed.sql`
+- Prompts:
   - `SYSTEM_PROMPT.md`
   - `STARTUP_PROMPT.md`
   - `FEW_SHOT_PROMPTS.json`
 
-The backend serves both API endpoints and MCP tools at `/mcp`.  
+The backend serves both API endpoints and MCP tools at `/mcp`.
+
 The chat layer proxies completions to an OpenAI-compatible endpoint (LM Studio by default).
 
 ## Prerequisites
