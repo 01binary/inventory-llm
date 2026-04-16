@@ -39,9 +39,18 @@ export default function InventoryList({
               <td>{item.quantity}</td>
               {showUpdated ? <td>{formatTimestamp(item.updatedUtc)}</td> : null}
               {readOnly ? null : (
-                <td className="actions-cell">
-                  <Link className="text-button" to={`/inventory/${item.id}/edit`}>Edit</Link>
-                  <button className="text-button danger-text" onClick={() => onDelete?.(item.id)}>
+                <td>
+                  <Link
+                    className="text-button"
+                    to={`/inventory/${item.id}/edit`}
+                  >
+                    Edit
+                  </Link>
+                  {' | '}
+                  <button
+                    className="text-button danger-text"
+                    onClick={() => onDelete?.(item.id)}
+                  >
                     Delete
                   </button>
                 </td>

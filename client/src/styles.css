@@ -256,11 +256,6 @@ thead th {
   color: #b94444;
 }
 
-.actions-cell {
-  display: flex;
-  gap: 1rem;
-}
-
 .sku-code {
   display: inline-block;
   padding: 0.15rem 0.45rem;
