@@ -16,7 +16,7 @@ Inventory demo app that combines:
 - DB schema + seed: `db/001_schema.sql`, `db/002_seed.sql`
 - Prompt assets:
   - `SYSTEM_PROMPT.md`
-  - `HELLO_PROMPT.md`
+  - `STARTUP_PROMPT.md`
   - `FEW_SHOT_PROMPTS.json`
 
 The backend serves both API endpoints and MCP tools at `/mcp`.  
@@ -143,7 +143,7 @@ The diagnostics page in the app can help troubleshoot issues with configuration 
 ## First Files to Customize
 
 - `SYSTEM_PROMPT.md`
-- `HELLO_PROMPT.md`
+- `STARTUP_PROMPT.md`
 - `FEW_SHOT_PROMPTS.json`
 - `db/002_seed.sql`
 - `server/appsettings.json`
