@@ -25,7 +25,7 @@ public sealed class PromptService
         _environment = environment;
         _logger = logger;
         _systemPromptPath = paths.Value.SystemPromptPath;
-        _helloPromptPath = paths.Value.HelloPromptPath;
+        _helloPromptPath = paths.Value.StartupPromptPath;
         _fewShotPromptsPath = paths.Value.FewShotPromptsPath;
     }
 
