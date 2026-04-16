@@ -149,3 +149,15 @@ The diagnostics page in the app can help troubleshoot issues with configuration 
 - `db/002_seed.sql`
 - `server/appsettings.json`
 - `client/src/styles.css`
+
+## Branch Localization Workflow
+
+- `main` is the English baseline (`en-US`).
+- `es-MX` keeps Spanish locale defaults and prompts.
+- To sync feature changes from `main` into `es-MX` while preserving Spanish locale files:
+
+```bash
+git checkout es-MX
+./scripts/merge-main-into-es-mx.sh
+git push
+```

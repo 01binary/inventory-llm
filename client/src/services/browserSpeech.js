@@ -1,6 +1,6 @@
-const FALLBACK_STT_LANGUAGE = "es-MX";
-const FALLBACK_TTS_LANGUAGE = "es-MX";
-const FALLBACK_TTS_VOICE_NAME = "Google español de Estados Unidos";
+const FALLBACK_STT_LANGUAGE = "en-US";
+const FALLBACK_TTS_LANGUAGE = "en-US";
+const FALLBACK_TTS_VOICE_NAME = "Google US English";
 
 let defaultSttLanguage = FALLBACK_STT_LANGUAGE;
 let defaultTtsLanguage = FALLBACK_TTS_LANGUAGE;
@@ -127,8 +127,8 @@ export function speakWithBrowser(text, languageOrOptions = defaultTtsLanguage) {
       ? voices.find((voice) => voice.name.toLowerCase().includes(normalizedPreferredName))
       : null;
     const selectedVoiceByUri = voices.find((voice) => voice.voiceURI === options.voiceURI);
-    const selectedSpanishVoice = voices.find((voice) => voice.lang?.toLowerCase().startsWith("es"));
-    const selectedVoice = selectedVoiceByName || selectedVoiceByNameContains || selectedVoiceByUri || selectedSpanishVoice;
+    const selectedEnglishVoice = voices.find((voice) => voice.lang?.toLowerCase().startsWith("en"));
+    const selectedVoice = selectedVoiceByName || selectedVoiceByNameContains || selectedVoiceByUri || selectedEnglishVoice;
     if (selectedVoice) {
       utterance.voice = selectedVoice;
       utterance.lang = selectedVoice.lang;
