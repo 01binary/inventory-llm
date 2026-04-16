@@ -41,6 +41,7 @@ public sealed class LlmService
             _logger.LogWarning(ex, "Could not load MCP tools from {McpServerUrl}. Continuing without tool support.", _options.McpServerUrl);
             tools = Array.Empty<McpToolDescriptor>();
         }
+
         var model = await ResolveModelAsync();
         var conversation = BuildMessages(request);
 
@@ -58,18 +59,19 @@ public sealed class LlmService
                 new StringContent(json, Encoding.UTF8, "application/json"));
 
             lastBody = await response.Content.ReadAsStringAsync();
+
             if (!response.IsSuccessStatusCode)
             {
                 _logger.LogWarning("LLM server returned {StatusCode}: {Body}", response.StatusCode, lastBody);
                 throw new InvalidOperationException($"LLM request failed with HTTP {(int)response.StatusCode}");
             }
 
-            using var document = JsonDocument.Parse(lastBody);
-            var root = document.RootElement;
+            var completion = JsonSerializer.Deserialize<LlmCompletionResponseDto>(lastBody)
+                ?? throw new InvalidOperationException("LLM response body could not be deserialized.");
 
-            if (!TryGetToolCalls(root, out var toolCallsElement))
+            if (!TryGetToolCalls(completion, out var toolCalls))
             {
-                var content = ExtractContent(root, lastBody);
+                var content = ExtractContent(completion, lastBody);
                 return new
                 {
                     text = content?.Trim() ?? string.Empty,
@@ -77,8 +79,9 @@ public sealed class LlmService
                 };
             }
 
-            AppendAssistantToolCallMessage(conversation, root, toolCallsElement);
-            await ExecuteToolCallsAsync(conversation, toolCallsElement, CancellationToken.None);
+            AppendAssistantToolCallMessage(conversation, completion, toolCalls);
+
+            await ExecuteToolCallsAsync(conversation, toolCalls, CancellationToken.None);
         }
 
         throw new InvalidOperationException(
@@ -88,7 +91,7 @@ public sealed class LlmService
     private object BuildPayload(
         string model,
         int maxTokens,
-        IReadOnlyList<Dictionary<string, object?>> conversation,
+        IReadOnlyList<LlmConversationMessageDto> conversation,
         IReadOnlyList<McpToolDescriptor> tools)
     {
         var toolDefinitions = tools.Select(tool => new
@@ -114,9 +117,9 @@ public sealed class LlmService
         };
     }
 
-    private List<Dictionary<string, object?>> BuildMessages(ChatCompletionRequest request)
+    private List<LlmConversationMessageDto> BuildMessages(ChatCompletionRequest request)
     {
-        var messages = new List<Dictionary<string, object?>>();
+        var messages = new List<LlmConversationMessageDto>();
         var systemPrompt = _PromptService.GetSystemPrompt();
 
         var hasSystemMessage = request.Messages?.Any(message =>
@@ -124,19 +127,19 @@ public sealed class LlmService
 
         if (!hasSystemMessage && !string.IsNullOrWhiteSpace(systemPrompt))
         {
-            messages.Add(new Dictionary<string, object?>
+            messages.Add(new LlmConversationMessageDto
             {
-                ["role"] = "system",
-                ["content"] = systemPrompt
+                Role = "system",
+                Content = systemPrompt
             });
         }
 
         foreach (var message in _PromptService.GetFewShotPrompts())
         {
-            messages.Add(new Dictionary<string, object?>
+            messages.Add(new LlmConversationMessageDto
             {
-                ["role"] = message.Role,
-                ["content"] = message.Content
+                Role = message.Role,
+                Content = message.Content
             });
         }
 
@@ -149,19 +152,19 @@ public sealed class LlmService
                     continue;
                 }
 
-                messages.Add(new Dictionary<string, object?>
+                messages.Add(new LlmConversationMessageDto
                 {
-                    ["role"] = message.Role.Trim().ToLowerInvariant(),
-                    ["content"] = message.Content.Trim()
+                    Role = message.Role.Trim().ToLowerInvariant(),
+                    Content = message.Content.Trim()
                 });
             }
         }
         else if (!string.IsNullOrWhiteSpace(request.Prompt))
         {
-            messages.Add(new Dictionary<string, object?>
+            messages.Add(new LlmConversationMessageDto
             {
-                ["role"] = "user",
-                ["content"] = request.Prompt.Trim()
+                Role = "user",
+                Content = request.Prompt.Trim()
             });
         }
 
@@ -173,96 +176,62 @@ public sealed class LlmService
         return messages;
     }
 
-    private static bool TryGetToolCalls(JsonElement root, out JsonElement toolCalls)
+    private static bool TryGetToolCalls(
+        LlmCompletionResponseDto completion,
+        out IReadOnlyList<LlmToolCallDto> toolCalls)
     {
-        toolCalls = default;
-        if (!root.TryGetProperty("choices", out var choicesElement) ||
-            choicesElement.ValueKind != JsonValueKind.Array ||
-            choicesElement.GetArrayLength() == 0)
-        {
-            return false;
-        }
-
-        var firstChoice = choicesElement[0];
-        if (!firstChoice.TryGetProperty("message", out var messageElement))
-        {
-            return false;
-        }
-
-        if (!messageElement.TryGetProperty("tool_calls", out toolCalls))
-        {
-            return false;
-        }
-
-        return toolCalls.ValueKind == JsonValueKind.Array && toolCalls.GetArrayLength() > 0;
+        toolCalls = completion.Choices?.FirstOrDefault()?.Message?.ToolCalls ?? Array.Empty<LlmToolCallDto>();
+        return toolCalls.Count > 0;
     }
 
     private static void AppendAssistantToolCallMessage(
-        ICollection<Dictionary<string, object?>> conversation,
-        JsonElement responseRoot,
-        JsonElement toolCalls)
+        ICollection<LlmConversationMessageDto> conversation,
+        LlmCompletionResponseDto response,
+        IReadOnlyList<LlmToolCallDto> toolCalls)
     {
-        var assistantMessage = new Dictionary<string, object?>
+        var firstMessage = response.Choices?.FirstOrDefault()?.Message;
+        conversation.Add(new LlmConversationMessageDto
         {
-            ["role"] = "assistant"
-        };
-
-        if (responseRoot.TryGetProperty("choices", out var choicesElement) &&
-            choicesElement.ValueKind == JsonValueKind.Array &&
-            choicesElement.GetArrayLength() > 0 &&
-            choicesElement[0].TryGetProperty("message", out var messageElement) &&
-            messageElement.TryGetProperty("content", out var contentElement))
-        {
-            assistantMessage["content"] = contentElement.ValueKind == JsonValueKind.String
-                ? contentElement.GetString()
-                : contentElement.GetRawText();
-        }
-        else
-        {
-            assistantMessage["content"] = string.Empty;
-        }
-
-        assistantMessage["tool_calls"] = JsonSerializer.Deserialize<object>(toolCalls.GetRawText());
-        conversation.Add(assistantMessage);
+            Role = "assistant",
+            Content = firstMessage is null
+                ? string.Empty
+                : ExtractMessageContent(firstMessage.Content),
+            ToolCalls = toolCalls
+        });
     }
 
     private async Task ExecuteToolCallsAsync(
-        ICollection<Dictionary<string, object?>> conversation,
-        JsonElement toolCalls,
+        ICollection<LlmConversationMessageDto> conversation,
+        IReadOnlyList<LlmToolCallDto> toolCalls,
         CancellationToken cancellationToken)
     {
-        foreach (var toolCall in toolCalls.EnumerateArray())
+        foreach (var toolCall in toolCalls)
         {
-            var toolCallId = toolCall.TryGetProperty("id", out var idElement)
-                ? idElement.GetString()
-                : Guid.NewGuid().ToString("N");
+            var toolCallId = string.IsNullOrWhiteSpace(toolCall.Id)
+                ? Guid.NewGuid().ToString("N")
+                : toolCall.Id;
 
-            if (!toolCall.TryGetProperty("function", out var functionElement))
+            if (toolCall.Function is null)
             {
                 continue;
             }
 
-            var toolName = functionElement.TryGetProperty("name", out var nameElement)
-                ? nameElement.GetString()
-                : null;
-
+            var toolName = toolCall.Function.Name;
             if (string.IsNullOrWhiteSpace(toolName))
             {
                 continue;
             }
 
-            var argumentsJson = functionElement.TryGetProperty("arguments", out var argumentsElement)
-                ? argumentsElement.GetString()
-                : "{}";
+            var argumentsJson = toolCall.Function.Arguments ?? "{}";
 
             _logger.LogInformation("Executing MCP tool call from model: {ToolName}", toolName);
             var toolResult = await _mcpClientService.CallToolAsync(toolName, argumentsJson, cancellationToken);
 
-            conversation.Add(new Dictionary<string, object?>
+            conversation.Add(new LlmConversationMessageDto
             {
-                ["role"] = "tool",
-                ["tool_call_id"] = toolCallId,
-                ["content"] = toolResult
+                Role = "tool",
+                ToolCallId = toolCallId,
+                Content = toolResult
             });
         }
     }
@@ -279,49 +248,43 @@ public sealed class LlmService
         using var response = await client.GetAsync(_options.LlmHealthPath);
         response.EnsureSuccessStatusCode();
         var body = await response.Content.ReadAsStringAsync();
-        using var document = JsonDocument.Parse(body);
-
-        if (document.RootElement.TryGetProperty("data", out var dataElement) &&
-            dataElement.ValueKind == JsonValueKind.Array &&
-            dataElement.GetArrayLength() > 0)
+        var modelList = JsonSerializer.Deserialize<LlmModelListResponseDto>(body);
+        var modelId = modelList?.Data?.FirstOrDefault()?.Id;
+        if (!string.IsNullOrWhiteSpace(modelId))
         {
-            var firstModel = dataElement[0];
-            if (firstModel.TryGetProperty("id", out var idElement))
-            {
-                var modelId = idElement.GetString();
-                if (!string.IsNullOrWhiteSpace(modelId))
-                {
-                    _logger.LogInformation("Resolved LM Studio model id {ModelId} from {Path}", modelId, _options.LlmHealthPath);
-                    return modelId;
-                }
-            }
+            _logger.LogInformation("Resolved LM Studio model id {ModelId} from {Path}", modelId, _options.LlmHealthPath);
+            return modelId;
         }
 
         throw new InvalidOperationException("Could not resolve an LM Studio model id from /v1/models. Set LLM_MODEL explicitly in .env.");
     }
 
-    private string ExtractContent(JsonElement root, string fallbackBody)
+    private static string ExtractMessageContent(JsonElement content)
     {
-        if (root.TryGetProperty("choices", out var choicesElement) &&
-            choicesElement.ValueKind == JsonValueKind.Array &&
-            choicesElement.GetArrayLength() > 0)
+        if (content.ValueKind == JsonValueKind.String)
         {
-            var firstChoice = choicesElement[0];
-            if (firstChoice.TryGetProperty("message", out var messageElement) &&
-                messageElement.TryGetProperty("content", out var messageContent))
-            {
-                if (messageContent.ValueKind == JsonValueKind.String)
-                {
-                    return messageContent.GetString() ?? string.Empty;
-                }
+            return content.GetString() ?? string.Empty;
+        }
 
-                return messageContent.GetRawText();
-            }
+        if (content.ValueKind is JsonValueKind.Undefined or JsonValueKind.Null)
+        {
+            return string.Empty;
+        }
 
-            if (firstChoice.TryGetProperty("text", out var textElement))
-            {
-                return textElement.GetString() ?? string.Empty;
-            }
+        return content.GetRawText();
+    }
+
+    private string ExtractContent(LlmCompletionResponseDto completion, string fallbackBody)
+    {
+        var firstChoice = completion.Choices?.FirstOrDefault();
+        if (firstChoice?.Message is { } message)
+        {
+            return ExtractMessageContent(message.Content);
+        }
+
+        if (!string.IsNullOrWhiteSpace(firstChoice?.Text))
+        {
+            return firstChoice.Text;
         }
 
         return fallbackBody;
