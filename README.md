@@ -11,8 +11,8 @@ Inventory demo app that combines:
 
 ## Architecture
 
-- Frontend: `app/ClientApp` (Vite + React)
-- Backend: `app/Server` (ASP.NET Core + Dapper + SQLite)
+- Frontend: `client` (Vite + React)
+- Backend: `server` (ASP.NET Core + Dapper + SQLite)
 - DB schema + seed: `db/001_schema.sql`, `db/002_seed.sql`
 - Prompt assets:
   - `SYSTEM_PROMPT.md`
@@ -72,16 +72,16 @@ docker compose stop app
 2. Run backend:
 
 ```bash
-cd app/Server
+cd server
 dotnet run
 ```
 
 3. Run frontend:
 
 ```bash
-cd app/ClientApp
+cd client
 npm install
-npm run dev
+npm start
 ```
 
 Dev URLs:
@@ -146,5 +146,5 @@ The diagnostics page in the app can help troubleshoot issues with configuration 
 - `HELLO_PROMPT.md`
 - `FEW_SHOT_PROMPTS.json`
 - `db/002_seed.sql`
-- `app/Server/appsettings.json`
-- `app/ClientApp/src/styles.css`
+- `server/appsettings.json`
+- `client/src/styles.css`

@@ -1,17 +1,17 @@
 # Node
-app/ClientApp/node_modules/
-app/ClientApp/dist/
+client/node_modules/
+client/dist/
 
 # .NET
-app/Server/bin/
-app/Server/obj/
+server/bin/
+server/obj/
 
 # Local data and logs
 docker/data/sqlite/
 docker/temp/
 docker/models/llama/
-app/Server/local-data/
-app/Server/local-tools/
+server/local-data/
+server/local-tools/
 docker/models/whisper/*.bin
 docker/models/piper/*.onnx
 docker/models/piper/*.onnx.json

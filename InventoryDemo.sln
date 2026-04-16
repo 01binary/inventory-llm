@@ -2,7 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InventoryDemo.Server", "app\Server\InventoryDemo.Server.csproj", "{5F7FA394-D0DA-4F54-A66D-4C90D8C132AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InventoryDemo.Server", "server\InventoryDemo.Server.csproj", "{5F7FA394-D0DA-4F54-A66D-4C90D8C132AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

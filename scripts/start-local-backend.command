@@ -4,7 +4,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 
-cd "${REPO_ROOT}/app/Server"
+cd "${REPO_ROOT}/server"
 
 export ASPNETCORE_ENVIRONMENT=Development
 export AppPaths__DatabasePath="${REPO_ROOT}/docker/data/sqlite/inventory.db"
