@@ -98,7 +98,7 @@ dotnet run
 ```bash
 cd client
 npm install
-npm run dev
+npm start
 ```
 
 Dev URLs:
@@ -146,7 +146,6 @@ Dev URLs:
 - `orders_get_latest`
 - `orders_create`
 - `orders_add_items_to_latest`
-
 
 ## Troubleshooting
 
