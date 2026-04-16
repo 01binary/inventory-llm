@@ -267,12 +267,6 @@ export default function DashboardPage() {
           chatInput={chatInput}
           onChatInputChange={setChatInput}
           onClearInput={handleClearChatInput}
-          onChatInputKeyDown={(event) => {
-            if (event.key === "Enter" && !event.shiftKey) {
-              event.preventDefault();
-              handleSendMessage();
-            }
-          }}
           chatInputRef={chatInputRef}
           messageEndRef={messageEndRef}
           isRecording={isRecording}

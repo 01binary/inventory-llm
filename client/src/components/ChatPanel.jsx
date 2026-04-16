@@ -7,7 +7,6 @@ export default function ChatPanel({
   chatInput,
   onChatInputChange,
   onClearInput,
-  onChatInputKeyDown,
   chatInputRef,
   messageEndRef,
   isRecording,
@@ -19,6 +18,25 @@ export default function ChatPanel({
   onSend,
   error
 }) {
+  function handleComposerSubmit(event) {
+    event.preventDefault();
+    onSend();
+  }
+
+  function handleChatInputKeyDown(event) {
+    const isPlainEnter =
+      (event.key === "Enter" || event.code === "Enter" || event.code === "NumpadEnter") &&
+      !event.shiftKey &&
+      !event.nativeEvent.isComposing;
+
+    if (!isPlainEnter) {
+      return;
+    }
+
+    event.preventDefault();
+    onSend();
+  }
+
   return (
     <article className="card pane chat-pane">
       <div className="pane-header">
@@ -46,7 +64,7 @@ export default function ChatPanel({
         <div ref={messageEndRef} />
       </div>
 
-      <div className="chat-composer">
+      <form className="chat-composer" onSubmit={handleComposerSubmit}>
         <div className="chat-input-wrap">
           <textarea
             ref={chatInputRef}
@@ -54,7 +72,7 @@ export default function ChatPanel({
             placeholder="Type your inventory question..."
             value={chatInput}
             onChange={(event) => onChatInputChange(event.target.value)}
-            onKeyDown={onChatInputKeyDown}
+            onKeyDown={handleChatInputKeyDown}
           />
           {chatInput ? (
             <button
@@ -93,13 +111,13 @@ export default function ChatPanel({
           </button>
           <button
             className="primary-button"
-            onClick={onSend}
+            type="submit"
             disabled={initializingChat || chatBusy || sttBusy || !chatInput.trim()}
           >
             Send
           </button>
         </div>
-      </div>
+      </form>
       {error ? <p className="error-text">{error}</p> : null}
     </article>
   );
