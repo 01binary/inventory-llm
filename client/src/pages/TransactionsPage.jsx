@@ -2,6 +2,25 @@ import { useEffect, useState } from "react";
 import PageHeader from "../components/PageHeader";
 import { api } from "../services/api";
 
+function formatTransactionTimestamp(value) {
+  if (!value) {
+    return "-";
+  }
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return "-";
+  }
+
+  return date.toLocaleString(undefined, {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit"
+  });
+}
+
 export default function TransactionsPage() {
   const [transactions, setTransactions] = useState([]);
   const [error, setError] = useState("");
@@ -35,7 +54,7 @@ export default function TransactionsPage() {
             <tbody>
               {transactions.map((transaction) => (
                 <tr key={transaction.id}>
-                  <td>{new Date(transaction.createdUtc).toLocaleString()}</td>
+                  <td>{formatTransactionTimestamp(transaction.createdUtc)}</td>
                   <td><span className="sku-code">{transaction.itemSku}</span></td>
                   <td>{transaction.itemName}</td>
                   <td>{transaction.transactionType}</td>
