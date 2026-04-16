@@ -584,7 +584,7 @@ thead th {
     padding: 0 0.75rem;
   }
 
-  .mobile-nav-title {
+  .sidebar .mobile-nav-title {
     display: block;
     margin: 0;
     font-size: 0.875rem;
