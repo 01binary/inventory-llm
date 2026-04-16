@@ -60,19 +60,19 @@ export default function DiagnosticsPage() {
           </>
         ) : null}
         <div className="diagnostics-list">
-          <DiagnosticRow label="App API" check={health?.app} />
-          <DiagnosticRow label="SQLite" check={health?.database} />
-          <DiagnosticRow label="LM Studio" check={health?.llm} />
+          <DiagnosticRow label="API" check={health?.app} />
+          <DiagnosticRow label="Database" check={health?.database} />
+          <DiagnosticRow label="LLM" check={health?.llm} />
         </div>
       </section>
 
       <section className="card">
-        <h3>Effective configuration</h3>
+        <h3>Configuration</h3>
         <pre className="config-block">{config ? JSON.stringify(config, null, 2) : "Loading..."}</pre>
       </section>
 
       <section className="card">
-        <h3>MCP client config (copy/paste)</h3>
+        <h3>MCP</h3>
         <pre className="config-block">{mcpClientConfig}</pre>
       </section>
 
