@@ -5,7 +5,15 @@
   },
   {
     "role": "assistant",
-    "content": "Claro. Voy a revisar el inventario completo y te comparto un resumen corto con SKU, nombre y cantidad."
+    "content": "Claro. Voy a consultar el inventario completo y te comparto un resumen corto con SKU, nombre y cantidad."
+  },
+  {
+    "role": "user",
+    "content": "Muéstrame todo el stock que tenemos hoy."
+  },
+  {
+    "role": "assistant",
+    "content": "Perfecto, revisaré el inventario completo actual para mostrarte todo el stock disponible."
   },
   {
     "role": "user",
@@ -13,23 +21,15 @@
   },
   {
     "role": "assistant",
-    "content": "Voy a consultar el estado del SKU CHOL y te digo la cantidad exacta disponible."
+    "content": "Voy a consultar ese SKU específico y te digo la cantidad exacta disponible."
   },
   {
     "role": "user",
-    "content": "Agrega 12 al SKU TORT, nos llegó un pedido."
+    "content": "Please show all inventory items before we create an order."
   },
   {
     "role": "assistant",
-    "content": "Perfecto. Registraré una transacción positiva para el SKU TORT (+12) y luego te confirmo el nuevo total."
-  },
-  {
-    "role": "user",
-    "content": "Quita 3 del SKU JARR porque se vendieron."
-  },
-  {
-    "role": "assistant",
-    "content": "Entendido. Aplicaré una transacción de salida para el SKU JARR (-3) y te confirmo el inventario actualizado."
+    "content": "Claro. Primero te mostraré el inventario completo; luego, si quieres, armamos la orden."
   },
   {
     "role": "user",
@@ -37,7 +37,7 @@
   },
   {
     "role": "assistant",
-    "content": "Listo. Crearé una nueva orden con esos dos SKUs y esas cantidades."
+    "content": "Listo. Voy a crear una nueva orden con esos SKUs y cantidades."
   },
   {
     "role": "user",
@@ -53,7 +53,7 @@
   },
   {
     "role": "assistant",
-    "content": "Claro. Voy a identificar el SKU correcto de salsa y, si hay una sola coincidencia, agregaré 5 a la orden más reciente. Si hay varias, te pediré precisión."
+    "content": "Claro. Primero identificaré el SKU exacto de salsa y, si hay una sola coincidencia, agregaré 5 a la orden más reciente."
   },
   {
     "role": "user",
@@ -61,30 +61,14 @@
   },
   {
     "role": "assistant",
-    "content": "Puedo hacerlo, pero primero necesito más precisión: hay varias opciones de salsa. ¿Cuál SKU quieres agregar (por ejemplo CHOL o SALS)?"
+    "content": "Puedo hacerlo, pero necesito precisión porque hay varias opciones de salsa. ¿Qué SKU quieres agregar?"
   },
   {
     "role": "user",
-    "content": "Quítale 2 al SKU XYZ999."
+    "content": "Quiero ver inventario y también crear una orden, ¿qué hacemos primero?"
   },
   {
     "role": "assistant",
-    "content": "No encuentro el SKU XYZ999 en inventario. ¿Me compartes el SKU correcto o el nombre exacto del producto para buscarlo?"
-  },
-  {
-    "role": "user",
-    "content": "Crea una orden con 0 de PEP15."
-  },
-  {
-    "role": "assistant",
-    "content": "Para crear o actualizar una orden, la cantidad debe ser mayor que cero. Dime una cantidad válida y lo hago."
-  },
-  {
-    "role": "user",
-    "content": "Agrégale -3 de CHAY a la orden."
-  },
-  {
-    "role": "assistant",
-    "content": "No puedo agregar una cantidad negativa en una orden de compra. Si quieres ajustar inventario hacia abajo, te ayudo con una transacción; si quieres ordenar CHAY, indícame una cantidad positiva."
+    "content": "Para evitar errores, primero te muestro el inventario completo y luego creamos la orden. ¿Te parece bien?"
   }
 ]
