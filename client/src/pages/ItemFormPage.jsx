@@ -110,7 +110,6 @@ export default function ItemFormPage() {
   return (
     <div className="stack">
       <PageHeader
-        eyebrow="Inventory"
         title={isEditing ? "Edit item" : "Add item"}
         description="Simple item editor backed by parameterized SQLite queries."
         actions={<Link className="text-button" to="/inventory">Back to list</Link>}

@@ -27,7 +27,7 @@ The chat layer proxies completions to an OpenAI-compatible endpoint (LM Studio b
 
 - Docker Desktop (for containerized run)
 - LM Studio local server running on `http://localhost:1234`
-- macOS or Windows
+- macOS, Windows, or Linux
 
 ## Configuration
 
@@ -51,16 +51,32 @@ macOS:
 
 ```bash
 chmod +x scripts/*.command
-./scripts/start-local-demo.command
+./scripts/start.command
 ```
 
 Windows:
 
 ```bat
-scripts\start-local-demo.bat
+scripts\start.bat
+```
+
+Linux:
+
+```bash
+cp -n .env.example .env
+mkdir -p docker/data/sqlite
+docker compose up -d --build
 ```
 
 App URL: `http://localhost:8080`
+
+Stop:
+
+- macOS: `./scripts/stop.command`
+- Windows: `scripts\stop.bat`
+- Linux: `docker compose down`
+
+Linux note: if LM Studio is running on your host machine (not in Docker), set `LLM_BASE_URL` in `.env` to a host-reachable address like `http://172.17.0.1:1234` instead of `host.docker.internal`.
 
 ## Local Dev (without app container)
 
@@ -131,7 +147,6 @@ Dev URLs:
 - `orders_create`
 - `orders_add_items_to_latest`
 
-
 ## Troubleshooting
 
 The diagnostics page in the app can help troubleshoot issues with configuration and running services.
@@ -141,6 +156,13 @@ The diagnostics page in the app can help troubleshoot issues with configuration 
   - `MCP_SERVER_URL=http://localhost:8080/mcp`
 - If no seed data appears, check DB volume at `docker/data/sqlite`
 
+## Minimal AI Setup Notes
+
+- Confirm tools are installed: `docker`, `docker compose`, `dotnet`, `node`, `npm`.
+- Ensure `.env` exists (`cp -n .env.example .env`).
+- For Linux + Docker + host LM Studio, verify `LLM_BASE_URL` is reachable from containers.
+- Use diagnostics page at `http://localhost:8080/diagnostics` for quick health checks.
+
 ## First Files to Customize
 
 - `SYSTEM_PROMPT.md`
@@ -149,3 +171,15 @@ The diagnostics page in the app can help troubleshoot issues with configuration 
 - `db/002_seed.sql`
 - `server/appsettings.json`
 - `client/src/styles.css`
+
+## Branch Localization Workflow
+
+- `main` is the English baseline (`en-US`).
+- `es-MX` keeps Spanish locale defaults and prompts.
+- To sync feature changes from `main` into `es-MX` while preserving Spanish locale files:
+
+```bash
+git switch es-MX
+./scripts/merge-main-into-es-mx.sh
+git push
+```

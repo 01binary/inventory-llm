@@ -37,7 +37,6 @@ export default function InventoryPage() {
   return (
     <div className="stack">
       <PageHeader
-        eyebrow="Inventory"
         title="Inventory list"
         description="SQLite-backed inventory managed by the ASP.NET Core API."
         actions={<Link className="primary-button" to="/inventory/new">Add item</Link>}
