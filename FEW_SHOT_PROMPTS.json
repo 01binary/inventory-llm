@@ -17,11 +17,11 @@
   },
   {
     "role": "user",
-    "content": "Cuánto tenemos del SKU CHOL?"
+    "content": "Cuánto tenemos de chorizo?"
   },
   {
     "role": "assistant",
-    "content": "Voy a consultar ese SKU específico y te digo la cantidad exacta disponible."
+    "content": "Voy a buscar chorizo en el inventario y te digo la cantidad exacta disponible si encuentro una sola coincidencia."
   },
   {
     "role": "user",
@@ -33,19 +33,35 @@
   },
   {
     "role": "user",
-    "content": "Crea una orden con 6 de PEP15 y 4 de FRIJ."
+    "content": "Crea una orden con 6 de pepino y 4 de frijoles."
   },
   {
     "role": "assistant",
-    "content": "Listo. Voy a crear una nueva orden con esos SKUs y cantidades."
+    "content": "Listo. Voy a buscar esos productos por nombre y crearé la orden con las cantidades indicadas cuando encuentre una sola coincidencia para cada uno."
   },
   {
     "role": "user",
-    "content": "También agrégale 2 de CHAY a la orden."
+    "content": "También agrégale 2 de chayote a la orden."
   },
   {
     "role": "assistant",
-    "content": "Perfecto, agregaré 2 de CHAY a la orden más reciente."
+    "content": "Perfecto. Buscaré chayote por nombre y, si hay una sola coincidencia, agregaré 2 a la orden más reciente."
+  },
+  {
+    "role": "user",
+    "content": "Cambia el clamato a 6 en la orden."
+  },
+  {
+    "role": "assistant",
+    "content": "Claro. Buscaré clamato por nombre y, si está en la orden más reciente, cambiaré esa línea para que la cantidad final sea 6."
+  },
+  {
+    "role": "user",
+    "content": "Quita las tostadas de la orden."
+  },
+  {
+    "role": "assistant",
+    "content": "Entendido. Buscaré tostadas por nombre y, si están en la orden más reciente, las quitaré de la orden."
   },
   {
     "role": "user",
@@ -53,7 +69,95 @@
   },
   {
     "role": "assistant",
-    "content": "Claro. Primero identificaré el SKU exacto de salsa y, si hay una sola coincidencia, agregaré 5 a la orden más reciente."
+    "content": "Claro. Buscaré salsa por nombre y, si hay una sola coincidencia, usaré su SKU automáticamente para agregar 5 a la orden más reciente."
+  },
+  {
+    "role": "user",
+    "content": "Crea una orden con tres chicharron."
+  },
+  {
+    "role": "assistant",
+    "content": "Claro. Voy a buscar chicharrón por nombre y, si hay una sola coincidencia, crearé la orden con 3 unidades usando su SKU automáticamente."
+  },
+  {
+    "role": "user",
+    "content": "Pon una orden de 4 clamato."
+  },
+  {
+    "role": "assistant",
+    "content": "Claro. Buscaré clamato por nombre; si encuentro una sola coincidencia, usaré ese producto y te diré el nombre, SKU y cantidad de la orden."
+  },
+  {
+    "role": "user",
+    "content": "Ordena una docena de tortillas y 6 de salsa verde."
+  },
+  {
+    "role": "assistant",
+    "content": "Perfecto. Buscaré tortillas y salsa verde por nombre, usaré los SKUs encontrados automáticamente y respetaré las cantidades que indicaste: 12 tortillas y 6 salsa verde."
+  },
+  {
+    "role": "user",
+    "content": "Recibimos cinco cajas de chicharron."
+  },
+  {
+    "role": "assistant",
+    "content": "Entendido. Voy a buscar chicharrón por nombre y registrar la recepción de 5 cajas si encuentro una sola coincidencia."
+  },
+  {
+    "role": "user",
+    "content": "Vendimos 2 de pepino y tres de frijoles."
+  },
+  {
+    "role": "assistant",
+    "content": "Listo. Buscaré los productos por nombre y registraré la venta usando las cantidades indicadas: 2 pepinos y 3 frijoles."
+  },
+  {
+    "role": "user",
+    "content": "Agrega chicharron y 4 de salsa roja a la orden."
+  },
+  {
+    "role": "assistant",
+    "content": "Puedo agregar 4 de salsa roja, pero necesito una cantidad para chicharrón. ¿Cuántas unidades quieres agregar?"
+  },
+  {
+    "role": "user",
+    "content": "Agrega 3 de mango a la orden."
+  },
+  {
+    "role": "assistant",
+    "content": "Claro. Buscaré mango como nombre de producto y, si encuentro una sola coincidencia, agregaré 3 a la orden sin pedir confirmación del SKU."
+  },
+  {
+    "role": "user",
+    "content": "Necesito ordenar 8 tortillas."
+  },
+  {
+    "role": "assistant",
+    "content": "Perfecto. Buscaré tortillas en el inventario; si aparece un solo producto, usaré su SKU automáticamente y crearé la orden con 8 unidades."
+  },
+  {
+    "role": "user",
+    "content": "Ordena 5 de salsa."
+  },
+  {
+    "role": "assistant",
+    "content": "Voy a buscar salsa en el inventario. Si hay varias salsas, te pediré elegir cuál; si solo hay una, usaré su SKU y ordenaré 5."
+  },
+  {
+    "role": "user",
+    "content": "Recibimos 7 de tostadas."
+  },
+  {
+    "role": "assistant",
+    "content": "Entendido. Buscaré tostadas por nombre y, si hay una sola coincidencia, registraré la recepción de 7 sin pedir confirmación del SKU."
+  },
+  {
+    "role": "user",
+    "content": "Vendimos 2 de queso."
+  },
+  {
+    "role": "assistant",
+    "content": "Buscaré queso en el inventario. Si encuentro varios productos de queso, te pediré elegir el producto correcto; si hay uno solo, registraré la venta de 2."
   },
   {
     "role": "user",
@@ -61,7 +165,7 @@
   },
   {
     "role": "assistant",
-    "content": "Puedo hacerlo, pero necesito precisión porque hay varias opciones de salsa. ¿Qué SKU quieres agregar?"
+    "content": "Puedo hacerlo, pero si la búsqueda devuelve varias opciones de salsa, necesito que elijas el producto correcto por nombre. ¿Cuál salsa quieres agregar?"
   },
   {
     "role": "user",

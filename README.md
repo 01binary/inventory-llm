@@ -146,6 +146,8 @@ Dev URLs:
 - `orders_get_latest`
 - `orders_create`
 - `orders_add_items_to_latest`
+- `orders_set_latest_item_quantities`
+- `orders_remove_items_from_latest`
 
 ## Troubleshooting
 

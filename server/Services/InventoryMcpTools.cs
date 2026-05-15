@@ -11,11 +11,17 @@ public sealed class InventoryMcpTools
 {
     public sealed class OrderToolItem
     {
-        [Description("Inventory item identifier, either SKU or item name.")]
-        public string ItemNameOrSku { get; set; } = string.Empty;
+        [Description("Product display name or partial display name to search for, such as 'clamato'. Use an explicit SKU only if the user says it is a SKU.")]
+        public string ProductName { get; set; } = string.Empty;
 
-        [Description("Quantity to order. Must be greater than zero.")]
+        [Description("Quantity for this order line. Must be greater than zero.")]
         public int Quantity { get; set; }
+    }
+
+    public sealed class ProductLookupItem
+    {
+        [Description("Product display name or partial display name to search for, such as 'clamato'. Use an explicit SKU only if the user says it is a SKU.")]
+        public string ProductName { get; set; } = string.Empty;
     }
 
     [McpServerTool(
@@ -54,9 +60,9 @@ public sealed class InventoryMcpTools
         ReadOnly = true,
         Idempotent = true,
         Destructive = false)]
-    [Description("Search inventory item status by name or SKU to answer questions like 'do I have X?' or 'how many X do I have?'.")]
+    [Description("Search inventory by product display name or explicit SKU. Partial names such as one word are valid. If one product matches, use its SKU without asking the user to confirm.")]
     public static async Task<object> SearchInventoryStatusAsync(
-        [Description("Item name or SKU fragment to search for.")] string query,
+        [Description("Product display name, partial display name, or explicit SKU fragment to search for.")] string query,
         IServiceProvider serviceProvider,
         [Description("Maximum number of matching items to return (1 to 50).")] int limit = 10)
     {
@@ -94,33 +100,33 @@ public sealed class InventoryMcpTools
         ReadOnly = false,
         Idempotent = false,
         Destructive = false)]
-    [Description("Add an inventory transaction by item name or SKU and adjust on-hand quantity.")]
+    [Description("Add an inventory transaction by product display name or explicit SKU and adjust on-hand quantity. Partial product names are valid; if one product matches, use it without asking for SKU confirmation.")]
     public static async Task<object> AddInventoryTransactionAsync(
-        [Description("Item name or SKU to identify which inventory item should be adjusted.")] string itemNameOrSku,
+        [Description("Product display name or partial display name to search for. Use an explicit SKU only if the user says it is a SKU.")] string productName,
         [Description("Quantity change to apply. Positive adds stock, negative removes stock.")] int quantityDelta,
         IServiceProvider serviceProvider,
         [Description("Transaction type label such as adjustment, restock, sale, or audit.")] string transactionType = "adjustment",
         [Description("Optional note describing the reason for this change.")] string? note = null)
     {
-        if (string.IsNullOrWhiteSpace(itemNameOrSku))
+        if (string.IsNullOrWhiteSpace(productName))
         {
             return new
             {
                 success = false,
-                message = "itemNameOrSku is required."
+                message = "productName is required."
             };
         }
 
         var inventoryService = serviceProvider.GetRequiredService<InventoryService>();
 
-        var normalizedLookup = itemNameOrSku.Trim();
+        var normalizedLookup = productName.Trim();
         var matches = await inventoryService.SearchItemsByNameOrSkuAsync(normalizedLookup, 10);
         if (matches.Count == 0)
         {
             return new
             {
                 success = false,
-                message = $"No inventory item found matching '{normalizedLookup}'."
+                message = $"No product found matching '{normalizedLookup}'."
             };
         }
 
@@ -141,12 +147,13 @@ public sealed class InventoryMcpTools
             return new
             {
                 success = false,
-                message = $"Multiple items match '{normalizedLookup}'. Use a more specific name or SKU.",
+                message = $"Multiple products match '{normalizedLookup}'. Ask the user to choose the intended product by display name.",
                 candidates = matches.Select(item => new
                 {
                     id = item.Id,
                     sku = item.Sku,
-                    name = item.Name
+                    name = item.Name,
+                    quantity = item.Quantity
                 })
             };
         }
@@ -190,7 +197,14 @@ public sealed class InventoryMcpTools
                     sku = refreshedItem.Sku,
                     name = refreshedItem.Name,
                     quantity = refreshedItem.Quantity
-                }
+                },
+            resolvedProduct = new
+            {
+                requestedName = normalizedLookup,
+                sku = selectedItem.Sku,
+                name = selectedItem.Name,
+                quantityDelta
+            }
         };
     }
 
@@ -225,9 +239,9 @@ public sealed class InventoryMcpTools
         ReadOnly = false,
         Idempotent = false,
         Destructive = false)]
-    [Description("Create a new order with one or more item lines.")]
+    [Description("Create a new order with one or more product lines. Product names can be partial display names; the tool resolves SKUs internally and does not require user SKU confirmation when exactly one product matches.")]
     public static async Task<object> CreateOrderAsync(
-        [Description("Array of order lines. Each line requires itemNameOrSku and quantity > 0.")]
+        [Description("Array of order lines. Each line requires productName and quantity > 0.")]
         List<OrderToolItem> items,
         IServiceProvider serviceProvider)
     {
@@ -244,6 +258,7 @@ public sealed class InventoryMcpTools
         var orderService = serviceProvider.GetRequiredService<OrderService>();
 
         var resolvedItems = new List<OrderItemRequest>();
+        var resolvedProducts = new List<object>();
         var unresolved = new List<object>();
         foreach (var item in items)
         {
@@ -251,18 +266,18 @@ public sealed class InventoryMcpTools
             {
                 unresolved.Add(new
                 {
-                    itemNameOrSku = item.ItemNameOrSku,
+                    productName = item.ProductName,
                     message = "Quantity must be greater than zero."
                 });
                 continue;
             }
 
-            var resolution = await ResolveItemByNameOrSkuAsync(item.ItemNameOrSku, inventoryService);
+            var resolution = await ResolveProductAsync(item.ProductName, inventoryService);
             if (!resolution.Success)
             {
                 unresolved.Add(new
                 {
-                    itemNameOrSku = item.ItemNameOrSku,
+                    productName = item.ProductName,
                     message = resolution.Message,
                     candidates = resolution.Candidates
                 });
@@ -273,6 +288,13 @@ public sealed class InventoryMcpTools
             {
                 Sku = resolution.Item!.Sku,
                 Quantity = item.Quantity
+            });
+            resolvedProducts.Add(new
+            {
+                requestedName = item.ProductName.Trim(),
+                sku = resolution.Item.Sku,
+                name = resolution.Item.Name,
+                quantity = item.Quantity
             });
         }
 
@@ -291,6 +313,7 @@ public sealed class InventoryMcpTools
         {
             success = true,
             message = $"Created order {order.OrderNumber}.",
+            resolvedProducts,
             order
         };
     }
@@ -300,9 +323,9 @@ public sealed class InventoryMcpTools
         ReadOnly = false,
         Idempotent = false,
         Destructive = false)]
-    [Description("Add one or more item lines to the latest existing order.")]
+    [Description("Add one or more product lines to the latest existing order. Product names can be partial display names; the tool resolves SKUs internally and does not require user SKU confirmation when exactly one product matches.")]
     public static async Task<object> AddItemsToLatestOrderAsync(
-        [Description("Array of order lines. Each line requires itemNameOrSku and quantity > 0.")]
+        [Description("Array of order lines. Each line requires productName and quantity > 0.")]
         List<OrderToolItem> items,
         IServiceProvider serviceProvider)
     {
@@ -319,6 +342,7 @@ public sealed class InventoryMcpTools
         var orderService = serviceProvider.GetRequiredService<OrderService>();
 
         var resolvedItems = new List<OrderItemRequest>();
+        var resolvedProducts = new List<object>();
         var unresolved = new List<object>();
         foreach (var item in items)
         {
@@ -326,18 +350,18 @@ public sealed class InventoryMcpTools
             {
                 unresolved.Add(new
                 {
-                    itemNameOrSku = item.ItemNameOrSku,
+                    productName = item.ProductName,
                     message = "Quantity must be greater than zero."
                 });
                 continue;
             }
 
-            var resolution = await ResolveItemByNameOrSkuAsync(item.ItemNameOrSku, inventoryService);
+            var resolution = await ResolveProductAsync(item.ProductName, inventoryService);
             if (!resolution.Success)
             {
                 unresolved.Add(new
                 {
-                    itemNameOrSku = item.ItemNameOrSku,
+                    productName = item.ProductName,
                     message = resolution.Message,
                     candidates = resolution.Candidates
                 });
@@ -348,6 +372,13 @@ public sealed class InventoryMcpTools
             {
                 Sku = resolution.Item!.Sku,
                 Quantity = item.Quantity
+            });
+            resolvedProducts.Add(new
+            {
+                requestedName = item.ProductName.Trim(),
+                sku = resolution.Item.Sku,
+                name = resolution.Item.Name,
+                quantity = item.Quantity
             });
         }
 
@@ -375,24 +406,246 @@ public sealed class InventoryMcpTools
         {
             success = true,
             message = $"Updated latest order {order.OrderNumber}.",
+            resolvedProducts,
             order
         };
     }
 
-    private static async Task<ItemResolutionResult> ResolveItemByNameOrSkuAsync(
-        string itemNameOrSku,
-        InventoryService inventoryService)
+    [McpServerTool(
+        Name = "orders_set_latest_item_quantities",
+        ReadOnly = false,
+        Idempotent = true,
+        Destructive = false)]
+    [Description("Set existing product line quantities on the latest order. Use this when the user asks to change, edit, fix, or set the quantity of an item already on the latest order. Product names can be partial display names; the tool resolves SKUs internally and does not require user SKU confirmation when exactly one product matches.")]
+    public static async Task<object> SetLatestOrderItemQuantitiesAsync(
+        [Description("Array of order line quantity edits. Each line requires productName and the new final quantity > 0.")]
+        List<OrderToolItem> items,
+        IServiceProvider serviceProvider)
     {
-        if (string.IsNullOrWhiteSpace(itemNameOrSku))
+        if (items.Count == 0)
         {
-            return ItemResolutionResult.Failure("itemNameOrSku is required.");
+            return new
+            {
+                success = false,
+                message = "At least one item is required to edit the latest order."
+            };
         }
 
-        var normalizedLookup = itemNameOrSku.Trim();
+        var inventoryService = serviceProvider.GetRequiredService<InventoryService>();
+        var orderService = serviceProvider.GetRequiredService<OrderService>();
+
+        var latestOrder = await orderService.GetLatestOrderAsync();
+        if (latestOrder is null)
+        {
+            return new
+            {
+                success = false,
+                message = "No existing order found. Create an order first."
+            };
+        }
+
+        var resolvedItems = new List<OrderItemRequest>();
+        var resolvedProducts = new List<object>();
+        var unresolved = new List<object>();
+        var missingFromOrder = new List<object>();
+
+        foreach (var item in items)
+        {
+            if (item.Quantity <= 0)
+            {
+                unresolved.Add(new
+                {
+                    productName = item.ProductName,
+                    message = "Quantity must be greater than zero. Use the remove tool to delete an item from the order."
+                });
+                continue;
+            }
+
+            var resolution = await ResolveProductAsync(item.ProductName, inventoryService);
+            if (!resolution.Success)
+            {
+                unresolved.Add(new
+                {
+                    productName = item.ProductName,
+                    message = resolution.Message,
+                    candidates = resolution.Candidates
+                });
+                continue;
+            }
+
+            var existingLine = latestOrder.Items.FirstOrDefault(line =>
+                string.Equals(line.Sku, resolution.Item!.Sku, StringComparison.OrdinalIgnoreCase));
+            if (existingLine is null)
+            {
+                missingFromOrder.Add(new
+                {
+                    requestedName = item.ProductName.Trim(),
+                    sku = resolution.Item!.Sku,
+                    name = resolution.Item.Name,
+                    message = "Product is not on the latest order."
+                });
+                continue;
+            }
+
+            resolvedItems.Add(new OrderItemRequest
+            {
+                Sku = resolution.Item!.Sku,
+                Quantity = item.Quantity
+            });
+            resolvedProducts.Add(new
+            {
+                requestedName = item.ProductName.Trim(),
+                sku = resolution.Item.Sku,
+                name = resolution.Item.Name,
+                previousQuantity = existingLine.Quantity,
+                quantity = item.Quantity
+            });
+        }
+
+        if (unresolved.Count > 0 || missingFromOrder.Count > 0)
+        {
+            return new
+            {
+                success = false,
+                message = "Some quantity edits could not be applied. Latest order was not updated.",
+                unresolved,
+                missingFromOrder
+            };
+        }
+
+        var order = await orderService.SetLatestOrderItemQuantitiesAsync(resolvedItems);
+        if (order is null)
+        {
+            return new
+            {
+                success = false,
+                message = "No existing order found. Create an order first."
+            };
+        }
+
+        return new
+        {
+            success = true,
+            message = $"Updated quantities on latest order {order.OrderNumber}.",
+            resolvedProducts,
+            order
+        };
+    }
+
+    [McpServerTool(
+        Name = "orders_remove_items_from_latest",
+        ReadOnly = false,
+        Idempotent = true,
+        Destructive = false)]
+    [Description("Remove one or more existing product lines from the latest order. Use this when the user asks to remove, delete, drop, or take an item off the latest order. Product names can be partial display names; the tool resolves SKUs internally and does not require user SKU confirmation when exactly one product matches.")]
+    public static async Task<object> RemoveItemsFromLatestOrderAsync(
+        [Description("Array of products to remove. Each entry requires productName.")]
+        List<ProductLookupItem> items,
+        IServiceProvider serviceProvider)
+    {
+        if (items.Count == 0)
+        {
+            return new
+            {
+                success = false,
+                message = "At least one item is required to remove from the latest order."
+            };
+        }
+
+        var inventoryService = serviceProvider.GetRequiredService<InventoryService>();
+        var orderService = serviceProvider.GetRequiredService<OrderService>();
+
+        var latestOrder = await orderService.GetLatestOrderAsync();
+        if (latestOrder is null)
+        {
+            return new
+            {
+                success = false,
+                message = "No existing order found. Create an order first."
+            };
+        }
+
+        var resolvedSkus = new List<string>();
+        var removedProducts = new List<object>();
+        var unresolved = new List<object>();
+        var missingFromOrder = new List<object>();
+
+        foreach (var item in items)
+        {
+            var resolution = await ResolveProductAsync(item.ProductName, inventoryService);
+            if (!resolution.Success)
+            {
+                unresolved.Add(new
+                {
+                    productName = item.ProductName,
+                    message = resolution.Message,
+                    candidates = resolution.Candidates
+                });
+                continue;
+            }
+
+            var existingLine = latestOrder.Items.FirstOrDefault(line =>
+                string.Equals(line.Sku, resolution.Item!.Sku, StringComparison.OrdinalIgnoreCase));
+            if (existingLine is null)
+            {
+                missingFromOrder.Add(new
+                {
+                    requestedName = item.ProductName.Trim(),
+                    sku = resolution.Item!.Sku,
+                    name = resolution.Item.Name,
+                    message = "Product is not on the latest order."
+                });
+                continue;
+            }
+
+            resolvedSkus.Add(resolution.Item!.Sku);
+            removedProducts.Add(new
+            {
+                requestedName = item.ProductName.Trim(),
+                sku = resolution.Item.Sku,
+                name = resolution.Item.Name,
+                removedQuantity = existingLine.Quantity
+            });
+        }
+
+        if (unresolved.Count > 0 || missingFromOrder.Count > 0)
+        {
+            return new
+            {
+                success = false,
+                message = "Some items could not be removed. Latest order was not updated.",
+                unresolved,
+                missingFromOrder
+            };
+        }
+
+        var order = await orderService.RemoveItemsFromLatestOrderAsync(resolvedSkus);
+
+        return new
+        {
+            success = true,
+            message = order is null
+                ? "Removed items from the latest order. The order now has no remaining items."
+                : $"Removed items from latest order {order.OrderNumber}.",
+            removedProducts,
+            order
+        };
+    }
+
+    private static async Task<ItemResolutionResult> ResolveProductAsync(
+        string productName,
+        InventoryService inventoryService)
+    {
+        if (string.IsNullOrWhiteSpace(productName))
+        {
+            return ItemResolutionResult.Failure("productName is required.");
+        }
+
+        var normalizedLookup = productName.Trim();
         var matches = await inventoryService.SearchItemsByNameOrSkuAsync(normalizedLookup, 10);
         if (matches.Count == 0)
         {
-            return ItemResolutionResult.Failure($"No inventory item found matching '{normalizedLookup}'.");
+            return ItemResolutionResult.Failure($"No product found matching '{normalizedLookup}'.");
         }
 
         var exactMatches = matches
@@ -410,12 +663,13 @@ public sealed class InventoryMcpTools
         if (selectedItem is null)
         {
             return ItemResolutionResult.Failure(
-                $"Multiple items match '{normalizedLookup}'. Use a more specific name or SKU.",
+                $"Multiple products match '{normalizedLookup}'. Ask the user to choose the intended product by display name.",
                 matches.Select(item => new
                 {
                     id = item.Id,
                     sku = item.Sku,
-                    name = item.Name
+                    name = item.Name,
+                    quantity = item.Quantity
                 }));
         }
 
