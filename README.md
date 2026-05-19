@@ -2,6 +2,8 @@
 
 An open-source, local-first AI inventory management demo designed to show how small businesses can use modern local AI models to build practical tools on affordable hardware.
 
+![screenshot](./screenshot.png)
+
 ## Overview
 
 This project combines a lightweight inventory database, a [Model Context Protocol](https://www.anthropic.com/news/model-context-protocol) server, and a web interface with AI-assisted workflows to demonstrate what real-world AI integration can look like.
