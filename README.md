@@ -14,15 +14,15 @@ The goal of this project is not to pretend AI adoption is effortless. The goal i
 
 ## Details
 
-- Frontend: `client` (Vite + React)
-- Backend: `server` (ASP.NET Core + Dapper + SQLite)
-- Database: `db/001_schema.sql`, `db/002_seed.sql`
+- Frontend: `/client` (Vite + React)
+- Backend: `/server` (ASP.NET Core + Dapper)
+- Database: `/db` (SQLite)
 - Prompts:
   - `SYSTEM_PROMPT.md`
   - `STARTUP_PROMPT.md`
   - `FEW_SHOT_PROMPTS.json`
 
-The backend serves both API endpoints and MCP tools at `/mcp`.
+The backend serves both API endpoints and MCP tools at `/mcp`. This means that the frontend is technically optional - you can run just the MCP server and pair that with a desktop AI agent like [LM Studio](https://lmstudio.ai/), [Claude Desktop](https://code.claude.com/docs/en/desktop-quickstart) or [Codex](https://chatgpt.com/codex/switch-to-codex/) to manage the inventory without a web interface.
 
 The chat layer proxies completions to an OpenAI-compatible endpoint (LM Studio by default).
 
