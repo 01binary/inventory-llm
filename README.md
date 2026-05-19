@@ -1,6 +1,6 @@
 # Inventory LLM Demo
 
-An open-source, local-first AI inventory management demo designed to show how small businesses can use modern local AI models to build practical tools on affordable hardware.
+This open-source, local-first AI inventory management application developed in collaboration with an [Anthropologist from Willamette University](https://willamette.academia.edu/PeterWogan) demonstrates how small businesses can use modern local AI models to build practical tools on affordable hardware.
 
 ![screenshot](./screenshot.png)
 
