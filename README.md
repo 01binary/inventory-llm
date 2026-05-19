@@ -14,6 +14,22 @@ This repository is a foundation, not a one-click business solution. Real-world d
 
 The goal of this project is not to pretend AI adoption is effortless. The goal is to show that modern open-source AI tools have become accessible enough that small businesses and independent developers can realistically build useful systems together.
 
+## Background
+
+Convenience-store workers will walk up and down the store aisles, notice which products are running low on the shelves, and then type or dictate their products-to-order list into this AI app on their phone.
+
+Even small businesses that already have paid digital programs for note-taking might prefer this tool, due to these same three reasons (free, simple, customizable).
+
+In fact, this [2025 study](https://www.avancim.com/en/blog/small-business-inventory-management-study) of over 2,500 small businesses found very similar reasons for why they didn’t change their inventory management system:
+
+> 58% cite expense as the primary barrier, `42%` worry about system complexity, `38%` feel they lack time for implementation, `31%` are unaware of available solutions.
+
+In addition, at least `25%` of small business owners speak a language other than English at home (per this Small Business Administration 2024 study).
+
+Given that there are currently over `33` million small businesses in the U.S., this means approximately `8.4` million small business owners navigate their daily lives and businesses in a language other than English.
+
+To address both needs, we demonstrated how an AI can be used entirely in Spanish on the [es-MX](https://github.com/01binary/inventory-llm/tree/es-MX) branch of this repository.
+
 ## Details
 
 - Frontend: `/client` (Vite + React)
