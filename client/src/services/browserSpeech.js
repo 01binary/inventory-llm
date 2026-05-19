@@ -1,6 +1,6 @@
 const FALLBACK_STT_LANGUAGE = "en-US";
 const FALLBACK_TTS_LANGUAGE = "en-US";
-const FALLBACK_TTS_VOICE_NAME = "Google US English";
+const FALLBACK_TTS_VOICE_NAME = "Sandy (English (United States))";
 
 let defaultSttLanguage = FALLBACK_STT_LANGUAGE;
 let defaultTtsLanguage = FALLBACK_TTS_LANGUAGE;
