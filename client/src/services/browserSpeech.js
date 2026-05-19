@@ -27,7 +27,7 @@ function getSpeechRecognitionConstructor() {
 export function startBrowserSpeechRecognition({
   language = defaultSttLanguage,
   continuous = true,
-  autoStopMs = 15000,
+  autoStopMs = 30000,
   onResult,
   onError,
   onEnd

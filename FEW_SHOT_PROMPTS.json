@@ -1,27 +1,27 @@
 [
   {
     "role": "user",
-    "content": "Dame una lista rápida del inventario actual."
+    "content": "Give me a quick list of current inventory."
   },
   {
     "role": "assistant",
-    "content": "Claro. Voy a consultar el inventario completo y te comparto un resumen corto con SKU, nombre y cantidad."
+    "content": "Sure. I will check the full inventory and share a short summary with SKU, name, and quantity."
   },
   {
     "role": "user",
-    "content": "Muéstrame todo el stock que tenemos hoy."
+    "content": "Show me all the stock we have today."
   },
   {
     "role": "assistant",
-    "content": "Perfecto, revisaré el inventario completo actual para mostrarte todo el stock disponible."
+    "content": "Perfect. I will review the current full inventory and show you all available stock."
   },
   {
     "role": "user",
-    "content": "Cuánto tenemos del SKU CHOL?"
+    "content": "How much chorizo do we have?"
   },
   {
     "role": "assistant",
-    "content": "Voy a consultar ese SKU específico y te digo la cantidad exacta disponible."
+    "content": "I will search inventory for chorizo and tell you the exact available quantity if I find a single match."
   },
   {
     "role": "user",
@@ -29,23 +29,39 @@
   },
   {
     "role": "assistant",
-    "content": "Claro. Primero te mostraré el inventario completo; luego, si quieres, armamos la orden."
+    "content": "Sure. I will show you the full inventory first; then, if you want, we can build the order."
   },
   {
     "role": "user",
-    "content": "Crea una orden con 6 de PEP15 y 4 de FRIJ."
+    "content": "Create an order with 6 pepino and 4 frijoles."
   },
   {
     "role": "assistant",
-    "content": "Listo. Voy a crear una nueva orden con esos SKUs y cantidades."
+    "content": "Done. I will search for those products by name and create the order with the requested quantities when I find a single match for each one."
   },
   {
     "role": "user",
-    "content": "También agrégale 2 de CHAY a la orden."
+    "content": "Also add 2 chayote to the order."
   },
   {
     "role": "assistant",
-    "content": "Perfecto, agregaré 2 de CHAY a la orden más reciente."
+    "content": "Perfect. I will search for chayote by name and, if there is a single match, add 2 to the latest order."
+  },
+  {
+    "role": "user",
+    "content": "Change the clamato to 6 on the order."
+  },
+  {
+    "role": "assistant",
+    "content": "Sure. I will search for clamato by name and, if it is on the latest order, change that line so the final quantity is 6."
+  },
+  {
+    "role": "user",
+    "content": "Remove the tostadas from the order."
+  },
+  {
+    "role": "assistant",
+    "content": "Understood. I will search for tostadas by name and, if they are on the latest order, remove them from the order."
   },
   {
     "role": "user",
@@ -53,22 +69,110 @@
   },
   {
     "role": "assistant",
-    "content": "Claro. Primero identificaré el SKU exacto de salsa y, si hay una sola coincidencia, agregaré 5 a la orden más reciente."
+    "content": "Sure. I will search for salsa by name and, if there is a single match, automatically use its SKU to add 5 to the latest order."
   },
   {
     "role": "user",
-    "content": "Agrégame 4 de salsa a la orden."
+    "content": "Create an order with three chicharron."
   },
   {
     "role": "assistant",
-    "content": "Puedo hacerlo, pero necesito precisión porque hay varias opciones de salsa. ¿Qué SKU quieres agregar?"
+    "content": "Sure. I will search for chicharron by name and, if there is a single match, create the order with 3 units using its SKU automatically."
   },
   {
     "role": "user",
-    "content": "Quiero ver inventario y también crear una orden, ¿qué hacemos primero?"
+    "content": "Put in an order for 4 clamato."
   },
   {
     "role": "assistant",
-    "content": "Para evitar errores, primero te muestro el inventario completo y luego creamos la orden. ¿Te parece bien?"
+    "content": "Sure. I will search for clamato by name; if I find a single match, I will use that product and tell you the name, SKU, and order quantity."
+  },
+  {
+    "role": "user",
+    "content": "Order a dozen tortillas and 6 salsa verde."
+  },
+  {
+    "role": "assistant",
+    "content": "Perfect. I will search for tortillas and salsa verde by name, use the SKUs found automatically, and keep the quantities you gave: 12 tortillas and 6 salsa verde."
+  },
+  {
+    "role": "user",
+    "content": "We received five boxes of chicharron."
+  },
+  {
+    "role": "assistant",
+    "content": "Understood. I will search for chicharron by name and record the receipt of 5 boxes if I find a single match."
+  },
+  {
+    "role": "user",
+    "content": "We sold 2 pepino and three frijoles."
+  },
+  {
+    "role": "assistant",
+    "content": "Done. I will search for the products by name and record the sale using the quantities you gave: 2 pepino and 3 frijoles."
+  },
+  {
+    "role": "user",
+    "content": "Add chicharron and 4 salsa roja to the order."
+  },
+  {
+    "role": "assistant",
+    "content": "I can add 4 salsa roja, but I need a quantity for chicharron. How many units do you want to add?"
+  },
+  {
+    "role": "user",
+    "content": "Add 3 mango to the order."
+  },
+  {
+    "role": "assistant",
+    "content": "Sure. I will search for mango as a product name and, if I find a single match, add 3 to the order without asking you to confirm the SKU."
+  },
+  {
+    "role": "user",
+    "content": "I need to order 8 tortillas."
+  },
+  {
+    "role": "assistant",
+    "content": "Perfect. I will search inventory for tortillas; if a single product appears, I will use its SKU automatically and create the order with 8 units."
+  },
+  {
+    "role": "user",
+    "content": "Order 5 salsa."
+  },
+  {
+    "role": "assistant",
+    "content": "I will search inventory for salsa. If there are multiple salsas, I will ask you to choose one; if there is only one, I will use its SKU and order 5."
+  },
+  {
+    "role": "user",
+    "content": "We received 7 tostadas."
+  },
+  {
+    "role": "assistant",
+    "content": "Understood. I will search for tostadas by name and, if there is a single match, record the receipt of 7 without asking you to confirm the SKU."
+  },
+  {
+    "role": "user",
+    "content": "We sold 2 queso."
+  },
+  {
+    "role": "assistant",
+    "content": "I will search inventory for queso. If I find multiple queso products, I will ask you to choose the correct product; if there is only one, I will record the sale of 2."
+  },
+  {
+    "role": "user",
+    "content": "Add 4 salsa to the order."
+  },
+  {
+    "role": "assistant",
+    "content": "I can do that, but if the search returns multiple salsa options, I need you to choose the correct product by name. Which salsa do you want to add?"
+  },
+  {
+    "role": "user",
+    "content": "I want to see inventory and also create an order. What should we do first?"
+  },
+  {
+    "role": "assistant",
+    "content": "To avoid mistakes, I will show you the full inventory first and then create the order. Does that work?"
   }
 ]

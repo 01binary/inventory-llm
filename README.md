@@ -1,25 +1,28 @@
 # Inventory LLM Demo
 
-Inventory demo app that combines:
+An open-source, local-first AI inventory management demo designed to show how small businesses can use modern local AI models to build practical tools on affordable hardware.
 
-- React frontend
-- ASP.NET Core backend
-- SQLite persistence
-- Model Context Protocol (MCP) tools
-- LM Studio-compatible local LLM
-- Browser-native speech-to-text and text-to-speech (Web Speech API)
+## Overview
 
-## Architecture
+This project combines a lightweight inventory database, a [Model Context Protocol](https://www.anthropic.com/news/model-context-protocol) server, and a web interface with AI-assisted workflows to demonstrate what real-world AI integration can look like.
 
-- Frontend: `client` (Vite + React)
-- Backend: `server` (ASP.NET Core + Dapper + SQLite)
-- Database: `db/001_schema.sql`, `db/002_seed.sql`
+It can run locally on a modern laptop, desktop, or small office server using local AI tooling such as [LM Studio](https://lmstudio.ai/). For simple deployments, that means businesses can experiment with AI while keeping their data and infrastructure under their own control.
+
+This repository is a foundation, not a one-click business solution. Real-world deployments may require customizing the information stored in the database and the business logic responsible for processing database transactions, tweaking the interface between the AI agent and the application, as well as infrastructure, security, or integrations with existing systems like ordering and payments.
+
+The goal of this project is not to pretend AI adoption is effortless. The goal is to show that modern open-source AI tools have become accessible enough that small businesses and independent developers can realistically build useful systems together.
+
+## Details
+
+- Frontend: `/client` (Vite + React)
+- Backend: `/server` (ASP.NET Core + Dapper)
+- Database: `/db` (SQLite)
 - Prompts:
   - `SYSTEM_PROMPT.md`
   - `STARTUP_PROMPT.md`
   - `FEW_SHOT_PROMPTS.json`
 
-The backend serves both API endpoints and MCP tools at `/mcp`.
+The backend serves both API endpoints and MCP tools at `/mcp`. This means that the frontend is technically optional - you can run just the MCP server and pair that with a desktop AI agent like [LM Studio](https://lmstudio.ai/), [Claude Desktop](https://code.claude.com/docs/en/desktop-quickstart) or [Codex](https://chatgpt.com/codex/switch-to-codex/) to manage the inventory without a web interface.
 
 The chat layer proxies completions to an OpenAI-compatible endpoint (LM Studio by default).
 
@@ -146,6 +149,8 @@ Dev URLs:
 - `orders_get_latest`
 - `orders_create`
 - `orders_add_items_to_latest`
+- `orders_set_latest_item_quantities`
+- `orders_remove_items_from_latest`
 
 ## Troubleshooting
 

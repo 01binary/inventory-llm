@@ -148,6 +148,116 @@ public sealed class OrderService
         return await GetOrderAsync(latestOrderNumber.Value);
     }
 
+    public async Task<OrderDetails?> SetLatestOrderItemQuantitiesAsync(IReadOnlyList<OrderItemRequest> items)
+    {
+        var normalizedItems = NormalizeItems(items, combineDuplicateQuantities: false);
+        var now = DateTime.UtcNow.ToString("O");
+
+        await using var connection = _databaseInitializer.CreateConnection();
+        await connection.OpenAsync();
+
+        const string latestOrderSql = """
+            SELECT order_number
+            FROM orders
+            ORDER BY order_number DESC
+            LIMIT 1;
+            """;
+
+        var latestOrderNumber = await connection.QuerySingleOrDefaultAsync<long?>(latestOrderSql);
+        if (latestOrderNumber is null)
+        {
+            return null;
+        }
+
+        await using var transaction = await connection.BeginTransactionAsync();
+        foreach (var item in normalizedItems)
+        {
+            const string updateSql = """
+                UPDATE orders
+                SET quantity = @Quantity,
+                    updated_utc = @UpdatedUtc
+                WHERE order_number = @OrderNumber
+                  AND lower(sku) = lower(@Sku);
+                """;
+
+            await connection.ExecuteAsync(
+                updateSql,
+                new
+                {
+                    OrderNumber = latestOrderNumber.Value,
+                    item.Sku,
+                    item.Quantity,
+                    UpdatedUtc = now
+                },
+                transaction);
+        }
+
+        await transaction.CommitAsync();
+        _logger.LogInformation(
+            "Set {LineCount} item quantities on latest order {OrderNumber}",
+            normalizedItems.Count,
+            latestOrderNumber.Value);
+
+        return await GetOrderAsync(latestOrderNumber.Value);
+    }
+
+    public async Task<OrderDetails?> RemoveItemsFromLatestOrderAsync(IReadOnlyList<string> skus)
+    {
+        var normalizedSkus = skus
+            .Where(sku => !string.IsNullOrWhiteSpace(sku))
+            .Select(sku => sku.Trim())
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .ToList();
+
+        if (normalizedSkus.Count == 0)
+        {
+            throw new ArgumentException("At least one valid SKU is required.", nameof(skus));
+        }
+
+        await using var connection = _databaseInitializer.CreateConnection();
+        await connection.OpenAsync();
+
+        const string latestOrderSql = """
+            SELECT order_number
+            FROM orders
+            ORDER BY order_number DESC
+            LIMIT 1;
+            """;
+
+        var latestOrderNumber = await connection.QuerySingleOrDefaultAsync<long?>(latestOrderSql);
+        if (latestOrderNumber is null)
+        {
+            return null;
+        }
+
+        await using var transaction = await connection.BeginTransactionAsync();
+        foreach (var sku in normalizedSkus)
+        {
+            const string deleteSql = """
+                DELETE FROM orders
+                WHERE order_number = @OrderNumber
+                  AND lower(sku) = lower(@Sku);
+                """;
+
+            await connection.ExecuteAsync(
+                deleteSql,
+                new
+                {
+                    OrderNumber = latestOrderNumber.Value,
+                    Sku = sku
+                },
+                transaction);
+        }
+
+        await transaction.CommitAsync();
+        _logger.LogInformation(
+            "Removed {LineCount} item lines from latest order {OrderNumber}",
+            normalizedSkus.Count,
+            latestOrderNumber.Value);
+
+        return await GetOrderAsync(latestOrderNumber.Value);
+    }
+
     private static async Task AddOrIncrementLineAsync(
         Microsoft.Data.Sqlite.SqliteConnection connection,
         IDbTransaction transaction,
@@ -213,14 +323,16 @@ public sealed class OrderService
             transaction);
     }
 
-    private static IReadOnlyList<OrderItemRequest> NormalizeItems(IReadOnlyList<OrderItemRequest> items)
+    private static IReadOnlyList<OrderItemRequest> NormalizeItems(
+        IReadOnlyList<OrderItemRequest> items,
+        bool combineDuplicateQuantities = true)
     {
         if (items.Count == 0)
         {
             throw new ArgumentException("At least one order item is required.", nameof(items));
         }
 
-        var normalized = items
+        var validItems = items
             .Where(item => !string.IsNullOrWhiteSpace(item.Sku))
             .Select(item => new OrderItemRequest
             {
@@ -228,13 +340,25 @@ public sealed class OrderService
                 Quantity = item.Quantity
             })
             .Where(item => item.Quantity > 0)
-            .GroupBy(item => item.Sku, StringComparer.OrdinalIgnoreCase)
-            .Select(group => new OrderItemRequest
-            {
-                Sku = group.First().Sku,
-                Quantity = group.Sum(item => item.Quantity)
-            })
             .ToList();
+
+        var normalized = combineDuplicateQuantities
+            ? validItems
+                .GroupBy(item => item.Sku, StringComparer.OrdinalIgnoreCase)
+                .Select(group => new OrderItemRequest
+                {
+                    Sku = group.First().Sku,
+                    Quantity = group.Sum(item => item.Quantity)
+                })
+                .ToList()
+            : validItems
+                .GroupBy(item => item.Sku, StringComparer.OrdinalIgnoreCase)
+                .Select(group => new OrderItemRequest
+                {
+                    Sku = group.Last().Sku,
+                    Quantity = group.Last().Quantity
+                })
+                .ToList();
 
         if (normalized.Count == 0)
         {
