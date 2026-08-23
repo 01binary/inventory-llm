@@ -24,7 +24,7 @@ In fact, this [2025 study](https://www.avancim.com/en/blog/small-business-invent
 
 > 58% cite expense as the primary barrier, `42%` worry about system complexity, `38%` feel they lack time for implementation, `31%` are unaware of available solutions.
 
-In addition, at least `25%` of small business owners speak a language other than English at home (per this Small Business Administration 2024 study).
+In addition, at least `25%` of small business owners speak a language other than English at home (per this [Small Business Administration 2024 study](https://advocacy.sba.gov/2024/03/25/lost-in-translation-the-effects-of-language-on-business-ownership-and-outreach/)).
 
 Given that there are currently over `33` million small businesses in the U.S., this means approximately `8.4` million small business owners navigate their daily lives and businesses in a language other than English.
 
