@@ -27,3 +27,5 @@ docker/models/piper/*.onnx.json
 Thumbs.db
 .idea/
 .vscode/
+
+training.jsonl

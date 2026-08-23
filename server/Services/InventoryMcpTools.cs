@@ -1,7 +1,6 @@
 using System.ComponentModel;
 using InventoryDemo.Server.DTOs;
 using InventoryDemo.Server.Models;
-using Microsoft.Extensions.DependencyInjection;
 using ModelContextProtocol.Server;
 
 namespace InventoryDemo.Server.Services;
