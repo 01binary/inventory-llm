@@ -57,6 +57,9 @@ dataset = Dataset.from_list([
     for i in range(0, len(messages), 2)
 ])
 
+dataset
+dataset[0]
+
 # Train
 # https://huggingface.co/docs/trl/en/sft_trainer
 
