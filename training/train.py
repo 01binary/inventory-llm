@@ -8,7 +8,7 @@
 !pip install torch torchvision torchaudio xformers --index-url https://download.pytorch.org/whl/cu128
 !pip install unsloth
 !pip install --no-deps --upgrade "torchao>=0.16.0"
-!pip install transformers==4.56.2
+!pip install --upgrade --no-cache-dir transformers==4.57.6 huggingface_hub==0.36.2
 !pip install --no-deps trl==0.22.2
 !pip install --upgrade --no-cache-dir --no-deps unsloth_zoo
 
@@ -27,7 +27,7 @@
 from unsloth import FastLanguageModel
 
 model, tokenizer = FastLanguageModel.from_pretrained(
-    model_name = "unsloth/Qwen3-8B-unsloth-bnb-4bit",
+    model_name = "unsloth/Qwen3-14B-unsloth-bnb-4bit",
     max_seq_length = 2048,   # Context length - can be longer, but uses more memory
     load_in_4bit = True,     # 4bit uses much less memory
     load_in_8bit = False,    # A bit more accurate, uses 2x memory
@@ -35,27 +35,40 @@ model, tokenizer = FastLanguageModel.from_pretrained(
     # token = "YOUR_HF_TOKEN",      # HF Token for gated models
 )
 
+model = FastLanguageModel.get_peft_model(
+    model,
+    r = 32,           # Choose any number > 0! Suggested 8, 16, 32, 64, 128
+    target_modules = ["q_proj", "k_proj", "v_proj", "o_proj",
+                      "gate_proj", "up_proj", "down_proj",],
+    lora_alpha = 32,  # Best to choose alpha = rank or rank*2
+    lora_dropout = 0, # Supports any, but = 0 is optimized
+    bias = "none",    # Supports any, but = "none" is optimized
+    # [NEW] "unsloth" uses 30% less VRAM, fits 2x larger batch sizes!
+    use_gradient_checkpointing = "unsloth", # True or "unsloth" for very long context
+    random_state = 3407,
+    use_rslora = False,   # We support rank stabilized LoRA
+    loftq_config = None,  # And LoftQ
+)
+
 # Load Dataset
 # https://unsloth.ai/docs/get-started/fine-tuning-llms-guide/datasets-guide
 
-import json
-from datasets import Dataset
+from datasets import load_dataset
 
-path = "/kaggle/input/datasets/valnovytskyy/inventory-prompts/FEW_SHOT_PROMPTS.json"
+path = "/kaggle/input/datasets/valnovytskyy/inventory-prompts/training.jsonl"
 
-with open(path, encoding="utf-8") as f:
-    messages = json.load(f)
+dataset = load_dataset("json", data_files=path, split="train")
 
-dataset = Dataset.from_list([
-    {
+def format_chat(example):
+    return {
         "text": tokenizer.apply_chat_template(
-            messages[i:i + 2],
+            example["messages"],
             tokenize=False,
             add_generation_prompt=False,
         )
     }
-    for i in range(0, len(messages), 2)
-])
+
+dataset = dataset.map(format_chat, remove_columns=["messages"])
 
 dataset
 dataset[0]
