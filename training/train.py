@@ -55,16 +55,22 @@ model = FastLanguageModel.get_peft_model(
 
 from datasets import load_dataset
 
-path = "/kaggle/input/datasets/valnovytskyy/inventory-prompts/training.jsonl"
+dataset = load_dataset(
+    "json", # JSON builder reads one JSON object per line
+    data_files="/kaggle/input/datasets/valnovytskyy/inventory-prompts/training.jsonl",
+    split="train" # No splitting
+)
 
-dataset = load_dataset("json", data_files=path, split="train")
+# Transform Dataset
+# Conver to format expected by Jinja tokenizer template
 
 def format_chat(example):
     return {
+        # Run Jinja template stored in tokenizer.chat_template
         "text": tokenizer.apply_chat_template(
-            example["messages"],
-            tokenize=False,
-            add_generation_prompt=False,
+            example["messages"],         # Over all messages
+            tokenize=False,              # Return strings instead of token IDs
+            add_generation_prompt=False, # Training instead of Inference
         )
     }
 
@@ -130,4 +136,8 @@ from huggingface_hub import login
 
 login()
 
-model.push_to_hub_gguf("valnovytskyy/inventory-qwen3-14B", tokenizer, quantization_method = "f16")
+model.push_to_hub_gguf(
+    "valnovytskyy/inventory-qwen3-14B",
+    tokenizer,
+    quantization_method = "f16"
+)
