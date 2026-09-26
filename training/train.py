@@ -17,7 +17,7 @@
 from unsloth import FastLanguageModel
 
 model, tokenizer = FastLanguageModel.from_pretrained(
-    model_name = "unsloth/Qwen3-14B-unsloth-bnb-4bit",
+    model_name = "unsloth/Qwen3-8B-unsloth-bnb-4bit",
     # unsloth/Qwen3-1.7B-unsloth-bnb-4bit
     # unsloth/Qwen3-4B-unsloth-bnb-4bit
     # unsloth/Qwen3-8B-unsloth-bnb-4bit
