@@ -111,8 +111,11 @@ trainer_stats = trainer.train()
 
 # Inference
 
+system_prompt = dataset[0]["messages"][0]["content"]
+
 messages = [
-    {"role" : "user", "content" : "Do I have candied ham in my inventory?"}
+    {"role" : "system", "content" : system_prompt},
+    {"role" : "user", "content" : "Order a dozen tortillas and 6 salsa verde."}
 ]
 
 text = tokenizer.apply_chat_template(
