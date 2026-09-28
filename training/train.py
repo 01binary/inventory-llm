@@ -62,7 +62,9 @@ dataset = load_dataset(
 )
 
 # Transform Dataset
-# Conver to format expected by Jinja tokenizer template
+# Convert to format expected by Jinja tokenizer template
+
+system_prompt = dataset[0]["messages"][0]["content"]
 
 def format_chat(example):
     return {
@@ -110,8 +112,6 @@ trainer = SFTTrainer(
 trainer_stats = trainer.train()
 
 # Inference
-
-system_prompt = dataset[0]["messages"][0]["content"]
 
 messages = [
     {"role" : "system", "content" : system_prompt},
