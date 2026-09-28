@@ -28,7 +28,7 @@ model, tokenizer = FastLanguageModel.from_pretrained(
     # unsloth/Llama-3.1-8B
     # unsloth/Llama-3.2-3B
     # unsloth/orpheus-3b-0.1-ft-unsloth-bnb-4bit
-    max_seq_length = 2048,   # Context length - can be longer, but uses more memory
+    max_seq_length = 8192,   # System prompt + tools schema + tool-call turns run ~4k tokens on the longest examples
     load_in_4bit = True,     # 4bit uses much less memory
     load_in_8bit = False,    # A bit more accurate, uses 2x memory
     full_finetuning = False, # We have full finetuning now!
@@ -65,18 +65,20 @@ dataset = load_dataset(
 # Convert to format expected by Jinja tokenizer template
 
 system_prompt = dataset[0]["messages"][0]["content"]
+tools = dataset[0]["tools"]
 
 def format_chat(example):
     return {
         # Run Jinja template stored in tokenizer.chat_template
         "text": tokenizer.apply_chat_template(
             example["messages"],         # Over all messages
+            tools=example["tools"],      # Same tool schema used at inference
             tokenize=False,              # Return strings instead of token IDs
             add_generation_prompt=False, # Training instead of Inference
         )
     }
 
-dataset = dataset.map(format_chat, remove_columns=["messages"])
+dataset = dataset.map(format_chat, remove_columns=["messages", "tools"])
 
 dataset
 dataset[0]
@@ -96,8 +98,8 @@ trainer = SFTTrainer(
         per_device_train_batch_size = 2,
         gradient_accumulation_steps = 4, # Use GA to mimic batch size!
         warmup_steps = 5,
-        # num_train_epochs = 1, # Set this for 1 full training run.
-        max_steps = 30,
+        num_train_epochs = 4, # Scales with dataset size, unlike a fixed max_steps
+        # max_steps = 30,
         learning_rate = 2e-4, # Reduce to 2e-5 for long training runs
         logging_steps = 1,
         optim = "adamw_8bit",
@@ -112,6 +114,7 @@ trainer = SFTTrainer(
 trainer_stats = trainer.train()
 
 # Inference
+# Must include the same system prompt and tools schema every training example used
 
 messages = [
     {"role" : "system", "content" : system_prompt},
@@ -120,6 +123,7 @@ messages = [
 
 text = tokenizer.apply_chat_template(
     messages,
+    tools = tools,
     tokenize = False,
     add_generation_prompt = True, # Must add for generation
     enable_thinking = False, # Disable thinking

@@ -1,0 +1,201 @@
+[
+    {
+        "type": "function",
+        "function": {
+            "name": "inventory_list_items",
+            "description": "List current inventory items with SKU, name, and quantity.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "limit": {
+                        "type": "integer",
+                        "description": "Maximum number of items to return (1 to 200)."
+                    }
+                },
+                "required": []
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "inventory_search_status",
+            "description": "Search inventory by product display name or explicit SKU. Partial names such as one word are valid. If one product matches, use its SKU without asking the user to confirm.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "query": {
+                        "type": "string",
+                        "description": "Product display name, partial display name, or explicit SKU fragment to search for."
+                    },
+                    "limit": {
+                        "type": "integer",
+                        "description": "Maximum number of matching items to return (1 to 50)."
+                    }
+                },
+                "required": ["query"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "inventory_add_transaction",
+            "description": "Add an inventory transaction by product display name or explicit SKU and adjust on-hand quantity. Partial product names are valid; if one product matches, use it without asking for SKU confirmation.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "productName": {
+                        "type": "string",
+                        "description": "Product display name or partial display name to search for. Use an explicit SKU only if the user says it is a SKU."
+                    },
+                    "quantityDelta": {
+                        "type": "integer",
+                        "description": "Quantity change to apply. Positive adds stock, negative removes stock."
+                    },
+                    "transactionType": {
+                        "type": "string",
+                        "description": "Transaction type label such as adjustment, restock, sale, or audit."
+                    },
+                    "note": {
+                        "type": "string",
+                        "description": "Optional note describing the reason for this change."
+                    }
+                },
+                "required": ["productName", "quantityDelta"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "orders_get_latest",
+            "description": "Get the latest order and its item lines.",
+            "parameters": {
+                "type": "object",
+                "properties": {},
+                "required": []
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "orders_create",
+            "description": "Create a new order with one or more product lines. Product names can be partial display names; the tool resolves SKUs internally and does not require user SKU confirmation when exactly one product matches.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "items": {
+                        "type": "array",
+                        "description": "Array of order lines. Each line requires productName and quantity > 0.",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "productName": {
+                                    "type": "string",
+                                    "description": "Product display name or partial display name to search for, such as 'clamato'. Use an explicit SKU only if the user says it is a SKU."
+                                },
+                                "quantity": {
+                                    "type": "integer",
+                                    "description": "Quantity for this order line. Must be greater than zero."
+                                }
+                            },
+                            "required": ["productName", "quantity"]
+                        }
+                    }
+                },
+                "required": ["items"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "orders_add_items_to_latest",
+            "description": "Add one or more product lines to the latest existing order. Product names can be partial display names; the tool resolves SKUs internally and does not require user SKU confirmation when exactly one product matches.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "items": {
+                        "type": "array",
+                        "description": "Array of order lines. Each line requires productName and quantity > 0.",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "productName": {
+                                    "type": "string",
+                                    "description": "Product display name or partial display name to search for, such as 'clamato'. Use an explicit SKU only if the user says it is a SKU."
+                                },
+                                "quantity": {
+                                    "type": "integer",
+                                    "description": "Quantity for this order line. Must be greater than zero."
+                                }
+                            },
+                            "required": ["productName", "quantity"]
+                        }
+                    }
+                },
+                "required": ["items"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "orders_set_latest_item_quantities",
+            "description": "Set existing product line quantities on the latest order. Use this when the user asks to change, edit, fix, or set the quantity of an item already on the latest order. Product names can be partial display names; the tool resolves SKUs internally and does not require user SKU confirmation when exactly one product matches.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "items": {
+                        "type": "array",
+                        "description": "Array of order line quantity edits. Each line requires productName and the new final quantity > 0.",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "productName": {
+                                    "type": "string",
+                                    "description": "Product display name or partial display name to search for, such as 'clamato'. Use an explicit SKU only if the user says it is a SKU."
+                                },
+                                "quantity": {
+                                    "type": "integer",
+                                    "description": "New final quantity for this order line. Must be greater than zero."
+                                }
+                            },
+                            "required": ["productName", "quantity"]
+                        }
+                    }
+                },
+                "required": ["items"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "orders_remove_items_from_latest",
+            "description": "Remove one or more existing product lines from the latest order. Use this when the user asks to remove, delete, drop, or take an item off the latest order. Product names can be partial display names; the tool resolves SKUs internally and does not require user SKU confirmation when exactly one product matches.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "items": {
+                        "type": "array",
+                        "description": "Array of products to remove. Each entry requires productName.",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "productName": {
+                                    "type": "string",
+                                    "description": "Product display name or partial display name to search for, such as 'clamato'. Use an explicit SKU only if the user says it is a SKU."
+                                }
+                            },
+                            "required": ["productName"]
+                        }
+                    }
+                },
+                "required": ["items"]
+            }
+        }
+    }
+]
