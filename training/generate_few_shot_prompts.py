@@ -80,17 +80,14 @@ def assistant_msg(text):
 
 
 def tool_call_msg(name, arguments):
-    return {
-        "role": "assistant",
-        "content": "",
-        "tool_calls": [
-            {"type": "function", "function": {"name": name, "arguments": arguments}}
-        ],
-    }
+    # Plain text, not a "tool_calls" field or "tool" role - see the comment in
+    # data-prep.py for why: not every base model's chat template supports those.
+    call = {"name": name, "arguments": arguments}
+    return {"role": "assistant", "content": f"<tool_call>\n{json.dumps(call)}\n</tool_call>"}
 
 
 def tool_result_msg(result):
-    return {"role": "tool", "content": json.dumps(result)}
+    return {"role": "user", "content": f"<tool_response>\n{json.dumps(result)}\n</tool_response>"}
 
 
 def search_result(skus, query):

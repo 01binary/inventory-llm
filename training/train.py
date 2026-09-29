@@ -1,6 +1,5 @@
-# Training Notebook for Qwen3 (14B) on Kaggle
-# From https://unsloth.ai/docs/get-started/unsloth-notebooks#kaggle-notebooks
-# Using Qwen3 (14B): https://www.kaggle.com/notebooks/welcome?src=https%3A%2F%2Fgithub.com%2Funslothai/notebooks/blob/main/nb/Kaggle-Qwen3_(14B).ipynb
+# Training Notebook for Gemma3 (12B) on Kaggle
+# From https://www.kaggle.com/notebooks/welcome?src=https%3A%2F%2Fgithub.com%2Funslothai/notebooks/blob/main/nb/Kaggle-Gemma3_(4B).ipynb
 
 # Install Dependencies
 
@@ -17,37 +16,35 @@
 from unsloth import FastLanguageModel
 
 model, tokenizer = FastLanguageModel.from_pretrained(
-    model_name = "unsloth/Qwen3-8B-unsloth-bnb-4bit",
-    # unsloth/Qwen3-1.7B-unsloth-bnb-4bit
-    # unsloth/Qwen3-4B-unsloth-bnb-4bit
-    # unsloth/Qwen3-8B-unsloth-bnb-4bit
-    # unsloth/Qwen3-14B-unsloth-bnb-4bit
-    # unsloth/Qwen3-32B-unsloth-bnb-4bit
-    # unsloth/gemma-3-12b-it-unsloth-bnb-4bit
-    # unsloth/Phi-4
-    # unsloth/Llama-3.1-8B
-    # unsloth/Llama-3.2-3B
-    # unsloth/orpheus-3b-0.1-ft-unsloth-bnb-4bit
-    max_seq_length = 8192,   # System prompt + tools schema + tool-call turns run ~4k tokens on the longest examples
+    model_name = "unsloth/gemma-3-12b-it-unsloth-bnb-4bit",
+    # "unsloth/gemma-3-1b-it-unsloth-bnb-4bit",
+    # "unsloth/gemma-3-4b-it-unsloth-bnb-4bit",
+    # "unsloth/gemma-3-12b-it-unsloth-bnb-4bit",
+    # "unsloth/gemma-3-27b-it-unsloth-bnb-4bit",
+    # "unsloth/Llama-3.1-8B",
+    # "unsloth/Llama-3.2-3B",
+    # "unsloth/Llama-3.3-70B",
+    # "unsloth/mistral-7b-instruct-v0.3",
+    # "unsloth/Phi-4",
+    max_seq_length = 8192,   # System prompt (incl. tool schema text) + tool-call turns run ~4k tokens on the longest examples
     load_in_4bit = True,     # 4bit uses much less memory
     load_in_8bit = False,    # A bit more accurate, uses 2x memory
     full_finetuning = False, # We have full finetuning now!
     # token = "YOUR_HF_TOKEN",      # HF Token for gated models
 )
 
-model = FastLanguageModel.get_peft_model(
+model = FastModel.get_peft_model(
     model,
-    r = 32,           # Choose any number > 0! Suggested 8, 16, 32, 64, 128
-    target_modules = ["q_proj", "k_proj", "v_proj", "o_proj",
-                      "gate_proj", "up_proj", "down_proj",],
-    lora_alpha = 32,  # Best to choose alpha = rank or rank*2
-    lora_dropout = 0, # Supports any, but = 0 is optimized
-    bias = "none",    # Supports any, but = "none" is optimized
-    # [NEW] "unsloth" uses 30% less VRAM, fits 2x larger batch sizes!
-    use_gradient_checkpointing = "unsloth", # True or "unsloth" for very long context
+    finetune_vision_layers     = False, # Turn off for just text!
+    finetune_language_layers   = True,  # Should leave on!
+    finetune_attention_modules = True,  # Attention good for GRPO
+    finetune_mlp_modules       = True,  # Should leave on always!
+
+    r = 8,           # Larger = higher accuracy, but might overfit
+    lora_alpha = 8,  # Recommended alpha == r at least
+    lora_dropout = 0,
+    bias = "none",
     random_state = 3407,
-    use_rslora = False,   # We support rank stabilized LoRA
-    loftq_config = None,  # And LoftQ
 )
 
 # Load Dataset
@@ -64,21 +61,24 @@ dataset = load_dataset(
 # Transform Dataset
 # Convert to format expected by Jinja tokenizer template
 
+# The system message (see data-prep.py) includes the tool-calling protocol and
+# schema as plain text rather than a `tools=` template kwarg or a "tool" role -
+# Gemma's chat template has neither and strictly enforces alternating
+# user/assistant turns, unlike Qwen's Hermes-style tool-calling support. Save
+# it now so inference can reuse it after remove_columns drops "messages" below.
 system_prompt = dataset[0]["messages"][0]["content"]
-tools = dataset[0]["tools"]
 
 def format_chat(example):
     return {
         # Run Jinja template stored in tokenizer.chat_template
         "text": tokenizer.apply_chat_template(
             example["messages"],         # Over all messages
-            tools=example["tools"],      # Same tool schema used at inference
             tokenize=False,              # Return strings instead of token IDs
             add_generation_prompt=False, # Training instead of Inference
         )
     }
 
-dataset = dataset.map(format_chat, remove_columns=["messages", "tools"])
+dataset = dataset.map(format_chat, remove_columns=["messages"])
 
 dataset
 dataset[0]
@@ -98,8 +98,8 @@ trainer = SFTTrainer(
         per_device_train_batch_size = 2,
         gradient_accumulation_steps = 4, # Use GA to mimic batch size!
         warmup_steps = 5,
-        num_train_epochs = 4, # Scales with dataset size, unlike a fixed max_steps
-        # max_steps = 30,
+        # num_train_epochs = 1, # Set this for 1 full training run.
+        max_steps = 30,
         learning_rate = 2e-4, # Reduce to 2e-5 for long training runs
         logging_steps = 1,
         optim = "adamw_8bit",
@@ -107,33 +107,35 @@ trainer = SFTTrainer(
         lr_scheduler_type = "linear",
         seed = 3407,
         report_to = "none", # Use TrackIO/WandB etc
-        padding_free  = False, # Set to True if > 17 GB VRAM
     ),
 )
 
 trainer_stats = trainer.train()
 
 # Inference
-# Must include the same system prompt and tools schema every training example used
+# Must include the same system prompt every training example used, otherwise the
+# chat template produces a prompt shape the model never saw while training.
+
+from transformers import TextStreamer
 
 messages = [
     {"role" : "system", "content" : system_prompt},
     {"role" : "user", "content" : "Order a dozen tortillas and 6 salsa verde."}
 ]
 
-text = tokenizer.apply_chat_template(
+inputs = tokenizer.apply_chat_template(
     messages,
-    tools = tools,
-    tokenize = False,
     add_generation_prompt = True, # Must add for generation
-    enable_thinking = False, # Disable thinking
+    tokenize = True,
+    return_tensors = "pt",
+    return_dict = True,
 )
 
-from transformers import TextStreamer
 _ = model.generate(
-    **tokenizer(text, return_tensors = "pt").to("cuda"),
-    max_new_tokens = 256, # Increase for longer outputs!
-    temperature = 0.7, top_p = 0.8, top_k = 20, # For non thinking
+    **inputs.to("cuda"),
+    max_new_tokens = 64, # Increase for longer outputs!
+    # Recommended Gemma-3 settings!
+    temperature = 1.0, top_p = 0.95, top_k = 64,
     streamer = TextStreamer(tokenizer, skip_prompt = True),
 )
 
@@ -144,7 +146,7 @@ from huggingface_hub import login
 login()
 
 model.push_to_hub_gguf(
-    "valnovytskyy/inventory-qwen3-14B",
+    "valnovytskyy/inventory-gemma3-12B",
     tokenizer,
     quantization_method = "f16"
 )

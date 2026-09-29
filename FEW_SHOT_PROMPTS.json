@@ -7,20 +7,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "inventory_list_items",
-              "arguments": {}
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"inventory_list_items\", \"arguments\": {}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"total\": 15, \"returned\": 15, \"items\": [{\"id\": 1, \"sku\": \"NABU\", \"name\": \"Nestl\\u00e9 Abuelita Hot Chocolate\", \"quantity\": 25, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 2, \"sku\": \"CLAM\", \"name\": \"Clamato El Original 16Oz\", \"quantity\": 12, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 3, \"sku\": \"MARU\", \"name\": \"Maruchan Instant Lunch Chicken Flavor\", \"quantity\": 8, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 4, \"sku\": \"MENU\", \"name\": \"Juanita's Menudo Picoso\", \"quantity\": 40, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 5, \"sku\": \"ARIE\", \"name\": \"Ariel Poder Y Cuidado\", \"quantity\": 6, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 6, \"sku\": \"FABU\", \"name\": \"Fabuloso Multi-Purpose Cleaner 56 Oz\", \"quantity\": 15, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 7, \"sku\": \"FOCA\", \"name\": \"Foca Detergente Liquido 1L\", \"quantity\": 30, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 8, \"sku\": \"ROMA\", \"name\": \"Roma Detergente Liquido 33 Oz\", \"quantity\": 20, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 9, \"sku\": \"BOCH\", \"name\": \"Botanas Chicharron Casero\", \"quantity\": 18, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 10, \"sku\": \"LATO\", \"name\": \"La Rosa Tostadas\", \"quantity\": 18, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 11, \"sku\": \"GUTO\", \"name\": \"Guerrero Tostadas Caseras Amarillas\", \"quantity\": 5, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 12, \"sku\": \"LECH\", \"name\": \"El Super Leon Churritos Mexicanos\", \"quantity\": 3, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 13, \"sku\": \"JARM\", \"name\": \"Jarritos Mango 1.5L\", \"quantity\": 3, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 14, \"sku\": \"MCMY\", \"name\": \"McCormick Mayonesa Con Jugo de Limones\", \"quantity\": 7, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 15, \"sku\": \"DOMV\", \"name\": \"Dona Maria Mole Verde 8.25 oz\", \"quantity\": 7, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}"
+        "role": "user",
+        "content": "<tool_response>\n{\"total\": 15, \"returned\": 15, \"items\": [{\"id\": 1, \"sku\": \"NABU\", \"name\": \"Nestl\\u00e9 Abuelita Hot Chocolate\", \"quantity\": 25, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 2, \"sku\": \"CLAM\", \"name\": \"Clamato El Original 16Oz\", \"quantity\": 12, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 3, \"sku\": \"MARU\", \"name\": \"Maruchan Instant Lunch Chicken Flavor\", \"quantity\": 8, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 4, \"sku\": \"MENU\", \"name\": \"Juanita's Menudo Picoso\", \"quantity\": 40, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 5, \"sku\": \"ARIE\", \"name\": \"Ariel Poder Y Cuidado\", \"quantity\": 6, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 6, \"sku\": \"FABU\", \"name\": \"Fabuloso Multi-Purpose Cleaner 56 Oz\", \"quantity\": 15, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 7, \"sku\": \"FOCA\", \"name\": \"Foca Detergente Liquido 1L\", \"quantity\": 30, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 8, \"sku\": \"ROMA\", \"name\": \"Roma Detergente Liquido 33 Oz\", \"quantity\": 20, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 9, \"sku\": \"BOCH\", \"name\": \"Botanas Chicharron Casero\", \"quantity\": 18, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 10, \"sku\": \"LATO\", \"name\": \"La Rosa Tostadas\", \"quantity\": 18, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 11, \"sku\": \"GUTO\", \"name\": \"Guerrero Tostadas Caseras Amarillas\", \"quantity\": 5, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 12, \"sku\": \"LECH\", \"name\": \"El Super Leon Churritos Mexicanos\", \"quantity\": 3, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 13, \"sku\": \"JARM\", \"name\": \"Jarritos Mango 1.5L\", \"quantity\": 3, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 14, \"sku\": \"MCMY\", \"name\": \"McCormick Mayonesa Con Jugo de Limones\", \"quantity\": 7, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 15, \"sku\": \"DOMV\", \"name\": \"Dona Maria Mole Verde 8.25 oz\", \"quantity\": 7, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -36,20 +27,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "inventory_list_items",
-              "arguments": {}
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"inventory_list_items\", \"arguments\": {}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"total\": 15, \"returned\": 15, \"items\": [{\"id\": 1, \"sku\": \"NABU\", \"name\": \"Nestl\\u00e9 Abuelita Hot Chocolate\", \"quantity\": 25, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 2, \"sku\": \"CLAM\", \"name\": \"Clamato El Original 16Oz\", \"quantity\": 12, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 3, \"sku\": \"MARU\", \"name\": \"Maruchan Instant Lunch Chicken Flavor\", \"quantity\": 8, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 4, \"sku\": \"MENU\", \"name\": \"Juanita's Menudo Picoso\", \"quantity\": 40, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 5, \"sku\": \"ARIE\", \"name\": \"Ariel Poder Y Cuidado\", \"quantity\": 6, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 6, \"sku\": \"FABU\", \"name\": \"Fabuloso Multi-Purpose Cleaner 56 Oz\", \"quantity\": 15, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 7, \"sku\": \"FOCA\", \"name\": \"Foca Detergente Liquido 1L\", \"quantity\": 30, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 8, \"sku\": \"ROMA\", \"name\": \"Roma Detergente Liquido 33 Oz\", \"quantity\": 20, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 9, \"sku\": \"BOCH\", \"name\": \"Botanas Chicharron Casero\", \"quantity\": 18, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 10, \"sku\": \"LATO\", \"name\": \"La Rosa Tostadas\", \"quantity\": 18, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 11, \"sku\": \"GUTO\", \"name\": \"Guerrero Tostadas Caseras Amarillas\", \"quantity\": 5, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 12, \"sku\": \"LECH\", \"name\": \"El Super Leon Churritos Mexicanos\", \"quantity\": 3, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 13, \"sku\": \"JARM\", \"name\": \"Jarritos Mango 1.5L\", \"quantity\": 3, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 14, \"sku\": \"MCMY\", \"name\": \"McCormick Mayonesa Con Jugo de Limones\", \"quantity\": 7, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 15, \"sku\": \"DOMV\", \"name\": \"Dona Maria Mole Verde 8.25 oz\", \"quantity\": 7, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}"
+        "role": "user",
+        "content": "<tool_response>\n{\"total\": 15, \"returned\": 15, \"items\": [{\"id\": 1, \"sku\": \"NABU\", \"name\": \"Nestl\\u00e9 Abuelita Hot Chocolate\", \"quantity\": 25, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 2, \"sku\": \"CLAM\", \"name\": \"Clamato El Original 16Oz\", \"quantity\": 12, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 3, \"sku\": \"MARU\", \"name\": \"Maruchan Instant Lunch Chicken Flavor\", \"quantity\": 8, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 4, \"sku\": \"MENU\", \"name\": \"Juanita's Menudo Picoso\", \"quantity\": 40, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 5, \"sku\": \"ARIE\", \"name\": \"Ariel Poder Y Cuidado\", \"quantity\": 6, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 6, \"sku\": \"FABU\", \"name\": \"Fabuloso Multi-Purpose Cleaner 56 Oz\", \"quantity\": 15, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 7, \"sku\": \"FOCA\", \"name\": \"Foca Detergente Liquido 1L\", \"quantity\": 30, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 8, \"sku\": \"ROMA\", \"name\": \"Roma Detergente Liquido 33 Oz\", \"quantity\": 20, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 9, \"sku\": \"BOCH\", \"name\": \"Botanas Chicharron Casero\", \"quantity\": 18, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 10, \"sku\": \"LATO\", \"name\": \"La Rosa Tostadas\", \"quantity\": 18, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 11, \"sku\": \"GUTO\", \"name\": \"Guerrero Tostadas Caseras Amarillas\", \"quantity\": 5, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 12, \"sku\": \"LECH\", \"name\": \"El Super Leon Churritos Mexicanos\", \"quantity\": 3, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 13, \"sku\": \"JARM\", \"name\": \"Jarritos Mango 1.5L\", \"quantity\": 3, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 14, \"sku\": \"MCMY\", \"name\": \"McCormick Mayonesa Con Jugo de Limones\", \"quantity\": 7, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 15, \"sku\": \"DOMV\", \"name\": \"Dona Maria Mole Verde 8.25 oz\", \"quantity\": 7, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -65,20 +47,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "inventory_list_items",
-              "arguments": {}
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"inventory_list_items\", \"arguments\": {}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"total\": 15, \"returned\": 15, \"items\": [{\"id\": 1, \"sku\": \"NABU\", \"name\": \"Nestl\\u00e9 Abuelita Hot Chocolate\", \"quantity\": 25, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 2, \"sku\": \"CLAM\", \"name\": \"Clamato El Original 16Oz\", \"quantity\": 12, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 3, \"sku\": \"MARU\", \"name\": \"Maruchan Instant Lunch Chicken Flavor\", \"quantity\": 8, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 4, \"sku\": \"MENU\", \"name\": \"Juanita's Menudo Picoso\", \"quantity\": 40, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 5, \"sku\": \"ARIE\", \"name\": \"Ariel Poder Y Cuidado\", \"quantity\": 6, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 6, \"sku\": \"FABU\", \"name\": \"Fabuloso Multi-Purpose Cleaner 56 Oz\", \"quantity\": 15, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 7, \"sku\": \"FOCA\", \"name\": \"Foca Detergente Liquido 1L\", \"quantity\": 30, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 8, \"sku\": \"ROMA\", \"name\": \"Roma Detergente Liquido 33 Oz\", \"quantity\": 20, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 9, \"sku\": \"BOCH\", \"name\": \"Botanas Chicharron Casero\", \"quantity\": 18, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 10, \"sku\": \"LATO\", \"name\": \"La Rosa Tostadas\", \"quantity\": 18, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 11, \"sku\": \"GUTO\", \"name\": \"Guerrero Tostadas Caseras Amarillas\", \"quantity\": 5, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 12, \"sku\": \"LECH\", \"name\": \"El Super Leon Churritos Mexicanos\", \"quantity\": 3, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 13, \"sku\": \"JARM\", \"name\": \"Jarritos Mango 1.5L\", \"quantity\": 3, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 14, \"sku\": \"MCMY\", \"name\": \"McCormick Mayonesa Con Jugo de Limones\", \"quantity\": 7, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 15, \"sku\": \"DOMV\", \"name\": \"Dona Maria Mole Verde 8.25 oz\", \"quantity\": 7, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}"
+        "role": "user",
+        "content": "<tool_response>\n{\"total\": 15, \"returned\": 15, \"items\": [{\"id\": 1, \"sku\": \"NABU\", \"name\": \"Nestl\\u00e9 Abuelita Hot Chocolate\", \"quantity\": 25, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 2, \"sku\": \"CLAM\", \"name\": \"Clamato El Original 16Oz\", \"quantity\": 12, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 3, \"sku\": \"MARU\", \"name\": \"Maruchan Instant Lunch Chicken Flavor\", \"quantity\": 8, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 4, \"sku\": \"MENU\", \"name\": \"Juanita's Menudo Picoso\", \"quantity\": 40, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 5, \"sku\": \"ARIE\", \"name\": \"Ariel Poder Y Cuidado\", \"quantity\": 6, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 6, \"sku\": \"FABU\", \"name\": \"Fabuloso Multi-Purpose Cleaner 56 Oz\", \"quantity\": 15, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 7, \"sku\": \"FOCA\", \"name\": \"Foca Detergente Liquido 1L\", \"quantity\": 30, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 8, \"sku\": \"ROMA\", \"name\": \"Roma Detergente Liquido 33 Oz\", \"quantity\": 20, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 9, \"sku\": \"BOCH\", \"name\": \"Botanas Chicharron Casero\", \"quantity\": 18, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 10, \"sku\": \"LATO\", \"name\": \"La Rosa Tostadas\", \"quantity\": 18, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 11, \"sku\": \"GUTO\", \"name\": \"Guerrero Tostadas Caseras Amarillas\", \"quantity\": 5, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 12, \"sku\": \"LECH\", \"name\": \"El Super Leon Churritos Mexicanos\", \"quantity\": 3, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 13, \"sku\": \"JARM\", \"name\": \"Jarritos Mango 1.5L\", \"quantity\": 3, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 14, \"sku\": \"MCMY\", \"name\": \"McCormick Mayonesa Con Jugo de Limones\", \"quantity\": 7, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 15, \"sku\": \"DOMV\", \"name\": \"Dona Maria Mole Verde 8.25 oz\", \"quantity\": 7, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -94,20 +67,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "inventory_list_items",
-              "arguments": {}
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"inventory_list_items\", \"arguments\": {}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"total\": 15, \"returned\": 15, \"items\": [{\"id\": 1, \"sku\": \"NABU\", \"name\": \"Nestl\\u00e9 Abuelita Hot Chocolate\", \"quantity\": 25, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 2, \"sku\": \"CLAM\", \"name\": \"Clamato El Original 16Oz\", \"quantity\": 12, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 3, \"sku\": \"MARU\", \"name\": \"Maruchan Instant Lunch Chicken Flavor\", \"quantity\": 8, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 4, \"sku\": \"MENU\", \"name\": \"Juanita's Menudo Picoso\", \"quantity\": 40, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 5, \"sku\": \"ARIE\", \"name\": \"Ariel Poder Y Cuidado\", \"quantity\": 6, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 6, \"sku\": \"FABU\", \"name\": \"Fabuloso Multi-Purpose Cleaner 56 Oz\", \"quantity\": 15, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 7, \"sku\": \"FOCA\", \"name\": \"Foca Detergente Liquido 1L\", \"quantity\": 30, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 8, \"sku\": \"ROMA\", \"name\": \"Roma Detergente Liquido 33 Oz\", \"quantity\": 20, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 9, \"sku\": \"BOCH\", \"name\": \"Botanas Chicharron Casero\", \"quantity\": 18, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 10, \"sku\": \"LATO\", \"name\": \"La Rosa Tostadas\", \"quantity\": 18, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 11, \"sku\": \"GUTO\", \"name\": \"Guerrero Tostadas Caseras Amarillas\", \"quantity\": 5, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 12, \"sku\": \"LECH\", \"name\": \"El Super Leon Churritos Mexicanos\", \"quantity\": 3, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 13, \"sku\": \"JARM\", \"name\": \"Jarritos Mango 1.5L\", \"quantity\": 3, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 14, \"sku\": \"MCMY\", \"name\": \"McCormick Mayonesa Con Jugo de Limones\", \"quantity\": 7, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 15, \"sku\": \"DOMV\", \"name\": \"Dona Maria Mole Verde 8.25 oz\", \"quantity\": 7, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}"
+        "role": "user",
+        "content": "<tool_response>\n{\"total\": 15, \"returned\": 15, \"items\": [{\"id\": 1, \"sku\": \"NABU\", \"name\": \"Nestl\\u00e9 Abuelita Hot Chocolate\", \"quantity\": 25, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 2, \"sku\": \"CLAM\", \"name\": \"Clamato El Original 16Oz\", \"quantity\": 12, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 3, \"sku\": \"MARU\", \"name\": \"Maruchan Instant Lunch Chicken Flavor\", \"quantity\": 8, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 4, \"sku\": \"MENU\", \"name\": \"Juanita's Menudo Picoso\", \"quantity\": 40, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 5, \"sku\": \"ARIE\", \"name\": \"Ariel Poder Y Cuidado\", \"quantity\": 6, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 6, \"sku\": \"FABU\", \"name\": \"Fabuloso Multi-Purpose Cleaner 56 Oz\", \"quantity\": 15, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 7, \"sku\": \"FOCA\", \"name\": \"Foca Detergente Liquido 1L\", \"quantity\": 30, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 8, \"sku\": \"ROMA\", \"name\": \"Roma Detergente Liquido 33 Oz\", \"quantity\": 20, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 9, \"sku\": \"BOCH\", \"name\": \"Botanas Chicharron Casero\", \"quantity\": 18, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 10, \"sku\": \"LATO\", \"name\": \"La Rosa Tostadas\", \"quantity\": 18, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 11, \"sku\": \"GUTO\", \"name\": \"Guerrero Tostadas Caseras Amarillas\", \"quantity\": 5, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 12, \"sku\": \"LECH\", \"name\": \"El Super Leon Churritos Mexicanos\", \"quantity\": 3, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 13, \"sku\": \"JARM\", \"name\": \"Jarritos Mango 1.5L\", \"quantity\": 3, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 14, \"sku\": \"MCMY\", \"name\": \"McCormick Mayonesa Con Jugo de Limones\", \"quantity\": 7, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 15, \"sku\": \"DOMV\", \"name\": \"Dona Maria Mole Verde 8.25 oz\", \"quantity\": 7, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -123,20 +87,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "inventory_list_items",
-              "arguments": {}
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"inventory_list_items\", \"arguments\": {}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"total\": 15, \"returned\": 15, \"items\": [{\"id\": 1, \"sku\": \"NABU\", \"name\": \"Nestl\\u00e9 Abuelita Hot Chocolate\", \"quantity\": 25, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 2, \"sku\": \"CLAM\", \"name\": \"Clamato El Original 16Oz\", \"quantity\": 12, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 3, \"sku\": \"MARU\", \"name\": \"Maruchan Instant Lunch Chicken Flavor\", \"quantity\": 8, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 4, \"sku\": \"MENU\", \"name\": \"Juanita's Menudo Picoso\", \"quantity\": 40, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 5, \"sku\": \"ARIE\", \"name\": \"Ariel Poder Y Cuidado\", \"quantity\": 6, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 6, \"sku\": \"FABU\", \"name\": \"Fabuloso Multi-Purpose Cleaner 56 Oz\", \"quantity\": 15, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 7, \"sku\": \"FOCA\", \"name\": \"Foca Detergente Liquido 1L\", \"quantity\": 30, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 8, \"sku\": \"ROMA\", \"name\": \"Roma Detergente Liquido 33 Oz\", \"quantity\": 20, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 9, \"sku\": \"BOCH\", \"name\": \"Botanas Chicharron Casero\", \"quantity\": 18, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 10, \"sku\": \"LATO\", \"name\": \"La Rosa Tostadas\", \"quantity\": 18, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 11, \"sku\": \"GUTO\", \"name\": \"Guerrero Tostadas Caseras Amarillas\", \"quantity\": 5, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 12, \"sku\": \"LECH\", \"name\": \"El Super Leon Churritos Mexicanos\", \"quantity\": 3, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 13, \"sku\": \"JARM\", \"name\": \"Jarritos Mango 1.5L\", \"quantity\": 3, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 14, \"sku\": \"MCMY\", \"name\": \"McCormick Mayonesa Con Jugo de Limones\", \"quantity\": 7, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 15, \"sku\": \"DOMV\", \"name\": \"Dona Maria Mole Verde 8.25 oz\", \"quantity\": 7, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}"
+        "role": "user",
+        "content": "<tool_response>\n{\"total\": 15, \"returned\": 15, \"items\": [{\"id\": 1, \"sku\": \"NABU\", \"name\": \"Nestl\\u00e9 Abuelita Hot Chocolate\", \"quantity\": 25, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 2, \"sku\": \"CLAM\", \"name\": \"Clamato El Original 16Oz\", \"quantity\": 12, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 3, \"sku\": \"MARU\", \"name\": \"Maruchan Instant Lunch Chicken Flavor\", \"quantity\": 8, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 4, \"sku\": \"MENU\", \"name\": \"Juanita's Menudo Picoso\", \"quantity\": 40, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 5, \"sku\": \"ARIE\", \"name\": \"Ariel Poder Y Cuidado\", \"quantity\": 6, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 6, \"sku\": \"FABU\", \"name\": \"Fabuloso Multi-Purpose Cleaner 56 Oz\", \"quantity\": 15, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 7, \"sku\": \"FOCA\", \"name\": \"Foca Detergente Liquido 1L\", \"quantity\": 30, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 8, \"sku\": \"ROMA\", \"name\": \"Roma Detergente Liquido 33 Oz\", \"quantity\": 20, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 9, \"sku\": \"BOCH\", \"name\": \"Botanas Chicharron Casero\", \"quantity\": 18, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 10, \"sku\": \"LATO\", \"name\": \"La Rosa Tostadas\", \"quantity\": 18, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 11, \"sku\": \"GUTO\", \"name\": \"Guerrero Tostadas Caseras Amarillas\", \"quantity\": 5, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 12, \"sku\": \"LECH\", \"name\": \"El Super Leon Churritos Mexicanos\", \"quantity\": 3, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 13, \"sku\": \"JARM\", \"name\": \"Jarritos Mango 1.5L\", \"quantity\": 3, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 14, \"sku\": \"MCMY\", \"name\": \"McCormick Mayonesa Con Jugo de Limones\", \"quantity\": 7, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 15, \"sku\": \"DOMV\", \"name\": \"Dona Maria Mole Verde 8.25 oz\", \"quantity\": 7, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -152,20 +107,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "inventory_list_items",
-              "arguments": {}
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"inventory_list_items\", \"arguments\": {}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"total\": 15, \"returned\": 15, \"items\": [{\"id\": 1, \"sku\": \"NABU\", \"name\": \"Nestl\\u00e9 Abuelita Hot Chocolate\", \"quantity\": 25, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 2, \"sku\": \"CLAM\", \"name\": \"Clamato El Original 16Oz\", \"quantity\": 12, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 3, \"sku\": \"MARU\", \"name\": \"Maruchan Instant Lunch Chicken Flavor\", \"quantity\": 8, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 4, \"sku\": \"MENU\", \"name\": \"Juanita's Menudo Picoso\", \"quantity\": 40, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 5, \"sku\": \"ARIE\", \"name\": \"Ariel Poder Y Cuidado\", \"quantity\": 6, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 6, \"sku\": \"FABU\", \"name\": \"Fabuloso Multi-Purpose Cleaner 56 Oz\", \"quantity\": 15, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 7, \"sku\": \"FOCA\", \"name\": \"Foca Detergente Liquido 1L\", \"quantity\": 30, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 8, \"sku\": \"ROMA\", \"name\": \"Roma Detergente Liquido 33 Oz\", \"quantity\": 20, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 9, \"sku\": \"BOCH\", \"name\": \"Botanas Chicharron Casero\", \"quantity\": 18, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 10, \"sku\": \"LATO\", \"name\": \"La Rosa Tostadas\", \"quantity\": 18, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 11, \"sku\": \"GUTO\", \"name\": \"Guerrero Tostadas Caseras Amarillas\", \"quantity\": 5, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 12, \"sku\": \"LECH\", \"name\": \"El Super Leon Churritos Mexicanos\", \"quantity\": 3, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 13, \"sku\": \"JARM\", \"name\": \"Jarritos Mango 1.5L\", \"quantity\": 3, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 14, \"sku\": \"MCMY\", \"name\": \"McCormick Mayonesa Con Jugo de Limones\", \"quantity\": 7, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 15, \"sku\": \"DOMV\", \"name\": \"Dona Maria Mole Verde 8.25 oz\", \"quantity\": 7, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}"
+        "role": "user",
+        "content": "<tool_response>\n{\"total\": 15, \"returned\": 15, \"items\": [{\"id\": 1, \"sku\": \"NABU\", \"name\": \"Nestl\\u00e9 Abuelita Hot Chocolate\", \"quantity\": 25, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 2, \"sku\": \"CLAM\", \"name\": \"Clamato El Original 16Oz\", \"quantity\": 12, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 3, \"sku\": \"MARU\", \"name\": \"Maruchan Instant Lunch Chicken Flavor\", \"quantity\": 8, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 4, \"sku\": \"MENU\", \"name\": \"Juanita's Menudo Picoso\", \"quantity\": 40, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 5, \"sku\": \"ARIE\", \"name\": \"Ariel Poder Y Cuidado\", \"quantity\": 6, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 6, \"sku\": \"FABU\", \"name\": \"Fabuloso Multi-Purpose Cleaner 56 Oz\", \"quantity\": 15, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 7, \"sku\": \"FOCA\", \"name\": \"Foca Detergente Liquido 1L\", \"quantity\": 30, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 8, \"sku\": \"ROMA\", \"name\": \"Roma Detergente Liquido 33 Oz\", \"quantity\": 20, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 9, \"sku\": \"BOCH\", \"name\": \"Botanas Chicharron Casero\", \"quantity\": 18, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 10, \"sku\": \"LATO\", \"name\": \"La Rosa Tostadas\", \"quantity\": 18, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 11, \"sku\": \"GUTO\", \"name\": \"Guerrero Tostadas Caseras Amarillas\", \"quantity\": 5, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 12, \"sku\": \"LECH\", \"name\": \"El Super Leon Churritos Mexicanos\", \"quantity\": 3, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 13, \"sku\": \"JARM\", \"name\": \"Jarritos Mango 1.5L\", \"quantity\": 3, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 14, \"sku\": \"MCMY\", \"name\": \"McCormick Mayonesa Con Jugo de Limones\", \"quantity\": 7, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 15, \"sku\": \"DOMV\", \"name\": \"Dona Maria Mole Verde 8.25 oz\", \"quantity\": 7, \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -181,22 +127,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "inventory_search_status",
-              "arguments": {
-                "query": "abuelita"
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"inventory_search_status\", \"arguments\": {\"query\": \"abuelita\"}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"found\": true, \"query\": \"abuelita\", \"count\": 1, \"items\": [{\"id\": 1, \"sku\": \"NABU\", \"name\": \"Nestl\\u00e9 Abuelita Hot Chocolate\", \"quantity\": 25, \"inStock\": true}]}"
+        "role": "user",
+        "content": "<tool_response>\n{\"found\": true, \"query\": \"abuelita\", \"count\": 1, \"items\": [{\"id\": 1, \"sku\": \"NABU\", \"name\": \"Nestl\\u00e9 Abuelita Hot Chocolate\", \"quantity\": 25, \"inStock\": true}]}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -212,22 +147,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "inventory_search_status",
-              "arguments": {
-                "query": "clamato"
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"inventory_search_status\", \"arguments\": {\"query\": \"clamato\"}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"found\": true, \"query\": \"clamato\", \"count\": 1, \"items\": [{\"id\": 2, \"sku\": \"CLAM\", \"name\": \"Clamato El Original 16Oz\", \"quantity\": 12, \"inStock\": true}]}"
+        "role": "user",
+        "content": "<tool_response>\n{\"found\": true, \"query\": \"clamato\", \"count\": 1, \"items\": [{\"id\": 2, \"sku\": \"CLAM\", \"name\": \"Clamato El Original 16Oz\", \"quantity\": 12, \"inStock\": true}]}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -243,22 +167,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "inventory_search_status",
-              "arguments": {
-                "query": "maruchan"
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"inventory_search_status\", \"arguments\": {\"query\": \"maruchan\"}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"found\": true, \"query\": \"maruchan\", \"count\": 1, \"items\": [{\"id\": 3, \"sku\": \"MARU\", \"name\": \"Maruchan Instant Lunch Chicken Flavor\", \"quantity\": 8, \"inStock\": true}]}"
+        "role": "user",
+        "content": "<tool_response>\n{\"found\": true, \"query\": \"maruchan\", \"count\": 1, \"items\": [{\"id\": 3, \"sku\": \"MARU\", \"name\": \"Maruchan Instant Lunch Chicken Flavor\", \"quantity\": 8, \"inStock\": true}]}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -274,22 +187,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "inventory_search_status",
-              "arguments": {
-                "query": "menudo"
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"inventory_search_status\", \"arguments\": {\"query\": \"menudo\"}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"found\": true, \"query\": \"menudo\", \"count\": 1, \"items\": [{\"id\": 4, \"sku\": \"MENU\", \"name\": \"Juanita's Menudo Picoso\", \"quantity\": 40, \"inStock\": true}]}"
+        "role": "user",
+        "content": "<tool_response>\n{\"found\": true, \"query\": \"menudo\", \"count\": 1, \"items\": [{\"id\": 4, \"sku\": \"MENU\", \"name\": \"Juanita's Menudo Picoso\", \"quantity\": 40, \"inStock\": true}]}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -305,22 +207,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "inventory_search_status",
-              "arguments": {
-                "query": "ariel"
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"inventory_search_status\", \"arguments\": {\"query\": \"ariel\"}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"found\": true, \"query\": \"ariel\", \"count\": 1, \"items\": [{\"id\": 5, \"sku\": \"ARIE\", \"name\": \"Ariel Poder Y Cuidado\", \"quantity\": 6, \"inStock\": true}]}"
+        "role": "user",
+        "content": "<tool_response>\n{\"found\": true, \"query\": \"ariel\", \"count\": 1, \"items\": [{\"id\": 5, \"sku\": \"ARIE\", \"name\": \"Ariel Poder Y Cuidado\", \"quantity\": 6, \"inStock\": true}]}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -336,22 +227,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "inventory_search_status",
-              "arguments": {
-                "query": "fabuloso"
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"inventory_search_status\", \"arguments\": {\"query\": \"fabuloso\"}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"found\": true, \"query\": \"fabuloso\", \"count\": 1, \"items\": [{\"id\": 6, \"sku\": \"FABU\", \"name\": \"Fabuloso Multi-Purpose Cleaner 56 Oz\", \"quantity\": 15, \"inStock\": true}]}"
+        "role": "user",
+        "content": "<tool_response>\n{\"found\": true, \"query\": \"fabuloso\", \"count\": 1, \"items\": [{\"id\": 6, \"sku\": \"FABU\", \"name\": \"Fabuloso Multi-Purpose Cleaner 56 Oz\", \"quantity\": 15, \"inStock\": true}]}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -367,22 +247,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "inventory_search_status",
-              "arguments": {
-                "query": "foca detergente"
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"inventory_search_status\", \"arguments\": {\"query\": \"foca detergente\"}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"found\": true, \"query\": \"foca detergente\", \"count\": 1, \"items\": [{\"id\": 7, \"sku\": \"FOCA\", \"name\": \"Foca Detergente Liquido 1L\", \"quantity\": 30, \"inStock\": true}]}"
+        "role": "user",
+        "content": "<tool_response>\n{\"found\": true, \"query\": \"foca detergente\", \"count\": 1, \"items\": [{\"id\": 7, \"sku\": \"FOCA\", \"name\": \"Foca Detergente Liquido 1L\", \"quantity\": 30, \"inStock\": true}]}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -398,22 +267,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "inventory_search_status",
-              "arguments": {
-                "query": "roma detergente"
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"inventory_search_status\", \"arguments\": {\"query\": \"roma detergente\"}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"found\": true, \"query\": \"roma detergente\", \"count\": 1, \"items\": [{\"id\": 8, \"sku\": \"ROMA\", \"name\": \"Roma Detergente Liquido 33 Oz\", \"quantity\": 20, \"inStock\": true}]}"
+        "role": "user",
+        "content": "<tool_response>\n{\"found\": true, \"query\": \"roma detergente\", \"count\": 1, \"items\": [{\"id\": 8, \"sku\": \"ROMA\", \"name\": \"Roma Detergente Liquido 33 Oz\", \"quantity\": 20, \"inStock\": true}]}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -429,22 +287,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "inventory_search_status",
-              "arguments": {
-                "query": "chicharron"
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"inventory_search_status\", \"arguments\": {\"query\": \"chicharron\"}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"found\": true, \"query\": \"chicharron\", \"count\": 1, \"items\": [{\"id\": 9, \"sku\": \"BOCH\", \"name\": \"Botanas Chicharron Casero\", \"quantity\": 18, \"inStock\": true}]}"
+        "role": "user",
+        "content": "<tool_response>\n{\"found\": true, \"query\": \"chicharron\", \"count\": 1, \"items\": [{\"id\": 9, \"sku\": \"BOCH\", \"name\": \"Botanas Chicharron Casero\", \"quantity\": 18, \"inStock\": true}]}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -460,22 +307,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "inventory_search_status",
-              "arguments": {
-                "query": "la rosa tostadas"
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"inventory_search_status\", \"arguments\": {\"query\": \"la rosa tostadas\"}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"found\": true, \"query\": \"la rosa tostadas\", \"count\": 1, \"items\": [{\"id\": 10, \"sku\": \"LATO\", \"name\": \"La Rosa Tostadas\", \"quantity\": 18, \"inStock\": true}]}"
+        "role": "user",
+        "content": "<tool_response>\n{\"found\": true, \"query\": \"la rosa tostadas\", \"count\": 1, \"items\": [{\"id\": 10, \"sku\": \"LATO\", \"name\": \"La Rosa Tostadas\", \"quantity\": 18, \"inStock\": true}]}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -491,22 +327,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "inventory_search_status",
-              "arguments": {
-                "query": "guerrero tostadas"
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"inventory_search_status\", \"arguments\": {\"query\": \"guerrero tostadas\"}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"found\": true, \"query\": \"guerrero tostadas\", \"count\": 1, \"items\": [{\"id\": 11, \"sku\": \"GUTO\", \"name\": \"Guerrero Tostadas Caseras Amarillas\", \"quantity\": 5, \"inStock\": true}]}"
+        "role": "user",
+        "content": "<tool_response>\n{\"found\": true, \"query\": \"guerrero tostadas\", \"count\": 1, \"items\": [{\"id\": 11, \"sku\": \"GUTO\", \"name\": \"Guerrero Tostadas Caseras Amarillas\", \"quantity\": 5, \"inStock\": true}]}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -522,22 +347,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "inventory_search_status",
-              "arguments": {
-                "query": "churritos"
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"inventory_search_status\", \"arguments\": {\"query\": \"churritos\"}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"found\": true, \"query\": \"churritos\", \"count\": 1, \"items\": [{\"id\": 12, \"sku\": \"LECH\", \"name\": \"El Super Leon Churritos Mexicanos\", \"quantity\": 3, \"inStock\": true}]}"
+        "role": "user",
+        "content": "<tool_response>\n{\"found\": true, \"query\": \"churritos\", \"count\": 1, \"items\": [{\"id\": 12, \"sku\": \"LECH\", \"name\": \"El Super Leon Churritos Mexicanos\", \"quantity\": 3, \"inStock\": true}]}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -553,22 +367,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "inventory_search_status",
-              "arguments": {
-                "query": "jarritos"
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"inventory_search_status\", \"arguments\": {\"query\": \"jarritos\"}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"found\": true, \"query\": \"jarritos\", \"count\": 1, \"items\": [{\"id\": 13, \"sku\": \"JARM\", \"name\": \"Jarritos Mango 1.5L\", \"quantity\": 3, \"inStock\": true}]}"
+        "role": "user",
+        "content": "<tool_response>\n{\"found\": true, \"query\": \"jarritos\", \"count\": 1, \"items\": [{\"id\": 13, \"sku\": \"JARM\", \"name\": \"Jarritos Mango 1.5L\", \"quantity\": 3, \"inStock\": true}]}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -584,22 +387,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "inventory_search_status",
-              "arguments": {
-                "query": "mayonesa"
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"inventory_search_status\", \"arguments\": {\"query\": \"mayonesa\"}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"found\": true, \"query\": \"mayonesa\", \"count\": 1, \"items\": [{\"id\": 14, \"sku\": \"MCMY\", \"name\": \"McCormick Mayonesa Con Jugo de Limones\", \"quantity\": 7, \"inStock\": true}]}"
+        "role": "user",
+        "content": "<tool_response>\n{\"found\": true, \"query\": \"mayonesa\", \"count\": 1, \"items\": [{\"id\": 14, \"sku\": \"MCMY\", \"name\": \"McCormick Mayonesa Con Jugo de Limones\", \"quantity\": 7, \"inStock\": true}]}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -615,22 +407,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "inventory_search_status",
-              "arguments": {
-                "query": "mole verde"
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"inventory_search_status\", \"arguments\": {\"query\": \"mole verde\"}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"found\": true, \"query\": \"mole verde\", \"count\": 1, \"items\": [{\"id\": 15, \"sku\": \"DOMV\", \"name\": \"Dona Maria Mole Verde 8.25 oz\", \"quantity\": 7, \"inStock\": true}]}"
+        "role": "user",
+        "content": "<tool_response>\n{\"found\": true, \"query\": \"mole verde\", \"count\": 1, \"items\": [{\"id\": 15, \"sku\": \"DOMV\", \"name\": \"Dona Maria Mole Verde 8.25 oz\", \"quantity\": 7, \"inStock\": true}]}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -646,22 +427,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "inventory_search_status",
-              "arguments": {
-                "query": "tostadas"
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"inventory_search_status\", \"arguments\": {\"query\": \"tostadas\"}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"found\": true, \"query\": \"tostadas\", \"count\": 2, \"items\": [{\"id\": 10, \"sku\": \"LATO\", \"name\": \"La Rosa Tostadas\", \"quantity\": 18, \"inStock\": true}, {\"id\": 11, \"sku\": \"GUTO\", \"name\": \"Guerrero Tostadas Caseras Amarillas\", \"quantity\": 5, \"inStock\": true}]}"
+        "role": "user",
+        "content": "<tool_response>\n{\"found\": true, \"query\": \"tostadas\", \"count\": 2, \"items\": [{\"id\": 10, \"sku\": \"LATO\", \"name\": \"La Rosa Tostadas\", \"quantity\": 18, \"inStock\": true}, {\"id\": 11, \"sku\": \"GUTO\", \"name\": \"Guerrero Tostadas Caseras Amarillas\", \"quantity\": 5, \"inStock\": true}]}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -685,22 +455,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "inventory_search_status",
-              "arguments": {
-                "query": "detergente"
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"inventory_search_status\", \"arguments\": {\"query\": \"detergente\"}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"found\": true, \"query\": \"detergente\", \"count\": 2, \"items\": [{\"id\": 7, \"sku\": \"FOCA\", \"name\": \"Foca Detergente Liquido 1L\", \"quantity\": 30, \"inStock\": true}, {\"id\": 8, \"sku\": \"ROMA\", \"name\": \"Roma Detergente Liquido 33 Oz\", \"quantity\": 20, \"inStock\": true}]}"
+        "role": "user",
+        "content": "<tool_response>\n{\"found\": true, \"query\": \"detergente\", \"count\": 2, \"items\": [{\"id\": 7, \"sku\": \"FOCA\", \"name\": \"Foca Detergente Liquido 1L\", \"quantity\": 30, \"inStock\": true}, {\"id\": 8, \"sku\": \"ROMA\", \"name\": \"Roma Detergente Liquido 33 Oz\", \"quantity\": 20, \"inStock\": true}]}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -724,22 +483,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "inventory_search_status",
-              "arguments": {
-                "query": "queso fresco"
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"inventory_search_status\", \"arguments\": {\"query\": \"queso fresco\"}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"found\": false, \"query\": \"queso fresco\", \"count\": 0, \"items\": []}"
+        "role": "user",
+        "content": "<tool_response>\n{\"found\": false, \"query\": \"queso fresco\", \"count\": 0, \"items\": []}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -755,22 +503,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "inventory_search_status",
-              "arguments": {
-                "query": "tortillas de harina"
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"inventory_search_status\", \"arguments\": {\"query\": \"tortillas de harina\"}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"found\": false, \"query\": \"tortillas de harina\", \"count\": 0, \"items\": []}"
+        "role": "user",
+        "content": "<tool_response>\n{\"found\": false, \"query\": \"tortillas de harina\", \"count\": 0, \"items\": []}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -786,22 +523,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "inventory_search_status",
-              "arguments": {
-                "query": "salsa verde enlatada"
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"inventory_search_status\", \"arguments\": {\"query\": \"salsa verde enlatada\"}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"found\": false, \"query\": \"salsa verde enlatada\", \"count\": 0, \"items\": []}"
+        "role": "user",
+        "content": "<tool_response>\n{\"found\": false, \"query\": \"salsa verde enlatada\", \"count\": 0, \"items\": []}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -817,22 +543,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "inventory_search_status",
-              "arguments": {
-                "query": "pan dulce"
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"inventory_search_status\", \"arguments\": {\"query\": \"pan dulce\"}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"found\": false, \"query\": \"pan dulce\", \"count\": 0, \"items\": []}"
+        "role": "user",
+        "content": "<tool_response>\n{\"found\": false, \"query\": \"pan dulce\", \"count\": 0, \"items\": []}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -848,22 +563,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "inventory_search_status",
-              "arguments": {
-                "query": "cafe de olla"
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"inventory_search_status\", \"arguments\": {\"query\": \"cafe de olla\"}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"found\": false, \"query\": \"cafe de olla\", \"count\": 0, \"items\": []}"
+        "role": "user",
+        "content": "<tool_response>\n{\"found\": false, \"query\": \"cafe de olla\", \"count\": 0, \"items\": []}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -879,27 +583,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "orders_create",
-              "arguments": {
-                "items": [
-                  {
-                    "productName": "abuelita",
-                    "quantity": 3
-                  }
-                ]
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"orders_create\", \"arguments\": {\"items\": [{\"productName\": \"abuelita\", \"quantity\": 3}]}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"success\": true, \"message\": \"Created order 1001.\", \"resolvedProducts\": [{\"requestedName\": \"abuelita\", \"sku\": \"NABU\", \"name\": \"Nestl\\u00e9 Abuelita Hot Chocolate\", \"quantity\": 3}], \"order\": {\"orderNumber\": 1001, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 3, \"items\": [{\"id\": 1, \"orderNumber\": 1001, \"sku\": \"NABU\", \"quantity\": 3, \"itemName\": \"Nestl\\u00e9 Abuelita Hot Chocolate\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}"
+        "role": "user",
+        "content": "<tool_response>\n{\"success\": true, \"message\": \"Created order 1001.\", \"resolvedProducts\": [{\"requestedName\": \"abuelita\", \"sku\": \"NABU\", \"name\": \"Nestl\\u00e9 Abuelita Hot Chocolate\", \"quantity\": 3}], \"order\": {\"orderNumber\": 1001, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 3, \"items\": [{\"id\": 1, \"orderNumber\": 1001, \"sku\": \"NABU\", \"quantity\": 3, \"itemName\": \"Nestl\\u00e9 Abuelita Hot Chocolate\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -915,27 +603,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "orders_create",
-              "arguments": {
-                "items": [
-                  {
-                    "productName": "clamato",
-                    "quantity": 2
-                  }
-                ]
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"orders_create\", \"arguments\": {\"items\": [{\"productName\": \"clamato\", \"quantity\": 2}]}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"success\": true, \"message\": \"Created order 1001.\", \"resolvedProducts\": [{\"requestedName\": \"clamato\", \"sku\": \"CLAM\", \"name\": \"Clamato El Original 16Oz\", \"quantity\": 2}], \"order\": {\"orderNumber\": 1001, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 2, \"items\": [{\"id\": 1, \"orderNumber\": 1001, \"sku\": \"CLAM\", \"quantity\": 2, \"itemName\": \"Clamato El Original 16Oz\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}"
+        "role": "user",
+        "content": "<tool_response>\n{\"success\": true, \"message\": \"Created order 1001.\", \"resolvedProducts\": [{\"requestedName\": \"clamato\", \"sku\": \"CLAM\", \"name\": \"Clamato El Original 16Oz\", \"quantity\": 2}], \"order\": {\"orderNumber\": 1001, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 2, \"items\": [{\"id\": 1, \"orderNumber\": 1001, \"sku\": \"CLAM\", \"quantity\": 2, \"itemName\": \"Clamato El Original 16Oz\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -951,27 +623,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "orders_create",
-              "arguments": {
-                "items": [
-                  {
-                    "productName": "maruchan",
-                    "quantity": 5
-                  }
-                ]
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"orders_create\", \"arguments\": {\"items\": [{\"productName\": \"maruchan\", \"quantity\": 5}]}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"success\": true, \"message\": \"Created order 1001.\", \"resolvedProducts\": [{\"requestedName\": \"maruchan\", \"sku\": \"MARU\", \"name\": \"Maruchan Instant Lunch Chicken Flavor\", \"quantity\": 5}], \"order\": {\"orderNumber\": 1001, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 5, \"items\": [{\"id\": 1, \"orderNumber\": 1001, \"sku\": \"MARU\", \"quantity\": 5, \"itemName\": \"Maruchan Instant Lunch Chicken Flavor\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}"
+        "role": "user",
+        "content": "<tool_response>\n{\"success\": true, \"message\": \"Created order 1001.\", \"resolvedProducts\": [{\"requestedName\": \"maruchan\", \"sku\": \"MARU\", \"name\": \"Maruchan Instant Lunch Chicken Flavor\", \"quantity\": 5}], \"order\": {\"orderNumber\": 1001, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 5, \"items\": [{\"id\": 1, \"orderNumber\": 1001, \"sku\": \"MARU\", \"quantity\": 5, \"itemName\": \"Maruchan Instant Lunch Chicken Flavor\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -987,27 +643,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "orders_create",
-              "arguments": {
-                "items": [
-                  {
-                    "productName": "menudo",
-                    "quantity": 4
-                  }
-                ]
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"orders_create\", \"arguments\": {\"items\": [{\"productName\": \"menudo\", \"quantity\": 4}]}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"success\": true, \"message\": \"Created order 1001.\", \"resolvedProducts\": [{\"requestedName\": \"menudo\", \"sku\": \"MENU\", \"name\": \"Juanita's Menudo Picoso\", \"quantity\": 4}], \"order\": {\"orderNumber\": 1001, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 4, \"items\": [{\"id\": 1, \"orderNumber\": 1001, \"sku\": \"MENU\", \"quantity\": 4, \"itemName\": \"Juanita's Menudo Picoso\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}"
+        "role": "user",
+        "content": "<tool_response>\n{\"success\": true, \"message\": \"Created order 1001.\", \"resolvedProducts\": [{\"requestedName\": \"menudo\", \"sku\": \"MENU\", \"name\": \"Juanita's Menudo Picoso\", \"quantity\": 4}], \"order\": {\"orderNumber\": 1001, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 4, \"items\": [{\"id\": 1, \"orderNumber\": 1001, \"sku\": \"MENU\", \"quantity\": 4, \"itemName\": \"Juanita's Menudo Picoso\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -1023,27 +663,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "orders_create",
-              "arguments": {
-                "items": [
-                  {
-                    "productName": "ariel",
-                    "quantity": 7
-                  }
-                ]
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"orders_create\", \"arguments\": {\"items\": [{\"productName\": \"ariel\", \"quantity\": 7}]}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"success\": true, \"message\": \"Created order 1001.\", \"resolvedProducts\": [{\"requestedName\": \"ariel\", \"sku\": \"ARIE\", \"name\": \"Ariel Poder Y Cuidado\", \"quantity\": 7}], \"order\": {\"orderNumber\": 1001, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 7, \"items\": [{\"id\": 1, \"orderNumber\": 1001, \"sku\": \"ARIE\", \"quantity\": 7, \"itemName\": \"Ariel Poder Y Cuidado\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}"
+        "role": "user",
+        "content": "<tool_response>\n{\"success\": true, \"message\": \"Created order 1001.\", \"resolvedProducts\": [{\"requestedName\": \"ariel\", \"sku\": \"ARIE\", \"name\": \"Ariel Poder Y Cuidado\", \"quantity\": 7}], \"order\": {\"orderNumber\": 1001, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 7, \"items\": [{\"id\": 1, \"orderNumber\": 1001, \"sku\": \"ARIE\", \"quantity\": 7, \"itemName\": \"Ariel Poder Y Cuidado\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -1059,27 +683,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "orders_create",
-              "arguments": {
-                "items": [
-                  {
-                    "productName": "fabuloso",
-                    "quantity": 6
-                  }
-                ]
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"orders_create\", \"arguments\": {\"items\": [{\"productName\": \"fabuloso\", \"quantity\": 6}]}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"success\": true, \"message\": \"Created order 1001.\", \"resolvedProducts\": [{\"requestedName\": \"fabuloso\", \"sku\": \"FABU\", \"name\": \"Fabuloso Multi-Purpose Cleaner 56 Oz\", \"quantity\": 6}], \"order\": {\"orderNumber\": 1001, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 6, \"items\": [{\"id\": 1, \"orderNumber\": 1001, \"sku\": \"FABU\", \"quantity\": 6, \"itemName\": \"Fabuloso Multi-Purpose Cleaner 56 Oz\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}"
+        "role": "user",
+        "content": "<tool_response>\n{\"success\": true, \"message\": \"Created order 1001.\", \"resolvedProducts\": [{\"requestedName\": \"fabuloso\", \"sku\": \"FABU\", \"name\": \"Fabuloso Multi-Purpose Cleaner 56 Oz\", \"quantity\": 6}], \"order\": {\"orderNumber\": 1001, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 6, \"items\": [{\"id\": 1, \"orderNumber\": 1001, \"sku\": \"FABU\", \"quantity\": 6, \"itemName\": \"Fabuloso Multi-Purpose Cleaner 56 Oz\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -1095,27 +703,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "orders_create",
-              "arguments": {
-                "items": [
-                  {
-                    "productName": "foca detergente",
-                    "quantity": 9
-                  }
-                ]
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"orders_create\", \"arguments\": {\"items\": [{\"productName\": \"foca detergente\", \"quantity\": 9}]}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"success\": true, \"message\": \"Created order 1001.\", \"resolvedProducts\": [{\"requestedName\": \"foca detergente\", \"sku\": \"FOCA\", \"name\": \"Foca Detergente Liquido 1L\", \"quantity\": 9}], \"order\": {\"orderNumber\": 1001, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 9, \"items\": [{\"id\": 1, \"orderNumber\": 1001, \"sku\": \"FOCA\", \"quantity\": 9, \"itemName\": \"Foca Detergente Liquido 1L\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}"
+        "role": "user",
+        "content": "<tool_response>\n{\"success\": true, \"message\": \"Created order 1001.\", \"resolvedProducts\": [{\"requestedName\": \"foca detergente\", \"sku\": \"FOCA\", \"name\": \"Foca Detergente Liquido 1L\", \"quantity\": 9}], \"order\": {\"orderNumber\": 1001, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 9, \"items\": [{\"id\": 1, \"orderNumber\": 1001, \"sku\": \"FOCA\", \"quantity\": 9, \"itemName\": \"Foca Detergente Liquido 1L\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -1131,27 +723,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "orders_create",
-              "arguments": {
-                "items": [
-                  {
-                    "productName": "roma detergente",
-                    "quantity": 8
-                  }
-                ]
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"orders_create\", \"arguments\": {\"items\": [{\"productName\": \"roma detergente\", \"quantity\": 8}]}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"success\": true, \"message\": \"Created order 1001.\", \"resolvedProducts\": [{\"requestedName\": \"roma detergente\", \"sku\": \"ROMA\", \"name\": \"Roma Detergente Liquido 33 Oz\", \"quantity\": 8}], \"order\": {\"orderNumber\": 1001, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 8, \"items\": [{\"id\": 1, \"orderNumber\": 1001, \"sku\": \"ROMA\", \"quantity\": 8, \"itemName\": \"Roma Detergente Liquido 33 Oz\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}"
+        "role": "user",
+        "content": "<tool_response>\n{\"success\": true, \"message\": \"Created order 1001.\", \"resolvedProducts\": [{\"requestedName\": \"roma detergente\", \"sku\": \"ROMA\", \"name\": \"Roma Detergente Liquido 33 Oz\", \"quantity\": 8}], \"order\": {\"orderNumber\": 1001, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 8, \"items\": [{\"id\": 1, \"orderNumber\": 1001, \"sku\": \"ROMA\", \"quantity\": 8, \"itemName\": \"Roma Detergente Liquido 33 Oz\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -1167,27 +743,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "orders_create",
-              "arguments": {
-                "items": [
-                  {
-                    "productName": "chicharron",
-                    "quantity": 11
-                  }
-                ]
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"orders_create\", \"arguments\": {\"items\": [{\"productName\": \"chicharron\", \"quantity\": 11}]}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"success\": true, \"message\": \"Created order 1001.\", \"resolvedProducts\": [{\"requestedName\": \"chicharron\", \"sku\": \"BOCH\", \"name\": \"Botanas Chicharron Casero\", \"quantity\": 11}], \"order\": {\"orderNumber\": 1001, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 11, \"items\": [{\"id\": 1, \"orderNumber\": 1001, \"sku\": \"BOCH\", \"quantity\": 11, \"itemName\": \"Botanas Chicharron Casero\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}"
+        "role": "user",
+        "content": "<tool_response>\n{\"success\": true, \"message\": \"Created order 1001.\", \"resolvedProducts\": [{\"requestedName\": \"chicharron\", \"sku\": \"BOCH\", \"name\": \"Botanas Chicharron Casero\", \"quantity\": 11}], \"order\": {\"orderNumber\": 1001, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 11, \"items\": [{\"id\": 1, \"orderNumber\": 1001, \"sku\": \"BOCH\", \"quantity\": 11, \"itemName\": \"Botanas Chicharron Casero\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -1203,27 +763,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "orders_create",
-              "arguments": {
-                "items": [
-                  {
-                    "productName": "la rosa tostadas",
-                    "quantity": 12
-                  }
-                ]
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"orders_create\", \"arguments\": {\"items\": [{\"productName\": \"la rosa tostadas\", \"quantity\": 12}]}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"success\": true, \"message\": \"Created order 1001.\", \"resolvedProducts\": [{\"requestedName\": \"la rosa tostadas\", \"sku\": \"LATO\", \"name\": \"La Rosa Tostadas\", \"quantity\": 12}], \"order\": {\"orderNumber\": 1001, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 12, \"items\": [{\"id\": 1, \"orderNumber\": 1001, \"sku\": \"LATO\", \"quantity\": 12, \"itemName\": \"La Rosa Tostadas\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}"
+        "role": "user",
+        "content": "<tool_response>\n{\"success\": true, \"message\": \"Created order 1001.\", \"resolvedProducts\": [{\"requestedName\": \"la rosa tostadas\", \"sku\": \"LATO\", \"name\": \"La Rosa Tostadas\", \"quantity\": 12}], \"order\": {\"orderNumber\": 1001, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 12, \"items\": [{\"id\": 1, \"orderNumber\": 1001, \"sku\": \"LATO\", \"quantity\": 12, \"itemName\": \"La Rosa Tostadas\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -1239,31 +783,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "orders_create",
-              "arguments": {
-                "items": [
-                  {
-                    "productName": "la rosa tostadas",
-                    "quantity": 12
-                  },
-                  {
-                    "productName": "chicharron",
-                    "quantity": 6
-                  }
-                ]
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"orders_create\", \"arguments\": {\"items\": [{\"productName\": \"la rosa tostadas\", \"quantity\": 12}, {\"productName\": \"chicharron\", \"quantity\": 6}]}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"success\": true, \"message\": \"Created order 1002.\", \"resolvedProducts\": [{\"requestedName\": \"la rosa tostadas\", \"sku\": \"LATO\", \"name\": \"La Rosa Tostadas\", \"quantity\": 12}, {\"requestedName\": \"chicharron\", \"sku\": \"BOCH\", \"name\": \"Botanas Chicharron Casero\", \"quantity\": 6}], \"order\": {\"orderNumber\": 1002, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 2, \"totalQuantity\": 18, \"items\": [{\"id\": 1, \"orderNumber\": 1002, \"sku\": \"LATO\", \"quantity\": 12, \"itemName\": \"La Rosa Tostadas\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 2, \"orderNumber\": 1002, \"sku\": \"BOCH\", \"quantity\": 6, \"itemName\": \"Botanas Chicharron Casero\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}"
+        "role": "user",
+        "content": "<tool_response>\n{\"success\": true, \"message\": \"Created order 1002.\", \"resolvedProducts\": [{\"requestedName\": \"la rosa tostadas\", \"sku\": \"LATO\", \"name\": \"La Rosa Tostadas\", \"quantity\": 12}, {\"requestedName\": \"chicharron\", \"sku\": \"BOCH\", \"name\": \"Botanas Chicharron Casero\", \"quantity\": 6}], \"order\": {\"orderNumber\": 1002, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 2, \"totalQuantity\": 18, \"items\": [{\"id\": 1, \"orderNumber\": 1002, \"sku\": \"LATO\", \"quantity\": 12, \"itemName\": \"La Rosa Tostadas\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 2, \"orderNumber\": 1002, \"sku\": \"BOCH\", \"quantity\": 6, \"itemName\": \"Botanas Chicharron Casero\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -1279,31 +803,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "orders_create",
-              "arguments": {
-                "items": [
-                  {
-                    "productName": "clamato",
-                    "quantity": 24
-                  },
-                  {
-                    "productName": "jarritos",
-                    "quantity": 12
-                  }
-                ]
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"orders_create\", \"arguments\": {\"items\": [{\"productName\": \"clamato\", \"quantity\": 24}, {\"productName\": \"jarritos\", \"quantity\": 12}]}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"success\": true, \"message\": \"Created order 1002.\", \"resolvedProducts\": [{\"requestedName\": \"clamato\", \"sku\": \"CLAM\", \"name\": \"Clamato El Original 16Oz\", \"quantity\": 24}, {\"requestedName\": \"jarritos\", \"sku\": \"JARM\", \"name\": \"Jarritos Mango 1.5L\", \"quantity\": 12}], \"order\": {\"orderNumber\": 1002, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 2, \"totalQuantity\": 36, \"items\": [{\"id\": 1, \"orderNumber\": 1002, \"sku\": \"CLAM\", \"quantity\": 24, \"itemName\": \"Clamato El Original 16Oz\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 2, \"orderNumber\": 1002, \"sku\": \"JARM\", \"quantity\": 12, \"itemName\": \"Jarritos Mango 1.5L\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}"
+        "role": "user",
+        "content": "<tool_response>\n{\"success\": true, \"message\": \"Created order 1002.\", \"resolvedProducts\": [{\"requestedName\": \"clamato\", \"sku\": \"CLAM\", \"name\": \"Clamato El Original 16Oz\", \"quantity\": 24}, {\"requestedName\": \"jarritos\", \"sku\": \"JARM\", \"name\": \"Jarritos Mango 1.5L\", \"quantity\": 12}], \"order\": {\"orderNumber\": 1002, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 2, \"totalQuantity\": 36, \"items\": [{\"id\": 1, \"orderNumber\": 1002, \"sku\": \"CLAM\", \"quantity\": 24, \"itemName\": \"Clamato El Original 16Oz\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 2, \"orderNumber\": 1002, \"sku\": \"JARM\", \"quantity\": 12, \"itemName\": \"Jarritos Mango 1.5L\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -1319,31 +823,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "orders_create",
-              "arguments": {
-                "items": [
-                  {
-                    "productName": "abuelita",
-                    "quantity": 10
-                  },
-                  {
-                    "productName": "mayonesa",
-                    "quantity": 5
-                  }
-                ]
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"orders_create\", \"arguments\": {\"items\": [{\"productName\": \"abuelita\", \"quantity\": 10}, {\"productName\": \"mayonesa\", \"quantity\": 5}]}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"success\": true, \"message\": \"Created order 1002.\", \"resolvedProducts\": [{\"requestedName\": \"abuelita\", \"sku\": \"NABU\", \"name\": \"Nestl\\u00e9 Abuelita Hot Chocolate\", \"quantity\": 10}, {\"requestedName\": \"mayonesa\", \"sku\": \"MCMY\", \"name\": \"McCormick Mayonesa Con Jugo de Limones\", \"quantity\": 5}], \"order\": {\"orderNumber\": 1002, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 2, \"totalQuantity\": 15, \"items\": [{\"id\": 1, \"orderNumber\": 1002, \"sku\": \"NABU\", \"quantity\": 10, \"itemName\": \"Nestl\\u00e9 Abuelita Hot Chocolate\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 2, \"orderNumber\": 1002, \"sku\": \"MCMY\", \"quantity\": 5, \"itemName\": \"McCormick Mayonesa Con Jugo de Limones\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}"
+        "role": "user",
+        "content": "<tool_response>\n{\"success\": true, \"message\": \"Created order 1002.\", \"resolvedProducts\": [{\"requestedName\": \"abuelita\", \"sku\": \"NABU\", \"name\": \"Nestl\\u00e9 Abuelita Hot Chocolate\", \"quantity\": 10}, {\"requestedName\": \"mayonesa\", \"sku\": \"MCMY\", \"name\": \"McCormick Mayonesa Con Jugo de Limones\", \"quantity\": 5}], \"order\": {\"orderNumber\": 1002, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 2, \"totalQuantity\": 15, \"items\": [{\"id\": 1, \"orderNumber\": 1002, \"sku\": \"NABU\", \"quantity\": 10, \"itemName\": \"Nestl\\u00e9 Abuelita Hot Chocolate\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 2, \"orderNumber\": 1002, \"sku\": \"MCMY\", \"quantity\": 5, \"itemName\": \"McCormick Mayonesa Con Jugo de Limones\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -1359,31 +843,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "orders_create",
-              "arguments": {
-                "items": [
-                  {
-                    "productName": "fabuloso",
-                    "quantity": 8
-                  },
-                  {
-                    "productName": "foca detergente",
-                    "quantity": 20
-                  }
-                ]
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"orders_create\", \"arguments\": {\"items\": [{\"productName\": \"fabuloso\", \"quantity\": 8}, {\"productName\": \"foca detergente\", \"quantity\": 20}]}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"success\": true, \"message\": \"Created order 1002.\", \"resolvedProducts\": [{\"requestedName\": \"fabuloso\", \"sku\": \"FABU\", \"name\": \"Fabuloso Multi-Purpose Cleaner 56 Oz\", \"quantity\": 8}, {\"requestedName\": \"foca detergente\", \"sku\": \"FOCA\", \"name\": \"Foca Detergente Liquido 1L\", \"quantity\": 20}], \"order\": {\"orderNumber\": 1002, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 2, \"totalQuantity\": 28, \"items\": [{\"id\": 1, \"orderNumber\": 1002, \"sku\": \"FABU\", \"quantity\": 8, \"itemName\": \"Fabuloso Multi-Purpose Cleaner 56 Oz\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 2, \"orderNumber\": 1002, \"sku\": \"FOCA\", \"quantity\": 20, \"itemName\": \"Foca Detergente Liquido 1L\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}"
+        "role": "user",
+        "content": "<tool_response>\n{\"success\": true, \"message\": \"Created order 1002.\", \"resolvedProducts\": [{\"requestedName\": \"fabuloso\", \"sku\": \"FABU\", \"name\": \"Fabuloso Multi-Purpose Cleaner 56 Oz\", \"quantity\": 8}, {\"requestedName\": \"foca detergente\", \"sku\": \"FOCA\", \"name\": \"Foca Detergente Liquido 1L\", \"quantity\": 20}], \"order\": {\"orderNumber\": 1002, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 2, \"totalQuantity\": 28, \"items\": [{\"id\": 1, \"orderNumber\": 1002, \"sku\": \"FABU\", \"quantity\": 8, \"itemName\": \"Fabuloso Multi-Purpose Cleaner 56 Oz\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 2, \"orderNumber\": 1002, \"sku\": \"FOCA\", \"quantity\": 20, \"itemName\": \"Foca Detergente Liquido 1L\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -1399,31 +863,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "orders_create",
-              "arguments": {
-                "items": [
-                  {
-                    "productName": "menudo",
-                    "quantity": 15
-                  },
-                  {
-                    "productName": "ariel",
-                    "quantity": 6
-                  }
-                ]
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"orders_create\", \"arguments\": {\"items\": [{\"productName\": \"menudo\", \"quantity\": 15}, {\"productName\": \"ariel\", \"quantity\": 6}]}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"success\": true, \"message\": \"Created order 1002.\", \"resolvedProducts\": [{\"requestedName\": \"menudo\", \"sku\": \"MENU\", \"name\": \"Juanita's Menudo Picoso\", \"quantity\": 15}, {\"requestedName\": \"ariel\", \"sku\": \"ARIE\", \"name\": \"Ariel Poder Y Cuidado\", \"quantity\": 6}], \"order\": {\"orderNumber\": 1002, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 2, \"totalQuantity\": 21, \"items\": [{\"id\": 1, \"orderNumber\": 1002, \"sku\": \"MENU\", \"quantity\": 15, \"itemName\": \"Juanita's Menudo Picoso\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 2, \"orderNumber\": 1002, \"sku\": \"ARIE\", \"quantity\": 6, \"itemName\": \"Ariel Poder Y Cuidado\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}"
+        "role": "user",
+        "content": "<tool_response>\n{\"success\": true, \"message\": \"Created order 1002.\", \"resolvedProducts\": [{\"requestedName\": \"menudo\", \"sku\": \"MENU\", \"name\": \"Juanita's Menudo Picoso\", \"quantity\": 15}, {\"requestedName\": \"ariel\", \"sku\": \"ARIE\", \"name\": \"Ariel Poder Y Cuidado\", \"quantity\": 6}], \"order\": {\"orderNumber\": 1002, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 2, \"totalQuantity\": 21, \"items\": [{\"id\": 1, \"orderNumber\": 1002, \"sku\": \"MENU\", \"quantity\": 15, \"itemName\": \"Juanita's Menudo Picoso\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 2, \"orderNumber\": 1002, \"sku\": \"ARIE\", \"quantity\": 6, \"itemName\": \"Ariel Poder Y Cuidado\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -1439,31 +883,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "orders_create",
-              "arguments": {
-                "items": [
-                  {
-                    "productName": "mole verde",
-                    "quantity": 7
-                  },
-                  {
-                    "productName": "maruchan",
-                    "quantity": 10
-                  }
-                ]
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"orders_create\", \"arguments\": {\"items\": [{\"productName\": \"mole verde\", \"quantity\": 7}, {\"productName\": \"maruchan\", \"quantity\": 10}]}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"success\": true, \"message\": \"Created order 1002.\", \"resolvedProducts\": [{\"requestedName\": \"mole verde\", \"sku\": \"DOMV\", \"name\": \"Dona Maria Mole Verde 8.25 oz\", \"quantity\": 7}, {\"requestedName\": \"maruchan\", \"sku\": \"MARU\", \"name\": \"Maruchan Instant Lunch Chicken Flavor\", \"quantity\": 10}], \"order\": {\"orderNumber\": 1002, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 2, \"totalQuantity\": 17, \"items\": [{\"id\": 1, \"orderNumber\": 1002, \"sku\": \"DOMV\", \"quantity\": 7, \"itemName\": \"Dona Maria Mole Verde 8.25 oz\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 2, \"orderNumber\": 1002, \"sku\": \"MARU\", \"quantity\": 10, \"itemName\": \"Maruchan Instant Lunch Chicken Flavor\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}"
+        "role": "user",
+        "content": "<tool_response>\n{\"success\": true, \"message\": \"Created order 1002.\", \"resolvedProducts\": [{\"requestedName\": \"mole verde\", \"sku\": \"DOMV\", \"name\": \"Dona Maria Mole Verde 8.25 oz\", \"quantity\": 7}, {\"requestedName\": \"maruchan\", \"sku\": \"MARU\", \"name\": \"Maruchan Instant Lunch Chicken Flavor\", \"quantity\": 10}], \"order\": {\"orderNumber\": 1002, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 2, \"totalQuantity\": 17, \"items\": [{\"id\": 1, \"orderNumber\": 1002, \"sku\": \"DOMV\", \"quantity\": 7, \"itemName\": \"Dona Maria Mole Verde 8.25 oz\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 2, \"orderNumber\": 1002, \"sku\": \"MARU\", \"quantity\": 10, \"itemName\": \"Maruchan Instant Lunch Chicken Flavor\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -1479,27 +903,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "orders_create",
-              "arguments": {
-                "items": [
-                  {
-                    "productName": "chicharron",
-                    "quantity": 6
-                  }
-                ]
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"orders_create\", \"arguments\": {\"items\": [{\"productName\": \"chicharron\", \"quantity\": 6}]}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"success\": true, \"message\": \"Created order 2001.\", \"resolvedProducts\": [{\"requestedName\": \"chicharron\", \"sku\": \"BOCH\", \"name\": \"Botanas Chicharron Casero\", \"quantity\": 6}], \"order\": {\"orderNumber\": 2001, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 6, \"items\": [{\"id\": 1, \"orderNumber\": 2001, \"sku\": \"BOCH\", \"quantity\": 6, \"itemName\": \"Botanas Chicharron Casero\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}"
+        "role": "user",
+        "content": "<tool_response>\n{\"success\": true, \"message\": \"Created order 2001.\", \"resolvedProducts\": [{\"requestedName\": \"chicharron\", \"sku\": \"BOCH\", \"name\": \"Botanas Chicharron Casero\", \"quantity\": 6}], \"order\": {\"orderNumber\": 2001, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 6, \"items\": [{\"id\": 1, \"orderNumber\": 2001, \"sku\": \"BOCH\", \"quantity\": 6, \"itemName\": \"Botanas Chicharron Casero\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -1511,27 +919,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "orders_add_items_to_latest",
-              "arguments": {
-                "items": [
-                  {
-                    "productName": "la rosa tostadas",
-                    "quantity": 12
-                  }
-                ]
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"orders_add_items_to_latest\", \"arguments\": {\"items\": [{\"productName\": \"la rosa tostadas\", \"quantity\": 12}]}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"success\": true, \"message\": \"Updated latest order 2001.\", \"resolvedProducts\": [{\"requestedName\": \"la rosa tostadas\", \"sku\": \"LATO\", \"name\": \"La Rosa Tostadas\", \"quantity\": 12}], \"order\": {\"orderNumber\": 2001, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 2, \"totalQuantity\": 18, \"items\": [{\"id\": 1, \"orderNumber\": 2001, \"sku\": \"BOCH\", \"quantity\": 6, \"itemName\": \"Botanas Chicharron Casero\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 2, \"orderNumber\": 2001, \"sku\": \"LATO\", \"quantity\": 12, \"itemName\": \"La Rosa Tostadas\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}"
+        "role": "user",
+        "content": "<tool_response>\n{\"success\": true, \"message\": \"Updated latest order 2001.\", \"resolvedProducts\": [{\"requestedName\": \"la rosa tostadas\", \"sku\": \"LATO\", \"name\": \"La Rosa Tostadas\", \"quantity\": 12}], \"order\": {\"orderNumber\": 2001, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 2, \"totalQuantity\": 18, \"items\": [{\"id\": 1, \"orderNumber\": 2001, \"sku\": \"BOCH\", \"quantity\": 6, \"itemName\": \"Botanas Chicharron Casero\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 2, \"orderNumber\": 2001, \"sku\": \"LATO\", \"quantity\": 12, \"itemName\": \"La Rosa Tostadas\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -1547,27 +939,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "orders_create",
-              "arguments": {
-                "items": [
-                  {
-                    "productName": "clamato",
-                    "quantity": 12
-                  }
-                ]
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"orders_create\", \"arguments\": {\"items\": [{\"productName\": \"clamato\", \"quantity\": 12}]}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"success\": true, \"message\": \"Created order 2002.\", \"resolvedProducts\": [{\"requestedName\": \"clamato\", \"sku\": \"CLAM\", \"name\": \"Clamato El Original 16Oz\", \"quantity\": 12}], \"order\": {\"orderNumber\": 2002, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 12, \"items\": [{\"id\": 1, \"orderNumber\": 2002, \"sku\": \"CLAM\", \"quantity\": 12, \"itemName\": \"Clamato El Original 16Oz\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}"
+        "role": "user",
+        "content": "<tool_response>\n{\"success\": true, \"message\": \"Created order 2002.\", \"resolvedProducts\": [{\"requestedName\": \"clamato\", \"sku\": \"CLAM\", \"name\": \"Clamato El Original 16Oz\", \"quantity\": 12}], \"order\": {\"orderNumber\": 2002, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 12, \"items\": [{\"id\": 1, \"orderNumber\": 2002, \"sku\": \"CLAM\", \"quantity\": 12, \"itemName\": \"Clamato El Original 16Oz\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -1579,31 +955,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "orders_add_items_to_latest",
-              "arguments": {
-                "items": [
-                  {
-                    "productName": "jarritos",
-                    "quantity": 6
-                  },
-                  {
-                    "productName": "abuelita",
-                    "quantity": 10
-                  }
-                ]
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"orders_add_items_to_latest\", \"arguments\": {\"items\": [{\"productName\": \"jarritos\", \"quantity\": 6}, {\"productName\": \"abuelita\", \"quantity\": 10}]}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"success\": true, \"message\": \"Updated latest order 2002.\", \"resolvedProducts\": [{\"requestedName\": \"jarritos\", \"sku\": \"JARM\", \"name\": \"Jarritos Mango 1.5L\", \"quantity\": 6}, {\"requestedName\": \"abuelita\", \"sku\": \"NABU\", \"name\": \"Nestl\\u00e9 Abuelita Hot Chocolate\", \"quantity\": 10}], \"order\": {\"orderNumber\": 2002, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 3, \"totalQuantity\": 28, \"items\": [{\"id\": 1, \"orderNumber\": 2002, \"sku\": \"CLAM\", \"quantity\": 12, \"itemName\": \"Clamato El Original 16Oz\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 2, \"orderNumber\": 2002, \"sku\": \"JARM\", \"quantity\": 6, \"itemName\": \"Jarritos Mango 1.5L\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 3, \"orderNumber\": 2002, \"sku\": \"NABU\", \"quantity\": 10, \"itemName\": \"Nestl\\u00e9 Abuelita Hot Chocolate\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}"
+        "role": "user",
+        "content": "<tool_response>\n{\"success\": true, \"message\": \"Updated latest order 2002.\", \"resolvedProducts\": [{\"requestedName\": \"jarritos\", \"sku\": \"JARM\", \"name\": \"Jarritos Mango 1.5L\", \"quantity\": 6}, {\"requestedName\": \"abuelita\", \"sku\": \"NABU\", \"name\": \"Nestl\\u00e9 Abuelita Hot Chocolate\", \"quantity\": 10}], \"order\": {\"orderNumber\": 2002, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 3, \"totalQuantity\": 28, \"items\": [{\"id\": 1, \"orderNumber\": 2002, \"sku\": \"CLAM\", \"quantity\": 12, \"itemName\": \"Clamato El Original 16Oz\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 2, \"orderNumber\": 2002, \"sku\": \"JARM\", \"quantity\": 6, \"itemName\": \"Jarritos Mango 1.5L\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 3, \"orderNumber\": 2002, \"sku\": \"NABU\", \"quantity\": 10, \"itemName\": \"Nestl\\u00e9 Abuelita Hot Chocolate\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -1619,27 +975,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "orders_create",
-              "arguments": {
-                "items": [
-                  {
-                    "productName": "menudo",
-                    "quantity": 20
-                  }
-                ]
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"orders_create\", \"arguments\": {\"items\": [{\"productName\": \"menudo\", \"quantity\": 20}]}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"success\": true, \"message\": \"Created order 2003.\", \"resolvedProducts\": [{\"requestedName\": \"menudo\", \"sku\": \"MENU\", \"name\": \"Juanita's Menudo Picoso\", \"quantity\": 20}], \"order\": {\"orderNumber\": 2003, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 20, \"items\": [{\"id\": 1, \"orderNumber\": 2003, \"sku\": \"MENU\", \"quantity\": 20, \"itemName\": \"Juanita's Menudo Picoso\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}"
+        "role": "user",
+        "content": "<tool_response>\n{\"success\": true, \"message\": \"Created order 2003.\", \"resolvedProducts\": [{\"requestedName\": \"menudo\", \"sku\": \"MENU\", \"name\": \"Juanita's Menudo Picoso\", \"quantity\": 20}], \"order\": {\"orderNumber\": 2003, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 20, \"items\": [{\"id\": 1, \"orderNumber\": 2003, \"sku\": \"MENU\", \"quantity\": 20, \"itemName\": \"Juanita's Menudo Picoso\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -1651,27 +991,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "orders_add_items_to_latest",
-              "arguments": {
-                "items": [
-                  {
-                    "productName": "maruchan",
-                    "quantity": 8
-                  }
-                ]
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"orders_add_items_to_latest\", \"arguments\": {\"items\": [{\"productName\": \"maruchan\", \"quantity\": 8}]}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"success\": true, \"message\": \"Updated latest order 2003.\", \"resolvedProducts\": [{\"requestedName\": \"maruchan\", \"sku\": \"MARU\", \"name\": \"Maruchan Instant Lunch Chicken Flavor\", \"quantity\": 8}], \"order\": {\"orderNumber\": 2003, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 2, \"totalQuantity\": 28, \"items\": [{\"id\": 1, \"orderNumber\": 2003, \"sku\": \"MENU\", \"quantity\": 20, \"itemName\": \"Juanita's Menudo Picoso\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 2, \"orderNumber\": 2003, \"sku\": \"MARU\", \"quantity\": 8, \"itemName\": \"Maruchan Instant Lunch Chicken Flavor\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}"
+        "role": "user",
+        "content": "<tool_response>\n{\"success\": true, \"message\": \"Updated latest order 2003.\", \"resolvedProducts\": [{\"requestedName\": \"maruchan\", \"sku\": \"MARU\", \"name\": \"Maruchan Instant Lunch Chicken Flavor\", \"quantity\": 8}], \"order\": {\"orderNumber\": 2003, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 2, \"totalQuantity\": 28, \"items\": [{\"id\": 1, \"orderNumber\": 2003, \"sku\": \"MENU\", \"quantity\": 20, \"itemName\": \"Juanita's Menudo Picoso\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 2, \"orderNumber\": 2003, \"sku\": \"MARU\", \"quantity\": 8, \"itemName\": \"Maruchan Instant Lunch Chicken Flavor\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -1687,27 +1011,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "orders_create",
-              "arguments": {
-                "items": [
-                  {
-                    "productName": "chicharron",
-                    "quantity": 6
-                  }
-                ]
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"orders_create\", \"arguments\": {\"items\": [{\"productName\": \"chicharron\", \"quantity\": 6}]}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"success\": true, \"message\": \"Created order 3001.\", \"resolvedProducts\": [{\"requestedName\": \"chicharron\", \"sku\": \"BOCH\", \"name\": \"Botanas Chicharron Casero\", \"quantity\": 6}], \"order\": {\"orderNumber\": 3001, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 6, \"items\": [{\"id\": 1, \"orderNumber\": 3001, \"sku\": \"BOCH\", \"quantity\": 6, \"itemName\": \"Botanas Chicharron Casero\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}"
+        "role": "user",
+        "content": "<tool_response>\n{\"success\": true, \"message\": \"Created order 3001.\", \"resolvedProducts\": [{\"requestedName\": \"chicharron\", \"sku\": \"BOCH\", \"name\": \"Botanas Chicharron Casero\", \"quantity\": 6}], \"order\": {\"orderNumber\": 3001, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 6, \"items\": [{\"id\": 1, \"orderNumber\": 3001, \"sku\": \"BOCH\", \"quantity\": 6, \"itemName\": \"Botanas Chicharron Casero\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -1719,27 +1027,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "orders_set_latest_item_quantities",
-              "arguments": {
-                "items": [
-                  {
-                    "productName": "chicharron",
-                    "quantity": 10
-                  }
-                ]
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"orders_set_latest_item_quantities\", \"arguments\": {\"items\": [{\"productName\": \"chicharron\", \"quantity\": 10}]}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"success\": true, \"message\": \"Updated quantities on latest order 3001.\", \"resolvedProducts\": [{\"requestedName\": \"chicharron\", \"sku\": \"BOCH\", \"name\": \"Botanas Chicharron Casero\", \"previousQuantity\": 6, \"quantity\": 10}], \"order\": {\"orderNumber\": 3001, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 10, \"items\": [{\"id\": 1, \"orderNumber\": 3001, \"sku\": \"BOCH\", \"quantity\": 10, \"itemName\": \"Botanas Chicharron Casero\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}"
+        "role": "user",
+        "content": "<tool_response>\n{\"success\": true, \"message\": \"Updated quantities on latest order 3001.\", \"resolvedProducts\": [{\"requestedName\": \"chicharron\", \"sku\": \"BOCH\", \"name\": \"Botanas Chicharron Casero\", \"previousQuantity\": 6, \"quantity\": 10}], \"order\": {\"orderNumber\": 3001, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 10, \"items\": [{\"id\": 1, \"orderNumber\": 3001, \"sku\": \"BOCH\", \"quantity\": 10, \"itemName\": \"Botanas Chicharron Casero\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -1755,27 +1047,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "orders_create",
-              "arguments": {
-                "items": [
-                  {
-                    "productName": "clamato",
-                    "quantity": 12
-                  }
-                ]
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"orders_create\", \"arguments\": {\"items\": [{\"productName\": \"clamato\", \"quantity\": 12}]}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"success\": true, \"message\": \"Created order 3002.\", \"resolvedProducts\": [{\"requestedName\": \"clamato\", \"sku\": \"CLAM\", \"name\": \"Clamato El Original 16Oz\", \"quantity\": 12}], \"order\": {\"orderNumber\": 3002, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 12, \"items\": [{\"id\": 1, \"orderNumber\": 3002, \"sku\": \"CLAM\", \"quantity\": 12, \"itemName\": \"Clamato El Original 16Oz\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}"
+        "role": "user",
+        "content": "<tool_response>\n{\"success\": true, \"message\": \"Created order 3002.\", \"resolvedProducts\": [{\"requestedName\": \"clamato\", \"sku\": \"CLAM\", \"name\": \"Clamato El Original 16Oz\", \"quantity\": 12}], \"order\": {\"orderNumber\": 3002, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 12, \"items\": [{\"id\": 1, \"orderNumber\": 3002, \"sku\": \"CLAM\", \"quantity\": 12, \"itemName\": \"Clamato El Original 16Oz\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -1787,27 +1063,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "orders_set_latest_item_quantities",
-              "arguments": {
-                "items": [
-                  {
-                    "productName": "clamato",
-                    "quantity": 24
-                  }
-                ]
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"orders_set_latest_item_quantities\", \"arguments\": {\"items\": [{\"productName\": \"clamato\", \"quantity\": 24}]}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"success\": true, \"message\": \"Updated quantities on latest order 3002.\", \"resolvedProducts\": [{\"requestedName\": \"clamato\", \"sku\": \"CLAM\", \"name\": \"Clamato El Original 16Oz\", \"previousQuantity\": 12, \"quantity\": 24}], \"order\": {\"orderNumber\": 3002, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 24, \"items\": [{\"id\": 1, \"orderNumber\": 3002, \"sku\": \"CLAM\", \"quantity\": 24, \"itemName\": \"Clamato El Original 16Oz\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}"
+        "role": "user",
+        "content": "<tool_response>\n{\"success\": true, \"message\": \"Updated quantities on latest order 3002.\", \"resolvedProducts\": [{\"requestedName\": \"clamato\", \"sku\": \"CLAM\", \"name\": \"Clamato El Original 16Oz\", \"previousQuantity\": 12, \"quantity\": 24}], \"order\": {\"orderNumber\": 3002, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 24, \"items\": [{\"id\": 1, \"orderNumber\": 3002, \"sku\": \"CLAM\", \"quantity\": 24, \"itemName\": \"Clamato El Original 16Oz\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -1823,27 +1083,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "orders_create",
-              "arguments": {
-                "items": [
-                  {
-                    "productName": "la rosa tostadas",
-                    "quantity": 12
-                  }
-                ]
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"orders_create\", \"arguments\": {\"items\": [{\"productName\": \"la rosa tostadas\", \"quantity\": 12}]}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"success\": true, \"message\": \"Created order 3003.\", \"resolvedProducts\": [{\"requestedName\": \"la rosa tostadas\", \"sku\": \"LATO\", \"name\": \"La Rosa Tostadas\", \"quantity\": 12}], \"order\": {\"orderNumber\": 3003, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 12, \"items\": [{\"id\": 1, \"orderNumber\": 3003, \"sku\": \"LATO\", \"quantity\": 12, \"itemName\": \"La Rosa Tostadas\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}"
+        "role": "user",
+        "content": "<tool_response>\n{\"success\": true, \"message\": \"Created order 3003.\", \"resolvedProducts\": [{\"requestedName\": \"la rosa tostadas\", \"sku\": \"LATO\", \"name\": \"La Rosa Tostadas\", \"quantity\": 12}], \"order\": {\"orderNumber\": 3003, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 12, \"items\": [{\"id\": 1, \"orderNumber\": 3003, \"sku\": \"LATO\", \"quantity\": 12, \"itemName\": \"La Rosa Tostadas\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -1855,27 +1099,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "orders_set_latest_item_quantities",
-              "arguments": {
-                "items": [
-                  {
-                    "productName": "la rosa tostadas",
-                    "quantity": 18
-                  }
-                ]
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"orders_set_latest_item_quantities\", \"arguments\": {\"items\": [{\"productName\": \"la rosa tostadas\", \"quantity\": 18}]}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"success\": true, \"message\": \"Updated quantities on latest order 3003.\", \"resolvedProducts\": [{\"requestedName\": \"la rosa tostadas\", \"sku\": \"LATO\", \"name\": \"La Rosa Tostadas\", \"previousQuantity\": 12, \"quantity\": 18}], \"order\": {\"orderNumber\": 3003, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 18, \"items\": [{\"id\": 1, \"orderNumber\": 3003, \"sku\": \"LATO\", \"quantity\": 18, \"itemName\": \"La Rosa Tostadas\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}"
+        "role": "user",
+        "content": "<tool_response>\n{\"success\": true, \"message\": \"Updated quantities on latest order 3003.\", \"resolvedProducts\": [{\"requestedName\": \"la rosa tostadas\", \"sku\": \"LATO\", \"name\": \"La Rosa Tostadas\", \"previousQuantity\": 12, \"quantity\": 18}], \"order\": {\"orderNumber\": 3003, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 18, \"items\": [{\"id\": 1, \"orderNumber\": 3003, \"sku\": \"LATO\", \"quantity\": 18, \"itemName\": \"La Rosa Tostadas\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -1891,31 +1119,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "orders_create",
-              "arguments": {
-                "items": [
-                  {
-                    "productName": "chicharron",
-                    "quantity": 6
-                  },
-                  {
-                    "productName": "la rosa tostadas",
-                    "quantity": 12
-                  }
-                ]
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"orders_create\", \"arguments\": {\"items\": [{\"productName\": \"chicharron\", \"quantity\": 6}, {\"productName\": \"la rosa tostadas\", \"quantity\": 12}]}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"success\": true, \"message\": \"Created order 4001.\", \"resolvedProducts\": [{\"requestedName\": \"chicharron\", \"sku\": \"BOCH\", \"name\": \"Botanas Chicharron Casero\", \"quantity\": 6}, {\"requestedName\": \"la rosa tostadas\", \"sku\": \"LATO\", \"name\": \"La Rosa Tostadas\", \"quantity\": 12}], \"order\": {\"orderNumber\": 4001, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 2, \"totalQuantity\": 18, \"items\": [{\"id\": 1, \"orderNumber\": 4001, \"sku\": \"BOCH\", \"quantity\": 6, \"itemName\": \"Botanas Chicharron Casero\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 2, \"orderNumber\": 4001, \"sku\": \"LATO\", \"quantity\": 12, \"itemName\": \"La Rosa Tostadas\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}"
+        "role": "user",
+        "content": "<tool_response>\n{\"success\": true, \"message\": \"Created order 4001.\", \"resolvedProducts\": [{\"requestedName\": \"chicharron\", \"sku\": \"BOCH\", \"name\": \"Botanas Chicharron Casero\", \"quantity\": 6}, {\"requestedName\": \"la rosa tostadas\", \"sku\": \"LATO\", \"name\": \"La Rosa Tostadas\", \"quantity\": 12}], \"order\": {\"orderNumber\": 4001, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 2, \"totalQuantity\": 18, \"items\": [{\"id\": 1, \"orderNumber\": 4001, \"sku\": \"BOCH\", \"quantity\": 6, \"itemName\": \"Botanas Chicharron Casero\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 2, \"orderNumber\": 4001, \"sku\": \"LATO\", \"quantity\": 12, \"itemName\": \"La Rosa Tostadas\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -1927,26 +1135,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "orders_remove_items_from_latest",
-              "arguments": {
-                "items": [
-                  {
-                    "productName": "chicharron"
-                  }
-                ]
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"orders_remove_items_from_latest\", \"arguments\": {\"items\": [{\"productName\": \"chicharron\"}]}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"success\": true, \"message\": \"Removed items from latest order 4001.\", \"removedProducts\": [{\"requestedName\": \"chicharron\", \"sku\": \"BOCH\", \"name\": \"Botanas Chicharron Casero\", \"removedQuantity\": 6}], \"order\": {\"orderNumber\": 4001, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 12, \"items\": [{\"id\": 1, \"orderNumber\": 4001, \"sku\": \"LATO\", \"quantity\": 12, \"itemName\": \"La Rosa Tostadas\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}"
+        "role": "user",
+        "content": "<tool_response>\n{\"success\": true, \"message\": \"Removed items from latest order 4001.\", \"removedProducts\": [{\"requestedName\": \"chicharron\", \"sku\": \"BOCH\", \"name\": \"Botanas Chicharron Casero\", \"removedQuantity\": 6}], \"order\": {\"orderNumber\": 4001, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 12, \"items\": [{\"id\": 1, \"orderNumber\": 4001, \"sku\": \"LATO\", \"quantity\": 12, \"itemName\": \"La Rosa Tostadas\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -1962,31 +1155,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "orders_create",
-              "arguments": {
-                "items": [
-                  {
-                    "productName": "clamato",
-                    "quantity": 12
-                  },
-                  {
-                    "productName": "jarritos",
-                    "quantity": 6
-                  }
-                ]
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"orders_create\", \"arguments\": {\"items\": [{\"productName\": \"clamato\", \"quantity\": 12}, {\"productName\": \"jarritos\", \"quantity\": 6}]}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"success\": true, \"message\": \"Created order 4002.\", \"resolvedProducts\": [{\"requestedName\": \"clamato\", \"sku\": \"CLAM\", \"name\": \"Clamato El Original 16Oz\", \"quantity\": 12}, {\"requestedName\": \"jarritos\", \"sku\": \"JARM\", \"name\": \"Jarritos Mango 1.5L\", \"quantity\": 6}], \"order\": {\"orderNumber\": 4002, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 2, \"totalQuantity\": 18, \"items\": [{\"id\": 1, \"orderNumber\": 4002, \"sku\": \"CLAM\", \"quantity\": 12, \"itemName\": \"Clamato El Original 16Oz\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 2, \"orderNumber\": 4002, \"sku\": \"JARM\", \"quantity\": 6, \"itemName\": \"Jarritos Mango 1.5L\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}"
+        "role": "user",
+        "content": "<tool_response>\n{\"success\": true, \"message\": \"Created order 4002.\", \"resolvedProducts\": [{\"requestedName\": \"clamato\", \"sku\": \"CLAM\", \"name\": \"Clamato El Original 16Oz\", \"quantity\": 12}, {\"requestedName\": \"jarritos\", \"sku\": \"JARM\", \"name\": \"Jarritos Mango 1.5L\", \"quantity\": 6}], \"order\": {\"orderNumber\": 4002, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 2, \"totalQuantity\": 18, \"items\": [{\"id\": 1, \"orderNumber\": 4002, \"sku\": \"CLAM\", \"quantity\": 12, \"itemName\": \"Clamato El Original 16Oz\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 2, \"orderNumber\": 4002, \"sku\": \"JARM\", \"quantity\": 6, \"itemName\": \"Jarritos Mango 1.5L\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -1998,26 +1171,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "orders_remove_items_from_latest",
-              "arguments": {
-                "items": [
-                  {
-                    "productName": "jarritos"
-                  }
-                ]
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"orders_remove_items_from_latest\", \"arguments\": {\"items\": [{\"productName\": \"jarritos\"}]}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"success\": true, \"message\": \"Removed items from latest order 4002.\", \"removedProducts\": [{\"requestedName\": \"jarritos\", \"sku\": \"JARM\", \"name\": \"Jarritos Mango 1.5L\", \"removedQuantity\": 6}], \"order\": {\"orderNumber\": 4002, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 12, \"items\": [{\"id\": 1, \"orderNumber\": 4002, \"sku\": \"CLAM\", \"quantity\": 12, \"itemName\": \"Clamato El Original 16Oz\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}"
+        "role": "user",
+        "content": "<tool_response>\n{\"success\": true, \"message\": \"Removed items from latest order 4002.\", \"removedProducts\": [{\"requestedName\": \"jarritos\", \"sku\": \"JARM\", \"name\": \"Jarritos Mango 1.5L\", \"removedQuantity\": 6}], \"order\": {\"orderNumber\": 4002, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 12, \"items\": [{\"id\": 1, \"orderNumber\": 4002, \"sku\": \"CLAM\", \"quantity\": 12, \"itemName\": \"Clamato El Original 16Oz\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -2033,31 +1191,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "orders_create",
-              "arguments": {
-                "items": [
-                  {
-                    "productName": "menudo",
-                    "quantity": 20
-                  },
-                  {
-                    "productName": "maruchan",
-                    "quantity": 8
-                  }
-                ]
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"orders_create\", \"arguments\": {\"items\": [{\"productName\": \"menudo\", \"quantity\": 20}, {\"productName\": \"maruchan\", \"quantity\": 8}]}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"success\": true, \"message\": \"Created order 4003.\", \"resolvedProducts\": [{\"requestedName\": \"menudo\", \"sku\": \"MENU\", \"name\": \"Juanita's Menudo Picoso\", \"quantity\": 20}, {\"requestedName\": \"maruchan\", \"sku\": \"MARU\", \"name\": \"Maruchan Instant Lunch Chicken Flavor\", \"quantity\": 8}], \"order\": {\"orderNumber\": 4003, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 2, \"totalQuantity\": 28, \"items\": [{\"id\": 1, \"orderNumber\": 4003, \"sku\": \"MENU\", \"quantity\": 20, \"itemName\": \"Juanita's Menudo Picoso\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 2, \"orderNumber\": 4003, \"sku\": \"MARU\", \"quantity\": 8, \"itemName\": \"Maruchan Instant Lunch Chicken Flavor\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}"
+        "role": "user",
+        "content": "<tool_response>\n{\"success\": true, \"message\": \"Created order 4003.\", \"resolvedProducts\": [{\"requestedName\": \"menudo\", \"sku\": \"MENU\", \"name\": \"Juanita's Menudo Picoso\", \"quantity\": 20}, {\"requestedName\": \"maruchan\", \"sku\": \"MARU\", \"name\": \"Maruchan Instant Lunch Chicken Flavor\", \"quantity\": 8}], \"order\": {\"orderNumber\": 4003, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 2, \"totalQuantity\": 28, \"items\": [{\"id\": 1, \"orderNumber\": 4003, \"sku\": \"MENU\", \"quantity\": 20, \"itemName\": \"Juanita's Menudo Picoso\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}, {\"id\": 2, \"orderNumber\": 4003, \"sku\": \"MARU\", \"quantity\": 8, \"itemName\": \"Maruchan Instant Lunch Chicken Flavor\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -2069,26 +1207,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "orders_remove_items_from_latest",
-              "arguments": {
-                "items": [
-                  {
-                    "productName": "maruchan"
-                  }
-                ]
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"orders_remove_items_from_latest\", \"arguments\": {\"items\": [{\"productName\": \"maruchan\"}]}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"success\": true, \"message\": \"Removed items from latest order 4003.\", \"removedProducts\": [{\"requestedName\": \"maruchan\", \"sku\": \"MARU\", \"name\": \"Maruchan Instant Lunch Chicken Flavor\", \"removedQuantity\": 8}], \"order\": {\"orderNumber\": 4003, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 20, \"items\": [{\"id\": 1, \"orderNumber\": 4003, \"sku\": \"MENU\", \"quantity\": 20, \"itemName\": \"Juanita's Menudo Picoso\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}"
+        "role": "user",
+        "content": "<tool_response>\n{\"success\": true, \"message\": \"Removed items from latest order 4003.\", \"removedProducts\": [{\"requestedName\": \"maruchan\", \"sku\": \"MARU\", \"name\": \"Maruchan Instant Lunch Chicken Flavor\", \"removedQuantity\": 8}], \"order\": {\"orderNumber\": 4003, \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\", \"lineCount\": 1, \"totalQuantity\": 20, \"items\": [{\"id\": 1, \"orderNumber\": 4003, \"sku\": \"MENU\", \"quantity\": 20, \"itemName\": \"Juanita's Menudo Picoso\", \"createdUtc\": \"2026-09-20T10:15:00Z\", \"updatedUtc\": \"2026-09-20T10:15:00Z\"}]}}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -2104,24 +1227,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "inventory_add_transaction",
-              "arguments": {
-                "productName": "guerrero tostadas",
-                "quantityDelta": 24,
-                "transactionType": "restock"
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"inventory_add_transaction\", \"arguments\": {\"productName\": \"guerrero tostadas\", \"quantityDelta\": 24, \"transactionType\": \"restock\"}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"success\": true, \"transaction\": {\"id\": 9001, \"itemId\": 11, \"itemSku\": \"GUTO\", \"itemName\": \"Guerrero Tostadas Caseras Amarillas\", \"transactionType\": \"restock\", \"quantityDelta\": 24, \"note\": null, \"createdUtc\": \"2026-09-20T10:15:00Z\"}, \"item\": {\"id\": 11, \"sku\": \"GUTO\", \"name\": \"Guerrero Tostadas Caseras Amarillas\", \"quantity\": 29}, \"resolvedProduct\": {\"requestedName\": \"guerrero tostadas\", \"sku\": \"GUTO\", \"name\": \"Guerrero Tostadas Caseras Amarillas\", \"quantityDelta\": 24}}"
+        "role": "user",
+        "content": "<tool_response>\n{\"success\": true, \"transaction\": {\"id\": 9001, \"itemId\": 11, \"itemSku\": \"GUTO\", \"itemName\": \"Guerrero Tostadas Caseras Amarillas\", \"transactionType\": \"restock\", \"quantityDelta\": 24, \"note\": null, \"createdUtc\": \"2026-09-20T10:15:00Z\"}, \"item\": {\"id\": 11, \"sku\": \"GUTO\", \"name\": \"Guerrero Tostadas Caseras Amarillas\", \"quantity\": 29}, \"resolvedProduct\": {\"requestedName\": \"guerrero tostadas\", \"sku\": \"GUTO\", \"name\": \"Guerrero Tostadas Caseras Amarillas\", \"quantityDelta\": 24}}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -2137,24 +1247,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "inventory_add_transaction",
-              "arguments": {
-                "productName": "churritos",
-                "quantityDelta": 30,
-                "transactionType": "restock"
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"inventory_add_transaction\", \"arguments\": {\"productName\": \"churritos\", \"quantityDelta\": 30, \"transactionType\": \"restock\"}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"success\": true, \"transaction\": {\"id\": 9001, \"itemId\": 12, \"itemSku\": \"LECH\", \"itemName\": \"El Super Leon Churritos Mexicanos\", \"transactionType\": \"restock\", \"quantityDelta\": 30, \"note\": null, \"createdUtc\": \"2026-09-20T10:15:00Z\"}, \"item\": {\"id\": 12, \"sku\": \"LECH\", \"name\": \"El Super Leon Churritos Mexicanos\", \"quantity\": 33}, \"resolvedProduct\": {\"requestedName\": \"churritos\", \"sku\": \"LECH\", \"name\": \"El Super Leon Churritos Mexicanos\", \"quantityDelta\": 30}}"
+        "role": "user",
+        "content": "<tool_response>\n{\"success\": true, \"transaction\": {\"id\": 9001, \"itemId\": 12, \"itemSku\": \"LECH\", \"itemName\": \"El Super Leon Churritos Mexicanos\", \"transactionType\": \"restock\", \"quantityDelta\": 30, \"note\": null, \"createdUtc\": \"2026-09-20T10:15:00Z\"}, \"item\": {\"id\": 12, \"sku\": \"LECH\", \"name\": \"El Super Leon Churritos Mexicanos\", \"quantity\": 33}, \"resolvedProduct\": {\"requestedName\": \"churritos\", \"sku\": \"LECH\", \"name\": \"El Super Leon Churritos Mexicanos\", \"quantityDelta\": 30}}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -2170,24 +1267,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "inventory_add_transaction",
-              "arguments": {
-                "productName": "jarritos",
-                "quantityDelta": 24,
-                "transactionType": "restock"
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"inventory_add_transaction\", \"arguments\": {\"productName\": \"jarritos\", \"quantityDelta\": 24, \"transactionType\": \"restock\"}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"success\": true, \"transaction\": {\"id\": 9001, \"itemId\": 13, \"itemSku\": \"JARM\", \"itemName\": \"Jarritos Mango 1.5L\", \"transactionType\": \"restock\", \"quantityDelta\": 24, \"note\": null, \"createdUtc\": \"2026-09-20T10:15:00Z\"}, \"item\": {\"id\": 13, \"sku\": \"JARM\", \"name\": \"Jarritos Mango 1.5L\", \"quantity\": 27}, \"resolvedProduct\": {\"requestedName\": \"jarritos\", \"sku\": \"JARM\", \"name\": \"Jarritos Mango 1.5L\", \"quantityDelta\": 24}}"
+        "role": "user",
+        "content": "<tool_response>\n{\"success\": true, \"transaction\": {\"id\": 9001, \"itemId\": 13, \"itemSku\": \"JARM\", \"itemName\": \"Jarritos Mango 1.5L\", \"transactionType\": \"restock\", \"quantityDelta\": 24, \"note\": null, \"createdUtc\": \"2026-09-20T10:15:00Z\"}, \"item\": {\"id\": 13, \"sku\": \"JARM\", \"name\": \"Jarritos Mango 1.5L\", \"quantity\": 27}, \"resolvedProduct\": {\"requestedName\": \"jarritos\", \"sku\": \"JARM\", \"name\": \"Jarritos Mango 1.5L\", \"quantityDelta\": 24}}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -2203,24 +1287,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "inventory_add_transaction",
-              "arguments": {
-                "productName": "maruchan",
-                "quantityDelta": -3,
-                "transactionType": "sale"
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"inventory_add_transaction\", \"arguments\": {\"productName\": \"maruchan\", \"quantityDelta\": -3, \"transactionType\": \"sale\"}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"success\": true, \"transaction\": {\"id\": 9001, \"itemId\": 3, \"itemSku\": \"MARU\", \"itemName\": \"Maruchan Instant Lunch Chicken Flavor\", \"transactionType\": \"sale\", \"quantityDelta\": -3, \"note\": null, \"createdUtc\": \"2026-09-20T10:15:00Z\"}, \"item\": {\"id\": 3, \"sku\": \"MARU\", \"name\": \"Maruchan Instant Lunch Chicken Flavor\", \"quantity\": 5}, \"resolvedProduct\": {\"requestedName\": \"maruchan\", \"sku\": \"MARU\", \"name\": \"Maruchan Instant Lunch Chicken Flavor\", \"quantityDelta\": -3}}"
+        "role": "user",
+        "content": "<tool_response>\n{\"success\": true, \"transaction\": {\"id\": 9001, \"itemId\": 3, \"itemSku\": \"MARU\", \"itemName\": \"Maruchan Instant Lunch Chicken Flavor\", \"transactionType\": \"sale\", \"quantityDelta\": -3, \"note\": null, \"createdUtc\": \"2026-09-20T10:15:00Z\"}, \"item\": {\"id\": 3, \"sku\": \"MARU\", \"name\": \"Maruchan Instant Lunch Chicken Flavor\", \"quantity\": 5}, \"resolvedProduct\": {\"requestedName\": \"maruchan\", \"sku\": \"MARU\", \"name\": \"Maruchan Instant Lunch Chicken Flavor\", \"quantityDelta\": -3}}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -2236,24 +1307,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "inventory_add_transaction",
-              "arguments": {
-                "productName": "ariel",
-                "quantityDelta": -2,
-                "transactionType": "sale"
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"inventory_add_transaction\", \"arguments\": {\"productName\": \"ariel\", \"quantityDelta\": -2, \"transactionType\": \"sale\"}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"success\": true, \"transaction\": {\"id\": 9001, \"itemId\": 5, \"itemSku\": \"ARIE\", \"itemName\": \"Ariel Poder Y Cuidado\", \"transactionType\": \"sale\", \"quantityDelta\": -2, \"note\": null, \"createdUtc\": \"2026-09-20T10:15:00Z\"}, \"item\": {\"id\": 5, \"sku\": \"ARIE\", \"name\": \"Ariel Poder Y Cuidado\", \"quantity\": 4}, \"resolvedProduct\": {\"requestedName\": \"ariel\", \"sku\": \"ARIE\", \"name\": \"Ariel Poder Y Cuidado\", \"quantityDelta\": -2}}"
+        "role": "user",
+        "content": "<tool_response>\n{\"success\": true, \"transaction\": {\"id\": 9001, \"itemId\": 5, \"itemSku\": \"ARIE\", \"itemName\": \"Ariel Poder Y Cuidado\", \"transactionType\": \"sale\", \"quantityDelta\": -2, \"note\": null, \"createdUtc\": \"2026-09-20T10:15:00Z\"}, \"item\": {\"id\": 5, \"sku\": \"ARIE\", \"name\": \"Ariel Poder Y Cuidado\", \"quantity\": 4}, \"resolvedProduct\": {\"requestedName\": \"ariel\", \"sku\": \"ARIE\", \"name\": \"Ariel Poder Y Cuidado\", \"quantityDelta\": -2}}\n</tool_response>"
       },
       {
         "role": "assistant",
@@ -2269,24 +1327,11 @@
       },
       {
         "role": "assistant",
-        "content": "",
-        "tool_calls": [
-          {
-            "type": "function",
-            "function": {
-              "name": "inventory_add_transaction",
-              "arguments": {
-                "productName": "abuelita",
-                "quantityDelta": -5,
-                "transactionType": "sale"
-              }
-            }
-          }
-        ]
+        "content": "<tool_call>\n{\"name\": \"inventory_add_transaction\", \"arguments\": {\"productName\": \"abuelita\", \"quantityDelta\": -5, \"transactionType\": \"sale\"}}\n</tool_call>"
       },
       {
-        "role": "tool",
-        "content": "{\"success\": true, \"transaction\": {\"id\": 9001, \"itemId\": 1, \"itemSku\": \"NABU\", \"itemName\": \"Nestl\\u00e9 Abuelita Hot Chocolate\", \"transactionType\": \"sale\", \"quantityDelta\": -5, \"note\": null, \"createdUtc\": \"2026-09-20T10:15:00Z\"}, \"item\": {\"id\": 1, \"sku\": \"NABU\", \"name\": \"Nestl\\u00e9 Abuelita Hot Chocolate\", \"quantity\": 20}, \"resolvedProduct\": {\"requestedName\": \"abuelita\", \"sku\": \"NABU\", \"name\": \"Nestl\\u00e9 Abuelita Hot Chocolate\", \"quantityDelta\": -5}}"
+        "role": "user",
+        "content": "<tool_response>\n{\"success\": true, \"transaction\": {\"id\": 9001, \"itemId\": 1, \"itemSku\": \"NABU\", \"itemName\": \"Nestl\\u00e9 Abuelita Hot Chocolate\", \"transactionType\": \"sale\", \"quantityDelta\": -5, \"note\": null, \"createdUtc\": \"2026-09-20T10:15:00Z\"}, \"item\": {\"id\": 1, \"sku\": \"NABU\", \"name\": \"Nestl\\u00e9 Abuelita Hot Chocolate\", \"quantity\": 20}, \"resolvedProduct\": {\"requestedName\": \"abuelita\", \"sku\": \"NABU\", \"name\": \"Nestl\\u00e9 Abuelita Hot Chocolate\", \"quantityDelta\": -5}}\n</tool_response>"
       },
       {
         "role": "assistant",
