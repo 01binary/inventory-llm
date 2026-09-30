@@ -32,8 +32,6 @@ model, tokenizer = FastLanguageModel.from_pretrained(
 
 # Configure LoRA Adapter
 
-from unsloth import FastLanguageModel
-
 model = FastLanguageModel.get_peft_model(
     model,
     finetune_vision_layers     = False, # Turn off for just text!
