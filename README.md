@@ -39,6 +39,8 @@ To address both needs, we demonstrated how an AI can be used entirely in Spanish
   - `SYSTEM_PROMPT.md`
   - `STARTUP_PROMPT.md`
   - `FEW_SHOT_PROMPTS.json`
+- [Training Notebook](https://www.kaggle.com/code/valnovytskyy/inventory-gemma)
+- [Trained Model](https://huggingface.co/valnovytskyy/inventory-gemma-12B)
 
 The backend serves both API endpoints and MCP tools at `/mcp`. This means that the frontend is technically optional - you can run just the MCP server and pair that with a desktop AI agent like [LM Studio](https://lmstudio.ai/), [Claude Desktop](https://code.claude.com/docs/en/desktop-quickstart) or [Codex](https://chatgpt.com/codex/switch-to-codex/) to manage the inventory without a web interface.
 

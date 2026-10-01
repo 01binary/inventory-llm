@@ -1,5 +1,6 @@
 # Training Notebook for Gemma3 (12B) on Kaggle
-# https://www.kaggle.com/notebooks/welcome?src=https%3A%2F%2Fgithub.com%2Funslothai/notebooks/blob/main/nb/Kaggle-Gemma3_(4B).ipynb
+# Template: https://www.kaggle.com/notebooks/welcome?src=https%3A%2F%2Fgithub.com%2Funslothai/notebooks/blob/main/nb/Kaggle-Gemma3_(4B).ipynb
+# Notebook: https://www.kaggle.com/code/valnovytskyy/inventory-gemma
 
 # Install Dependencies
 
